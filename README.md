@@ -1,1 +1,3 @@
-# WORMS
+WORMS
+
+Projekt z grafiki
