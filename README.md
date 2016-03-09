@@ -1,3 +1,3 @@
-#KATAKUMBY
+#Caterpillar
 
 Projekt z grafiki
