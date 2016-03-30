@@ -1,6 +1,10 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+/Caterpillars/build/*
+/build/*
+build/*
+build/
 *~
 *.autosave
 *.a
@@ -34,10 +38,6 @@ Thumbs.db
 *.rc
 /.qmake.cache
 /.qmake.stash
-/Caterpillars/build/*
-/build/*
-build/*
-build/
 
 # qtcreator generated files
 *.pro.user*
