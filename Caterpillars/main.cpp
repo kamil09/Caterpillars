@@ -3,8 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <glm/glm.hpp>
-#include "src/settings.h"
-#include "src/menu.h"
+#include "src/settings.hpp"
+#include "src/menu.hpp"
 
 using namespace std;
 
@@ -12,9 +12,13 @@ static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
 }
 static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
+<<<<<<< HEAD
 	//if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
 
 //MOVE
+=======
+	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
+>>>>>>> a8a52dc6b2cfb5d9a0bb9a75b6dc56635ebea5eb
 	//if(key == W && action == GLFW_PRESS)
 	//if(key == W && action == GLFW_RELEASE)
 	//if(key == A && action == GLFW_PRESS)
@@ -55,6 +59,10 @@ int main(void){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
 	GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+	// GLFWwindow* window = glfwCreateWindow(Setting::getInstance()->getWidth(), mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+
+	std::cout << Setting::getInstance().getHeight() << std::endl;
+	std::cout << Setting::getInstance().getWidth() << std::endl;
 
 	if(!window) {
 		std::cerr << "terminated" << std::endl;
@@ -63,6 +71,8 @@ int main(void){
 	}
 
 	glfwMakeContextCurrent(window);
+
+	glewExperimental = GL_TRUE;
 
 	GLenum error_code = glewInit();
 	if(error_code != GLEW_OK) {
@@ -84,30 +94,33 @@ int main(void){
 	while (!glfwWindowShouldClose(window)) {
 		glfwSetTime(0);
 		switch (gameCase) {
-			case START:
-				//gameCase=mainMenuView();
+		case START:
+			//gameCase=mainMenuView();
 			break;
-			case OPTIONS:
-				//gameCase=optionsView();
+		case OPTIONS:
+			//gameCase=optionsView();
 			break;
-			case INFO:
-				//gameCase=infoView();
+		case INFO:
+			//gameCase=infoView();
 			break;
-			case GAME:
-				//gameCase=gameView();
+		case GAME:
+			//gameCase=gameView();
 			break;
-			case PAUSE:
-				//gameCase=pauseView();
+		case PAUSE:
+			//gameCase=pauseView();
 			break;
-			case GAME_END:
-				//gameCase=gameEndView();
+		case GAME_END:
+			//gameCase=gameEndView();
 			break;
-			case EXIT:
-				//gameCase=exitView();
+		case EXIT:
+			//gameCase=exitView();
 			break;
 		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	glfwDestroyCursor(cursor);
