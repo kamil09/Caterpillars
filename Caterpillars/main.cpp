@@ -12,13 +12,8 @@ static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
 }
 static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
-<<<<<<< HEAD
-	//if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
-
-//MOVE
-=======
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
->>>>>>> a8a52dc6b2cfb5d9a0bb9a75b6dc56635ebea5eb
+//move
 	//if(key == W && action == GLFW_PRESS)
 	//if(key == W && action == GLFW_RELEASE)
 	//if(key == A && action == GLFW_PRESS)
@@ -33,7 +28,6 @@ static void key_callback(GLFWwindow* window,int key, int scancode, int action, i
 //show/close inventory
 	//if(key == I && action == GLFW_PRESS)
 	//if(key == I && action == GLFW_RELEASE)
-
 
 //close / pause
 	//if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
