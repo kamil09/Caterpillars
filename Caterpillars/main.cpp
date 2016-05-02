@@ -11,11 +11,32 @@ using namespace std;
 static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
 }
-
 static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
 	//if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
+
+//MOVE
 	//if(key == W && action == GLFW_PRESS)
+	//if(key == W && action == GLFW_RELEASE)
+	//if(key == A && action == GLFW_PRESS)
+	//if(key == A && action == GLFW_RELEASE)
+	//if(key == S && action == GLFW_PRESS)
+	//if(key == S && action == GLFW_RELEASE)
+	//if(key == D && action == GLFW_PRESS)
+	//if(key == D && action == GLFW_RELEASE)
+//jump (jeżeli połączony z jakimś z powyższych to skaczemy w kierunku)
+	//if(key == SPACE && action == GLFW_PRESS)
+	//if(key == SPACE && action == GLFW_RELEASE)
+//show/close inventory
+	//if(key == I && action == GLFW_PRESS)
+	//if(key == I && action == GLFW_RELEASE)
+
+
+//close / pause
 	//if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+
+}
+static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
+{
 
 }
 
@@ -49,6 +70,10 @@ int main(void){
 	}
 
 	glfwSetKeyCallback(window, key_callback);
+	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+	glfwSetCursor(window, cursor);
+	glfwSetCursorPosCallback(window, cursor_pos_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 	const GLubyte *vendor = glGetString(GL_VENDOR);
 	const GLubyte *renderer = glGetString(GL_RENDERER);
@@ -85,6 +110,7 @@ int main(void){
 		glfwPollEvents();
 	}
 
+	glfwDestroyCursor(cursor);
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
