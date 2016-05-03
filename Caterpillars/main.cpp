@@ -65,10 +65,12 @@ int main(void){
 				infoView();
 				break;
 			case GAME:
-				//gameCase=gameView();
+				//DRAW 3D scene
+				gameView(); //draw 2d
 				break;
 			case PAUSE:
-				//gameCase=pauseView();
+				//DRAW 3D scene
+				pauseView(); //draw 2d
 				break;
 			case GAME_END:
 				gameEndView();

@@ -2,6 +2,7 @@
 #define settings
 
 #include <iostream>
+#include "string.h"
 
 class Setting {
    private:
@@ -9,19 +10,26 @@ class Setting {
       int height;
       bool fullWindow;
       bool fullResolution;
+      bool music;
+      bool sounds;
+      int difficulty;
+      int frames;
+      std::string rankFileName;
    public:
       Setting();
       Setting(const Setting &);
       ~Setting();
       static Setting& getInstance();
+      //NIE ROBIMY SETTERÓW, nie pozwalamy na zmiany ustawień
       int getWidth();
-      void setWidth(int w);
       int getHeight();
-      void setHeight(int h);
       bool getFullWindow();
-      void setFullWindow(bool r);
       bool getFullResolution();
-      void setFullResolution(bool r);
+      bool getMusic();
+      bool getSounds();
+      int getDifficulty();
+      int getFrames();
+      std::string getRankFileName();
 };
 
 

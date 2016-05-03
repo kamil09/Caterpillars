@@ -28,7 +28,7 @@ void del2d(){
 
 void mainMenuView(){
    init2d();
-   
+   //DRAW MENU
    del2d();
 };
 void optionsView(){
@@ -47,6 +47,17 @@ void gameEndView(){
    del2d();
 };
 void exitView(){
+   init2d();
+
+   del2d();
+};
+
+void gameView(){
+   init2d();
+
+   del2d();
+};
+void pauseView(){
    init2d();
 
    del2d();

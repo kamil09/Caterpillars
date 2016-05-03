@@ -24,5 +24,7 @@ void optionsView();
 void infoView();
 void gameEndView();
 void exitView();
+void gameView();
+void pauseView();
 
 #endif
