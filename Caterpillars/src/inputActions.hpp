@@ -33,6 +33,11 @@ class inputActions{
       //Wskazuje o ile przesnięto myszę od ostatniej klatki (używane do sterowania kamerą)
       double movedX;
       double movedY;
+      //Tych 2 zmiennych poniżej nie używać! potrzebne do wyliczanie tych 2 zmiennych wyżej ;)
+      double lastX;
+      double lastY;
+
+      void clear();
 };
 
 
