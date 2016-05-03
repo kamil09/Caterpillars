@@ -6,6 +6,7 @@
 #include "src/settings.hpp"
 #include "src/2dView.hpp"
 #include "src/button.hpp"
+#include "src/inputActions.hpp"
 
 using namespace std;
 using namespace glm;
@@ -16,6 +17,9 @@ static void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );
 //KURSOR
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
+//MYSZ
+static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 //INICJALIZACJA
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor);
 
@@ -108,6 +112,8 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
 	glfwSetCursorPosCallback(window, cursor_pos_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 
@@ -124,26 +130,32 @@ static void error_callback(int error, const char* description){
 static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
 //move
-	//if(key == W && action == GLFW_PRESS)
-	//if(key == W && action == GLFW_RELEASE)
-	//if(key == A && action == GLFW_PRESS)
-	//if(key == A && action == GLFW_RELEASE)
-	//if(key == S && action == GLFW_PRESS)
-	//if(key == S && action == GLFW_RELEASE)
-	//if(key == D && action == GLFW_PRESS)
-	//if(key == D && action == GLFW_RELEASE)
+	if(key == GLFW_KEY_W && action == GLFW_PRESS) inputActions::getInstance().w_pressed=true;
+	if(key == GLFW_KEY_W && action == GLFW_RELEASE) inputActions::getInstance().w_pressed=false;
+	if(key == GLFW_KEY_A && action == GLFW_PRESS) inputActions::getInstance().a_pressed=true;
+	if(key == GLFW_KEY_A && action == GLFW_RELEASE) inputActions::getInstance().a_pressed=true;
+	if(key == GLFW_KEY_S && action == GLFW_PRESS) inputActions::getInstance().s_pressed=true;
+	if(key == GLFW_KEY_S && action == GLFW_RELEASE) inputActions::getInstance().s_pressed=true;
+	if(key == GLFW_KEY_D && action == GLFW_PRESS) inputActions::getInstance().d_pressed=true;
+	if(key == GLFW_KEY_D && action == GLFW_RELEASE) inputActions::getInstance().d_pressed=true;
 //jump (jeżeli połączony z jakimś z powyższych to skaczemy w kierunku)
-	//if(key == SPACE && action == GLFW_PRESS)
-	//if(key == SPACE && action == GLFW_RELEASE)
+	if(key == GLFW_KEY_SPACE && action == GLFW_PRESS) inputActions::getInstance().space_pressed=true;
 //show/close inventory
-	//if(key == I && action == GLFW_PRESS)
-	//if(key == I && action == GLFW_RELEASE)
-
+	if(key == GLFW_KEY_I && action == GLFW_PRESS) inputActions::getInstance().i_pressed=true;
 //close / pause
-	//if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-
+	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) inputActions::getInstance().escape_pressed=true;
 }
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
 
+}
+static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
+	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) inputActions::getInstance().leftClick=true;
+	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) inputActions::getInstance().leftClick=false;
+
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) inputActions::getInstance().rightClick=true;
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) inputActions::getInstance().rightClick=false;
+}
+static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
+	inputActions::getInstance().escape_pressed+=yoffset;
 }
