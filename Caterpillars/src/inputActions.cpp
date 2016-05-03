@@ -12,6 +12,11 @@ inputActions::inputActions(){
    this->scroll=0;
    this->leftClick=false;
    this->rightClick=false;
+   this->lastLeftClick=false;
+   this->cursorLastX=0;
+   this->cursorLastY=0;
+   this->movedX=0;
+   this->movedY=0;
 }
 
 inputActions::~inputActions(){

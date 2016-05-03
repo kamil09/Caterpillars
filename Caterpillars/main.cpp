@@ -147,14 +147,21 @@ static void key_callback(GLFWwindow* window,int key, int scancode, int action, i
 }
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
-
+	inputActions::getInstance().movedX=xpos-inputActions::getInstance().movedX;
+	inputActions::getInstance().movedY=ypos-inputActions::getInstance().movedY;
 }
-static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
-	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) inputActions::getInstance().leftClick=true;
-	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) inputActions::getInstance().leftClick=false;
-
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) inputActions::getInstance().rightClick=true;
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) inputActions::getInstance().rightClick=false;
+static void mouse_button_callback(GLFWwindow* window, int key, int action, int mods){
+	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) inputActions::getInstance().leftClick=true;
+	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
+		inputActions::getInstance().leftClick=false;
+		inputActions::getInstance().lastLeftClick=true;
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		inputActions::getInstance().cursorLastX=xpos;
+		inputActions::getInstance().cursorLastY=ypos;
+	}
+	if(key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) inputActions::getInstance().rightClick=true;
+	if(key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) inputActions::getInstance().rightClick=false;
 }
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
 	inputActions::getInstance().escape_pressed+=yoffset;
