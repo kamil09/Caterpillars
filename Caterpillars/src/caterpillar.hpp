@@ -5,6 +5,7 @@
 
 class Caterpillar : public Object{
 private:
+   float life;
 
 public:
    Caterpillar();
