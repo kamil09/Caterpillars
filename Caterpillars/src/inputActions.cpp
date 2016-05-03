@@ -25,8 +25,9 @@ inputActions::inputActions(){
 }
 
 void inputActions::clear(){
-   movedX=0;
-   movedY=0;
+   this->scroll=0;
+   this->movedX=0;
+   this->movedY=0;
 }
 
 inputActions::~inputActions(){

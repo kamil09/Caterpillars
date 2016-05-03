@@ -93,8 +93,6 @@ Setting::~Setting(){
 }
 
 Setting& Setting::getInstance(){
-	// static Setting *instance = new Setting();
-	// return *instance;
 	static Setting instance;
 	return instance;
 }
