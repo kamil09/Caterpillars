@@ -170,6 +170,8 @@ int main(void){
 		        // glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
+		//Czyścimy niektóre inputy przed kolejną klatką.
+		inputActions::getInstance().clear();
 		glfwPollEvents();
 	}
 
@@ -238,8 +240,10 @@ static void key_callback(GLFWwindow* window,int key, int scancode, int action, i
 }
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	inputActions::getInstance().movedX=xpos-inputActions::getInstance().movedX;
-	inputActions::getInstance().movedY=ypos-inputActions::getInstance().movedY;
+	inputActions::getInstance().movedX=xpos-inputActions::getInstance().lastX;
+	inputActions::getInstance().movedY=ypos-inputActions::getInstance().lastY;
+	inputActions::getInstance().lastX=xpos;
+	inputActions::getInstance().lastY=ypos;
 }
 static void mouse_button_callback(GLFWwindow* window, int key, int action, int mods){
 	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) inputActions::getInstance().leftClick=true;

@@ -2,7 +2,11 @@
 #define settings
 
 #include <iostream>
-#include "string.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+using namespace std;
 
 class Setting {
    private:
@@ -14,11 +18,13 @@ class Setting {
       bool sounds;
       int difficulty;
       int frames;
-      std::string rankFileName;
+      char* rankFileName;
+      void loadFromFile(FILE *in);
    public:
       Setting();
       Setting(const Setting &);
       ~Setting();
+      void load();
       static Setting& getInstance();
       //NIE ROBIMY SETTERÓW, nie pozwalamy na zmiany ustawień
       int getWidth();
@@ -29,7 +35,7 @@ class Setting {
       bool getSounds();
       int getDifficulty();
       int getFrames();
-      std::string getRankFileName();
+      char *getRankFileName();
 };
 
 

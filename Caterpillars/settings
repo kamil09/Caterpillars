@@ -1,18 +1,15 @@
 #USTAWIENIA
-
 #EKRAN
 width:800
 height:600
-fullWindow:ON
+fullWindow:1
 #IF ON width and height are not used;
-fullResolution:ON
-
+fullResolution:1
 #ranking
-theBestFile:ranking
-
+theBestFile:rankFile
 #USTAWIENIA GRY
 #0- początkujący ; 1-normalny ; 2-zaawansowany; 3-matematyk
-difficulty:3
+difficulty:1
 frames:30
-music:ON
-voice:ON
+music:1
+voice:1
