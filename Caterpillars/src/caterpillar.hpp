@@ -5,7 +5,7 @@
 
 class Caterpillar : public Object{
 private:
-   float life;
+   float life;          //Życie naszego bohatera :)
    float maxWalkAngle;  //Maksymalny kąt pod jakim może wchodzić worms na wzniesienie
    float maxWalkSpeed;  //maksymalna prędkość chodzenia m/s
 public:

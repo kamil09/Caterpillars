@@ -20,6 +20,7 @@ void Map::rand(){
 }
 void Map::kaboom(float x, float y, float z, float radius){
    //Zmniejszamy wysokość w punkcie kaboom i okolicznych
+   //Dajemy efekt dźwiękowy i odpryski jakieś.
 
    this->genTriangleTab();
 }
