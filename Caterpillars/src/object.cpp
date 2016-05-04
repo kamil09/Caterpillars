@@ -6,6 +6,7 @@ Object::Object(){
    this->speedY=0;
    this->speedZ=0;
    this->kickTime=0;
+   this->canKick=true;
 }
 Object::~Object(){
 

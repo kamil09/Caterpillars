@@ -1,6 +1,12 @@
 #ifndef objectCl
 #define objectCl
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <glm/glm.hpp>
+
 class Object{
 private:
    float speedX;
@@ -9,8 +15,12 @@ private:
    float posX;
    float posY;
    float posZ;
+   bool canKick;     //Czy można zadziałać na dany obiekt. Jezeli false to obiekt znajduje się w powietrzu i nie da rady w niego ingerować
    double kickTime;  //Czas od rozpoczęcia rzutu
 
+   int verticlesCount;
+   GLfloat vertices[];
+   GLuint indices[];
 public:
    Object();
    ~Object();
