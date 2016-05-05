@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <thread>
+#include "math.h"
 
 using namespace std;
 
@@ -17,13 +18,15 @@ private:
    int minHeight;   //wysokość do jakiej można rozwalić teren
    float fogSpeed;  //Prędkość podnoszenia się mgły [m/s] (zamiast wody :) )
    float fogHeight; //Wysokość na jakiej jest mgła
-   float air;       //Współczynnik Oporu powietrza
+   float air;       //Współczynnik Oporu powietrza Od 0 do 1
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    void generateRandomMap();
+   void recalculateTriangleMap(int rowStart,int rowEnd);
 
 public:
    Map();
    ~Map();
+   void bindBuffers();
    Map(const Map &);
    static Map& getInstance();
    void draw();
