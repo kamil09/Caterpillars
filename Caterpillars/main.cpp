@@ -4,7 +4,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include "src/settings.hpp"
-#include "src/2dView.hpp"
+// #include "src/2dView.hpp"
 #include "src/button.hpp"
 #include "src/inputActions.hpp"
 
@@ -13,6 +13,8 @@ using namespace glm;
 
 GLenum err;
 
+enum gameCaseType {START,OPTIONS,INFO,GAME,PAUSE,GAME_END,EXIT};
+gameCaseType gameCase;
 
 
 //ERROR
@@ -246,6 +248,7 @@ void readPixel(GLFWwindow *window){
 	float data[4];
 	inputActions::getInstance().getMouseCurrentPosition(window);
 	glReadPixels(inputActions::getInstance().getCursorLastX(),viewport[3]-1-inputActions::getInstance().getCursorLastY(),1,1, GL_RGBA, GL_FLOAT, data);
+	glFlush();
 	glFinish();
 	std::cout << "red: " << data[0] << " green: " << data[1] << " blue: " << data[2] << " alpha: " << data[3] << std::endl;
 }
