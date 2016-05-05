@@ -38,3 +38,20 @@ inputActions& inputActions::getInstance(){
 	static inputActions instance;
 	return instance;
 }
+
+void inputActions::getMouseCurrentPosition(GLFWwindow* window){
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+    this->cursorLastX=xpos;
+    this->cursorLastY=ypos;
+    std::cout << "Cursor X: " << this->cursorLastX << " Cursor Y: " << this->cursorLastY << std::endl;
+}
+
+
+double inputActions::getCursorLastX(){
+    return this->cursorLastX;
+}
+
+double inputActions::getCursorLastY(){
+    return this->cursorLastY;
+}

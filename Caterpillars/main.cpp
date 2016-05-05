@@ -11,6 +11,7 @@
 using namespace std;
 using namespace glm;
 
+GLenum err;
 
 
 
@@ -26,6 +27,9 @@ static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 //INICJALIZACJA
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor);
 
+void readPixel(GLFWwindow *window);
+
+
 //MAIN
 int main(void){
 	glfwSetErrorCallback(error_callback);
@@ -38,7 +42,7 @@ int main(void){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
 	GLFWwindow* window;
-	if ( Setting::getInstance().getFullWindow() ){
+	if ( Setting::getInstance().getFullWindow() ) {
 		if (Setting::getInstance().getFullResolution() ) window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
 		else window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",glfwGetPrimaryMonitor(), NULL);
 	}
@@ -47,75 +51,91 @@ int main(void){
 		else window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
 	}
 
-	std::cout << Setting::getInstance().getHeight() << std::endl;
-	std::cout << Setting::getInstance().getWidth() << std::endl;
+	// window = glfwCreateWindow(800,600,"test",NULL,NULL);
+
+	// std::cout << Setting::getInstance().getHeight() << std::endl;
+	// std::cout << Setting::getInstance().getWidth() << std::endl;
 
 	if(!window) {
 		std::cerr << "terminated" << std::endl;
 		glfwTerminate();
 		return 1;
 	}
-	GLFWcursor* cursor=0;
+	GLFWcursor* cursor = 0;
 	initOpenGLProgram(window,cursor);
 
 	glViewport(0,0,mode->width,mode->height);
 
 	// Enable depth test
-	glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
-	glDepthFunc(GL_LESS);
+	// glDepthFunc(GL_LESS);
 
 	// Cull triangles which normal is not towards the camera
-	glEnable(GL_CULL_FACE);
+	// glEnable(GL_CULL_FACE);
 
+	Button *listaButtonow[4];
+	for(int i=0; i<4; i++) {
+		listaButtonow[i] = new Button(255 + (i*200),0.0f,0.60f-(i*0.4f),0.5f,0.3f);
+	}
 
-	Button *nowyButton = new Button(100,0.0f,0.0f,0.5f,0.5f);
+	std::cout << "wartosc: " << listaButtonow[1]->vertices[1] << std::endl;
+	// listaButtonow[4] = new Button(255*255,0.0f,0.0f,0.5f,0.5f);
+
+	while((err = glGetError())!=GL_NO_ERROR) {
+		std::cerr << "opengl error: " << err << std::endl;
+	}
+	// Button *nowyButton = new Button(100,0.0f,0.0f,0.5f,0.3f);
 
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	   glClear(GL_COLOR_BUFFER_BIT);
-		switch (gameCase) {
-			case START:
-				mainMenuView();
-				break;
-			case OPTIONS:
-				optionsView();
-				break;
-			case INFO:
-				infoView();
-				break;
-			case GAME:
-				//DRAW 3D scene
-				gameView(); //draw 2d
-				break;
-			case PAUSE:
-				//DRAW 3D scene
-				pauseView(); //draw 2d
-				break;
-			case GAME_END:
-				gameEndView();
-				break;
-			case EXIT:
-				exitView();
-				break;
-		}
-			nowyButton->rysuj();
-		// Draw our first triangle
-		        // glUseProgram(shaderProgram);
-		        // glBindVertexArray(VAO);
-		        // //glDrawArrays(GL_TRIANGLES, 0, 6);
-		        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		        // glBindVertexArray(0);
 
+		// glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		switch (gameCase) {
+		case START:
+		    //  mainMenuView();
+		     break;
+		case OPTIONS:
+		    //  optionsView();
+		     break;
+		case INFO:
+		    //  infoView();
+		     break;
+		case GAME:
+		     //DRAW 3D scene
+		    //  gameView();         //draw 2d
+		     break;
+		case PAUSE:
+		     //DRAW 3D scene
+		    //  pauseView();         //draw 2d
+		     break;
+		case GAME_END:
+		    //  gameEndView();
+		     break;
+		case EXIT:
+		    //  exitView();
+		     break;
+		}
+
+		for(int i=0; i<4; i++) {
+			listaButtonow[i]->rysuj();
+		}
+
+		// glFlush();
+		// glFinish();
+
+
+		while((err = glGetError())!=GL_NO_ERROR) {
+			std::cerr << "opengl error: " << err << std::endl;
+		}
+
+		glfwPollEvents();
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();
-		glfwPollEvents();
 	}
 
-	// glDeleteVertexArrays(1, &VAO);
-	// glDeleteBuffers(1, &VBO);
-	// glDeleteBuffers(1, &EBO);
 
 	glfwDestroyCursor(cursor);
 	glfwDestroyWindow(window);
@@ -128,16 +148,24 @@ int main(void){
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
-	glewInit();
+	while((err = glGetError())!=GL_NO_ERROR) {
+		std::cerr << "opengl error: " << err << std::endl;
+	}
+	std::cout << "CHECKED" << std::endl;
 
-	GLuint VertexArrayID;							//TODO : PO CO TO? :)
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
+	// GLuint VertexArrayID;                                                   //TODO : PO CO TO? :)
+	// glGenVertexArrays(1, &VertexArrayID);
+	// glBindVertexArray(VertexArrayID);
 
 	GLenum error_code = glewInit();
 	if(error_code != GLEW_OK) {
 		std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
 	}
+	while((err = glGetError())!=GL_NO_ERROR) {
+		std::cerr << "opengl error: " << err << std::endl;
+	}
+
+	std::cout << "CHECKED2" << std::endl;
 
 	glfwSetKeyCallback(window, key_callback);
 	cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
@@ -153,13 +181,18 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	const GLubyte *version = glGetString(GL_VERSION);
 	const GLubyte *shading = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "Informacje o sprzęcie:" << std::endl << vendor << std::endl << renderer << std::endl << version << std::endl << shading << std::endl;
-
+	// GLenum err;
 }
 static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
 }
 static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GL_TRUE);
+
+	// if(key == GLFW_KEY_X && action == GLFW_PRESS) {
+	// 	readPixel(window);
+	// }
+
 //move
 	if(key == GLFW_KEY_W && action == GLFW_PRESS) inputActions::getInstance().w_pressed=true;
 	if(key == GLFW_KEY_W && action == GLFW_RELEASE) inputActions::getInstance().w_pressed=false;
@@ -176,6 +209,7 @@ static void key_callback(GLFWwindow* window,int key, int scancode, int action, i
 //close / pause
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) inputActions::getInstance().escape_pressed=true;
 }
+
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	inputActions::getInstance().movedX=xpos-inputActions::getInstance().lastX;
@@ -183,19 +217,35 @@ static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 	inputActions::getInstance().lastX=xpos;
 	inputActions::getInstance().lastY=ypos;
 }
+
 static void mouse_button_callback(GLFWwindow* window, int key, int action, int mods){
 	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) inputActions::getInstance().leftClick=true;
-	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
+	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
 		inputActions::getInstance().leftClick=false;
 		inputActions::getInstance().lastLeftClick=true;
-		double xpos, ypos;
-		glfwGetCursorPos(window, &xpos, &ypos);
-		inputActions::getInstance().cursorLastX=xpos;
-		inputActions::getInstance().cursorLastY=ypos;
+		// double xpos, ypos;
+		// glfwGetCursorPos(window, &xpos, &ypos);
+		// inputActions::getInstance().cursorLastX=xpos;
+		// inputActions::getInstance().cursorLastY=ypos;
+		readPixel(window);
 	}
+
 	if(key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) inputActions::getInstance().rightClick=true;
 	if(key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) inputActions::getInstance().rightClick=false;
 }
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
 	inputActions::getInstance().escape_pressed+=yoffset;
+}
+void readPixel(GLFWwindow *window){
+	glFlush();
+	glFinish();
+	// glReadBuffer(GL_BACK);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	float data[4];
+	inputActions::getInstance().getMouseCurrentPosition(window);
+	glReadPixels(inputActions::getInstance().getCursorLastX(),viewport[3]-1-inputActions::getInstance().getCursorLastY(),1,1, GL_RGBA, GL_FLOAT, data);
+	glFinish();
+	std::cout << "red: " << data[0] << " green: " << data[1] << " blue: " << data[2] << " alpha: " << data[3] << std::endl;
 }

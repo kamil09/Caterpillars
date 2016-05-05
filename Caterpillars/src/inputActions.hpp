@@ -2,6 +2,9 @@
 #define inputCl
 
 #include <iostream>
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 class inputActions{
    public:
@@ -9,7 +12,7 @@ class inputActions{
       inputActions(const inputActions &);
       ~inputActions();
       static inputActions& getInstance();
-
+      void getMouseCurrentPosition(GLFWwindow *window);
       //Będziemy zapamiętywać wciśnięcie przycisku i sprawdzać przy każdym przeliczaniu fizyki (co klatkę)
       bool w_pressed;
       bool a_pressed;
@@ -38,6 +41,8 @@ class inputActions{
       double lastY;
 
       void clear();
+      double getCursorLastX();
+      double getCursorLastY();
 };
 
 

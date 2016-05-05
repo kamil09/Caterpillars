@@ -2,12 +2,13 @@
 
 // Button::Button(int i,GLfloat lewaKrawedz,GLfloat prawaKrawedz,GLfloat gornaKrawedz,GLfloat dolnaKrawedz){
 Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight){
-	this->r = ((i & 0x000000FF) >>  0)/255.0f;
-	this->g = ((i & 0x0000FF00) >>  8)/255.0f;
-	this->b = ((i & 0x00FF0000) >> 16)/255.0f;
-    this->posX = newX;
-    this->posY = newY;
-    std::cout << "Pozycja X: " << this->posX << " Pozycja Y:" << this->posY << std::endl;
+	this->r = ((i & 0x000000FF) >>  0);
+	this->g = ((i & 0x0000FF00) >>  8);
+	this->b = ((i & 0x00FF0000) >> 16);
+
+	this->setPosX(newX);
+    this->setPosY(newY);
+    std::cout << "Pozycja X: " << this->getPosX() << " Pozycja Y:" << this->getPosY() << std::endl;
 
 
     this->width = newWidth;
@@ -17,25 +18,28 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 
 	std::cout << "Tworznenie buttonu" << std::endl;
 
+	// this->vertices = new GLfloat[12]();
+	this->vertices.resize(12);
+	// this->vertices =(GLfloat*) malloc(sizeof(GLfloat)*12);
 	// this->vertices[0] = 0.5f;
-	this->vertices[0] = posX + this->width/2.0f;
+	this->vertices[0] = this->getPosX() + this->width/2.0f;
 	// this->vertices[1] = 0.5f;
-	this->vertices[1] = posY + this->height/2.0f;
+	this->vertices[1] = this->getPosY() + this->height/2.0f;
 	this->vertices[2] = 0.0f;
 	// this->vertices[3] = 0.5f;
-	this->vertices[3] = posX + this->width/2.0f;
+	this->vertices[3] = this->getPosX() + this->width/2.0f;
 	// this->vertices[4] = -0.5f;
-	this->vertices[4] = posY - this->height/2.0f;
+	this->vertices[4] = this->getPosY() - this->height/2.0f;
 	this->vertices[5] = 0.0f;
 	// this->vertices[6] = -0.5f;
-	this->vertices[6] = posX - this->width/2.0f;
+	this->vertices[6] = this->getPosX() - this->width/2.0f;
 	// this->vertices[7] = -0.5f;
-	this->vertices[7] = posY - this->height/2.0f;
+	this->vertices[7] = this->getPosY() - this->height/2.0f;
 	this->vertices[8] = 0.0f;
 	// this->vertices[9] = -0.5f;
-	this->vertices[9] = posX - this->width/2.0f;
+	this->vertices[9] = this->getPosX() - this->width/2.0f;
 	// this->vertices[10] = 0.5f;
-	this->vertices[10] = posY + this->height/2.0f;
+	this->vertices[10] = this->getPosY() + this->height/2.0f;
 	this->vertices[11] = 0.0f;
 
 	// this->vertices[] = {
@@ -45,15 +49,18 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	//     -0.5f,  0.5f, 0.0f   // Top Left
 	// };
 
-
+	// this->indices = new GLuint[6]();
+	this->indices.resize(6);
+	// this->indices = (GLuint*) malloc(sizeof(GLuint)*6);
 	this->indices[0] = 0;
 	this->indices[1] = 1;
 	this->indices[2] = 3;
 	this->indices[3] = 1;
 	this->indices[4] = 2;
 	this->indices[5] = 3;
+
 	//
-	// this->indices[] = {  // Note that we start from 0!
+// this->indices[] = {  // Note that we start from 0!
 	//     0, 1, 3,  // First Triangle
 	//     1, 2, 3   // Second Triangle
 	// };
@@ -85,15 +92,6 @@ void Button::initVertexShaderSource(){
 }
 
 void Button::initFragmentShaderSource(){
-	// std::cout << "Tworznie fragment shader source" << std::endl;
-	// this->fragmentShaderSource =
-	//         "#version 330 core\n"
-	//         "out vec4 color;\n"
-	//         "void main()\n"
-	//         "{\n"
-	//         "color = vec4(1.0f,1.0f,1.0f,1.0f);\n"
-	//         "}\n\0";
-    //
     std::cout << "Tworznie fragment shader source" << std::endl;
 	this->fragmentShaderSource =
 	        "#version 330 core\n"
@@ -134,14 +132,14 @@ void Button::initProgram(){
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	this->shaderProgram = glCreateProgram();
+	glAttachShader(this->shaderProgram, vertexShader);
+	glAttachShader(this->shaderProgram, fragmentShader);
+	glLinkProgram(this->shaderProgram);
 	// Check for linking errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	glGetProgramiv(this->shaderProgram, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		glGetProgramInfoLog(this->shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
 
@@ -156,17 +154,18 @@ void Button::bindBuffers(){
 
 	// GLuint VBO, VAO, EBO;
 	// GLuint VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	glGenVertexArrays(1, &(this->VAO));
+	glGenBuffers(1, &this->VBO);
+	glGenBuffers(1, &this->EBO);
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(VAO);
+	glBindVertexArray(this->VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(this->vertices), this->vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(this->vertices), this->vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices), this->indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -174,18 +173,22 @@ void Button::bindBuffers(){
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
+
+	glDisableVertexAttribArray(0);
 }
 
 void Button::rysuj(){
+	// glEnableVertexAttribArray(0);
+	glUseProgram(this->shaderProgram);
+    GLint vertexColorLocation = glGetUniformLocation(this->shaderProgram, "buttonColor");
+    glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
 
-	glUseProgram(shaderProgram);
-    GLint vertexColorLocation = glGetUniformLocation(shaderProgram, "buttonColor");
-    glUniform4f(vertexColorLocation, this->r, this->g, this->b, 1.0f);
-
-    glBindVertexArray(VAO);
+    glBindVertexArray(this->VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	// glDisableVertexAttribArray(0);
+
 }
 
 void Button::wybrano(){

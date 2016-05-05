@@ -9,3 +9,20 @@ Co robimy w pierwszej kolejności:
 7.Stworzenie metod dotyczących fizyki (grawitacja, rzut ukośny) - które można wywołać na rzecz obiektu (bo np trzał i skok to to samo, tylko inny obiekt i wartości parametrów)
 8. Rysowanie mapy (wielka tablica z wartościami wierzchołków którą później rysujemny)
 ... A delej pomyślimy ;)
+
+
+MENU:
+
+1. Single player
+
+2. Multiplayer
+  a. liczba graczy. (2 lub więcej)
+  b. kolor graczy
+  c.
+
+3. opcje
+  a. wyświetlać to co w pliku
+4. exit
+  a. czy jestes pewny wyjscia
+
+Zrobić pause.

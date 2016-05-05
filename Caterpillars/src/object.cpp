@@ -29,3 +29,24 @@ void Object::recalculatePhysics(){
    //Sprawdzanie kolizji (czy można przesunąć obiekt na daną pozycję)
 
 }
+
+GLfloat Object::getPosX(){
+    return this->posX;
+}
+void Object::setPosX(GLfloat newValue){
+    this->posX = newValue;
+}
+
+GLfloat Object::getPosY(){
+    return this->posY;
+}
+void Object::setPosY(GLfloat newValue){
+    this->posY = newValue;
+}
+
+GLfloat Object::getPosZ(){
+    return this->posZ;
+}
+void Object::setPosZ(GLfloat newValue){
+    this->posZ = newValue;
+}
