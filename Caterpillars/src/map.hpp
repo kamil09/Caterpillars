@@ -2,6 +2,12 @@
 #define mapCl
 
 #include "object.hpp"
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <thread>
+
+using namespace std;
 
 //MAPA MOŻE BYĆ TYLKO JEDNA :)
 class Map : public Object{
@@ -12,7 +18,8 @@ private:
    float fogSpeed;  //Prędkość podnoszenia się mgły [m/s] (zamiast wody :) )
    float fogHeight; //Wysokość na jakiej jest mgła
    float air;       //Współczynnik Oporu powietrza
-   float mapVert[2000][2000]; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
+   float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
+   void generateRandomMap();
 
 public:
    Map();

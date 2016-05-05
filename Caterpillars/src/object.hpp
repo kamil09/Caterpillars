@@ -7,6 +7,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <vector>
+#include "shader.hpp"
 
 class Object{
 private:
@@ -31,7 +32,8 @@ public:
     GLuint VAO;
     GLuint VBO;
     GLuint EBO;
-    GLuint shaderProgram;
+    // GLuint shaderProgram;
+    Shader *shader;
    Object();
    ~Object();
    void draw();

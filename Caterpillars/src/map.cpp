@@ -1,6 +1,18 @@
 #include "map.hpp"
 
+/**
+ * Ustawienia mapy i genearatora
+*/
+const int vertX=2000;
+const int vertY=2000;
+const int baseHeight=50;
+const int maxMapHeight=400;
+const int maxHillRadius=300;
+const int minHillNum=10;
+const int maxHillNum=25;
+
 Map::Map(){
+   srand (time(NULL));
    this->windForce=10;
    this->gravity=9.81;
    this->minHeight=0;
@@ -10,9 +22,38 @@ Map::Map(){
    this->fogHeight=0;
 
    this->rand();
+   this->generateRandomMap();
    this->genTriangleTab();
 }
-Map::~Map(){
+Map::~Map(){}
+
+void makeHill(float **map){
+   float hillHeight = rand() % maxMapHeight;
+   float hillRadius = rand() % maxHillRadius;
+   float hillGeometry = ((rand() % 101)-50)/50;
+   printf("hillH:%f hillRad:%f hillGeo:%f \n",hillHeight,hillRadius,hillGeometry);
+}
+
+void Map::generateRandomMap(){
+   //DEKLARACJA PAMIĘCI I USTAWIENIE BAZOWEJ WYSOKOŚCI
+   this->mapVert = new float*[vertX];
+   for(int i=0;i<vertX;i++) mapVert[i]=new float[vertY];
+   for(int i=0;i<vertX;i++)
+      for(int j=0;j<vertY;j++)
+         this->mapVert[i][j]=baseHeight;
+
+   //WYLOSOWANIE n WZNIESIEN I URUCHOMIENIE n WĄTKÓW BUDOWY WZNIESIENIA
+   int hillNumbers = rand() % (maxHillNum-minHillNum) + minHillNum;
+
+   std::vector<std::thread*> threadList;
+   //threads fight : START
+   for(int i=0;i<hillNumbers;i++)
+      threadList.push_back(new std::thread(makeHill,this->mapVert));
+
+   for(int i=0;i<hillNumbers;i++){
+      threadList[i]->join();
+      delete threadList[i];
+   }
 
 }
 void Map::rand(){
