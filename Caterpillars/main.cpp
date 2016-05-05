@@ -6,6 +6,7 @@
 #include "src/settings.hpp"
 // #include "src/2dView.hpp"
 #include "src/button.hpp"
+#include "src/map.hpp"
 #include "src/inputActions.hpp"
 
 using namespace std;
@@ -27,6 +28,8 @@ static void mouse_button_callback(GLFWwindow* window, int button, int action, in
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 //INICJALIZACJA
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor);
+
+void readPixel(GLFWwindow *window);
 
 //MAIN
 int main(void){
@@ -60,38 +63,73 @@ int main(void){
 	GLFWcursor* cursor=0;
 	initOpenGLProgram(window,cursor);
 
+	glViewport(0,0,mode->width,mode->height);
+
+	// Enable depth test
+	// glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	// glDepthFunc(GL_LESS);
+
+	// Cull triangles which normal is not towards the camera
+	// glEnable(GL_CULL_FACE);
+
+	Button *listaButtonow[4];
+	for(int i=0; i<4; i++) {
+		listaButtonow[i] = new Button(255 + (i*200),0.0f,0.60f-(i*0.4f),0.5f,0.3f);
+	}
+
+	std::cout << "wartosc: " << listaButtonow[1]->vertices[1] << std::endl;
+	// listaButtonow[4] = new Button(255*255,0.0f,0.0f,0.5f,0.5f);
+
+	while((err = glGetError())!=GL_NO_ERROR) {
+		std::cerr << "opengl error: " << err << std::endl;
+	}
+	// Button *nowyButton = new Button(100,0.0f,0.0f,0.5f,0.3f);
+	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	   glClear(GL_COLOR_BUFFER_BIT);
 		switch (gameCase) {
 			case START:
-				mainMenuView();
+				//mainMenuView();
 				break;
 			case OPTIONS:
-				optionsView();
+				//optionsView();
 				break;
 			case INFO:
-				infoView();
+				//infoView();
 				break;
 			case GAME:
 				//DRAW 3D scene
-				gameView(); //draw 2d
+				//gameView(); //draw 2d
 				break;
 			case PAUSE:
 				//DRAW 3D scene
-				pauseView(); //draw 2d
+				//pauseView(); //draw 2d
 				break;
 			case GAME_END:
-				gameEndView();
+				//gameEndView();
 				break;
 			case EXIT:
-				exitView();
+				//exitView();
 				break;
 		}
+		for(int i=0; i<4; i++) {
+			listaButtonow[i]->rysuj();
+		}
+
+		// glFlush();
+		// glFinish();
+
+
+		while((err = glGetError())!=GL_NO_ERROR) {
+			std::cerr << "opengl error: " << err << std::endl;
+		}
+
+		glfwPollEvents();
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();
-		glfwPollEvents();
 	}
 	glfwDestroyCursor(cursor);
 	glfwDestroyWindow(window);
@@ -104,16 +142,24 @@ int main(void){
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
-	glewInit();
+	while((err = glGetError())!=GL_NO_ERROR) {
+		std::cerr << "opengl error: " << err << std::endl;
+	}
+	std::cout << "CHECKED" << std::endl;
 
-	GLuint VertexArrayID;							//TODO : PO CO TO? :)
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
+	// GLuint VertexArrayID;                                                   //TODO : PO CO TO? :)
+	// glGenVertexArrays(1, &VertexArrayID);
+	// glBindVertexArray(VertexArrayID);
 
 	GLenum error_code = glewInit();
 	if(error_code != GLEW_OK) {
 		std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
 	}
+	while((err = glGetError())!=GL_NO_ERROR) {
+		std::cerr << "opengl error: " << err << std::endl;
+	}
+
+	std::cout << "CHECKED2" << std::endl;
 
 	glfwSetKeyCallback(window, key_callback);
 	cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
@@ -129,7 +175,7 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	const GLubyte *version = glGetString(GL_VERSION);
 	const GLubyte *shading = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "Informacje o sprzęcie:" << std::endl << vendor << std::endl << renderer << std::endl << version << std::endl << shading << std::endl;
-
+	// GLenum err;
 }
 static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
@@ -164,10 +210,11 @@ static void mouse_button_callback(GLFWwindow* window, int key, int action, int m
 	if(key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
 		inputActions::getInstance().leftClick=false;
 		inputActions::getInstance().lastLeftClick=true;
-		double xpos, ypos;
-		glfwGetCursorPos(window, &xpos, &ypos);
-		inputActions::getInstance().cursorLastX=xpos;
-		inputActions::getInstance().cursorLastY=ypos;
+		// double xpos, ypos;
+		// glfwGetCursorPos(window, &xpos, &ypos);
+		// inputActions::getInstance().cursorLastX=xpos;
+		// inputActions::getInstance().cursorLastY=ypos;
+		readPixel(window);
 	}
 	if(key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) inputActions::getInstance().rightClick=true;
 	if(key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) inputActions::getInstance().rightClick=false;
@@ -175,8 +222,7 @@ static void mouse_button_callback(GLFWwindow* window, int key, int action, int m
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
 	inputActions::getInstance().escape_pressed+=yoffset;
 }
-<<<<<<< HEAD
-=======
+
 void readPixel(GLFWwindow *window){
 	glFlush();
 	glFinish();
@@ -191,4 +237,3 @@ void readPixel(GLFWwindow *window){
 	glFinish();
 	std::cout << "red: " << data[0] << " green: " << data[1] << " blue: " << data[2] << " alpha: " << data[3] << std::endl;
 }
->>>>>>> e2e577f92814c4c195ba7907629fc7c2fd1e5d24

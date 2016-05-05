@@ -30,8 +30,10 @@ Map::~Map(){}
 void makeHill(float **map){
    float hillHeight = rand() % maxMapHeight;
    float hillRadius = rand() % maxHillRadius;
-   float hillGeometry = ((rand() % 101)-50)/50;
-   printf("hillH:%f hillRad:%f hillGeo:%f \n",hillHeight,hillRadius,hillGeometry);
+   float hillGeometry = ((float)(rand() % 101)-50)/50;
+   int hillX = rand() % vertX;
+   int hillY = rand() % vertY;
+   printf("hillH:%f hillRad:%f hillGeo:%f X:%d Y:%d \n",hillHeight,hillRadius,hillGeometry,hillX,hillY);
 }
 
 void Map::generateRandomMap(){
@@ -43,7 +45,8 @@ void Map::generateRandomMap(){
          this->mapVert[i][j]=baseHeight;
 
    //WYLOSOWANIE n WZNIESIEN I URUCHOMIENIE n WĄTKÓW BUDOWY WZNIESIENIA
-   int hillNumbers = rand() % (maxHillNum-minHillNum) + minHillNum;
+   int hillNumbers=0;
+   hillNumbers = std::rand() % (maxHillNum-minHillNum) + minHillNum;
 
    std::vector<std::thread*> threadList;
    //threads fight : START
