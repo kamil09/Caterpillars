@@ -55,3 +55,28 @@ double inputActions::getCursorLastX(){
 double inputActions::getCursorLastY(){
     return this->cursorLastY;
 }
+
+void inputActions::key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
+    inputActions().getInstance().currentState->key_callback(window, key, scancode, action, mods);
+}
+void inputActions::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
+    inputActions::getInstance().currentState->cursor_pos_callback(window, xpos, ypos);
+}
+void inputActions::mouse_button_callback(GLFWwindow* window, int key, int action, int mods){
+    inputActions::getInstance().currentState->mouse_button_callback(window, key, action, mods);
+}
+void inputActions::scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
+    inputActions::getInstance().currentState->scroll_callback(window, xoffset, yoffset);
+}
+
+
+
+void inputActions::setCallbacks(GLFWwindow* window,GLFWcursor* cursor){
+	glfwSetKeyCallback(window, inputActions::key_callback);
+	cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
+	glfwSetCursor(window, cursor);
+	glfwSetCursorPosCallback(window, inputActions::getInstance().cursor_pos_callback);
+	glfwSetMouseButtonCallback(window, inputActions::getInstance().mouse_button_callback);
+	glfwSetScrollCallback(window, inputActions::getInstance().scroll_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}

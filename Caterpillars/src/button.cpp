@@ -1,8 +1,6 @@
 #include "button.hpp"
 
-// Button::Button(int i,GLfloat lewaKrawedz,GLfloat prawaKrawedz,GLfloat gornaKrawedz,GLfloat dolnaKrawedz){
 Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight){
-	// this->shader = new Shader(this->vertexPath,this->fragmentPath);
 	this->shader = new Shader("../src/shader.vs","../src/shader.frag");
 
 	this->r = ((i & 0x000000FF) >>  0);
@@ -21,27 +19,17 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 
 	std::cout << "Tworznenie buttonu" << std::endl;
 
-	// this->vertices = new GLfloat[12]();
 	this->vertices.resize(12);
-	// this->vertices =(GLfloat*) malloc(sizeof(GLfloat)*12);
-	// this->vertices[0] = 0.5f;
 	this->vertices[0] = this->getPosX() + this->width/2.0f;
-	// this->vertices[1] = 0.5f;
 	this->vertices[1] = this->getPosY() + this->height/2.0f;
 	this->vertices[2] = 0.0f;
-	// this->vertices[3] = 0.5f;
 	this->vertices[3] = this->getPosX() + this->width/2.0f;
-	// this->vertices[4] = -0.5f;
 	this->vertices[4] = this->getPosY() - this->height/2.0f;
 	this->vertices[5] = 0.0f;
-	// this->vertices[6] = -0.5f;
 	this->vertices[6] = this->getPosX() - this->width/2.0f;
-	// this->vertices[7] = -0.5f;
 	this->vertices[7] = this->getPosY() - this->height/2.0f;
 	this->vertices[8] = 0.0f;
-	// this->vertices[9] = -0.5f;
 	this->vertices[9] = this->getPosX() - this->width/2.0f;
-	// this->vertices[10] = 0.5f;
 	this->vertices[10] = this->getPosY() + this->height/2.0f;
 	this->vertices[11] = 0.0f;
 
@@ -52,9 +40,7 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	//     -0.5f,  0.5f, 0.0f   // Top Left
 	// };
 
-	// this->indices = new GLuint[6]();
 	this->indices.resize(6);
-	// this->indices = (GLuint*) malloc(sizeof(GLuint)*6);
 	this->indices[0] = 0;
 	this->indices[1] = 1;
 	this->indices[2] = 3;
@@ -67,10 +53,6 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	//     0, 1, 3,  // First Triangle
 	//     1, 2, 3   // Second Triangle
 	// };
-
-	// this->initVertexShaderSource();
-	// this->initFragmentShaderSource();
-	// this->initProgram();
 	this->bindBuffers();
 }
 
@@ -80,76 +62,10 @@ Button::~Button(){
 	glDeleteBuffers(1, &this->VBO);
 	glDeleteBuffers(1, &this->EBO);
 }
-//
-// void Button::initVertexShaderSource(){
-// 	std::cout << "Tworznie vertex shader source" << std::endl;
-// 	this->vertexShaderSource =
-// 	        "#version 330 core\n"
-// 	        "layout (location = 0) in vec3 position;\n"
-// 	        "void main()\n"
-// 	        "{\n"
-// 	        "gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-// 	        "}\0";
-//
-//
-// }
-//
-// void Button::initFragmentShaderSource(){
-//     std::cout << "Tworznie fragment shader source" << std::endl;
-// 	this->fragmentShaderSource =
-
-// }
-
-// void Button::initProgram(){
-// 	std::cout << "Inicjowanie programu" << std::endl;
-//
-//     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-// 	glShaderSource(vertexShader, 1, &this->vertexShaderSource, NULL);
-// 	glCompileShader(vertexShader);
-// 	GLint success;
-// 	GLchar infoLog[512];
-// 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-// 	if (!success)
-// 	{
-// 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-// 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-// 	}
-//
-//     // glUniform4f(pickingColorID, r/255.0f, g/255.0f, b/255.0f, 1.0f);
-//
-// 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-// 	glShaderSource(fragmentShader, 1, &this->fragmentShaderSource, NULL);
-// 	glCompileShader(fragmentShader);
-// 	// Check for compile time errors
-// 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-// 	if (!success)
-// 	{
-// 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-// 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-// 	}
-//
-// 	this->shaderProgram = glCreateProgram();
-// 	glAttachShader(this->shaderProgram, vertexShader);
-// 	glAttachShader(this->shaderProgram, fragmentShader);
-// 	glLinkProgram(this->shaderProgram);
-// 	// Check for linking errors
-// 	glGetProgramiv(this->shaderProgram, GL_LINK_STATUS, &success);
-// 	if (!success) {
-// 		glGetProgramInfoLog(this->shaderProgram, 512, NULL, infoLog);
-// 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-// 	}
-//
-// 	glDeleteShader(vertexShader);
-// 	glDeleteShader(fragmentShader);
-//
-// }
 
 
 void Button::bindBuffers(){
 	std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
-
-	// GLuint VBO, VAO, EBO;
-	// GLuint VBO, EBO;
 	glGenVertexArrays(1, &(this->VAO));
 	glGenBuffers(1, &this->VBO);
 	glGenBuffers(1, &this->EBO);

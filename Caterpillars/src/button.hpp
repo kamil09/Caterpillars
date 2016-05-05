@@ -14,33 +14,13 @@
 class Button : public Object{
 
 public:
-    // static const GLchar *vertexPath;// = "./shader,vs";
-    // static const GLchar *fragmentPath;// = "./shader.frag";
-    // const GLchar *vertexShaderSource;
-    // const GLchar *fragmentShaderSource;
-   // Button(int i,GLfloat lewaKrawedz,GLfloat prawaKrawedz,GLfloat gornaKrawedz,GLfloat dolnaKrawedz);
-   Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight);
+    Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight);
    ~Button();
-   // GLfloat vertices[12];
-   //
-   // GLuint indices[6];
-   // GLfloat posX;
-   // GLfloat posY;
    GLfloat width;
    GLfloat height;
-
-   // GLuint VAO;
-   // GLuint VBO;
-   // GLuint EBO;
-   // GLuint shaderProgram;
-
-   GLfloat r;
+GLfloat r;
    GLfloat g;
    GLfloat b;
-
-// void initVertexShaderSource();
-// void initFragmentShaderSource();
-// void initProgram();
 void bindBuffers();
 void rysuj();
 void wybrano();

@@ -23,16 +23,11 @@ private:
 public:
     int verticesCount;
     int indicesCount;
-    // GLfloat *vertices;
     std::vector<GLfloat> vertices;
-    // GLfloat vertices[12];
-    // GLuint *indices;
     std::vector<GLuint> indices;
-    // GLuint indices[6];
     GLuint VAO;
     GLuint VBO;
     GLuint EBO;
-    // GLuint shaderProgram;
     Shader *shader;
    Object();
    ~Object();
