@@ -78,9 +78,11 @@ int main(void){
 
 		errorCheck("Rysowanie");
 
+		Map::getInstance().draw();
+		//TEST KABOOOOOOOMMMMMMM
 		for(int i=0;i<10;i++) Map::getInstance().kaboom(rand()%500,rand()%400+100,rand()%2000, rand()%100+200);
 		puts("10 kaboom");
-		Map::getInstance().draw();
+
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
 		}

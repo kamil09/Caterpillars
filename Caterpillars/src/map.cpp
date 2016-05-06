@@ -27,6 +27,7 @@ Map::Map(){
    this->generateRandomMap();
    this->genTriangleTab();
    this->bindBuffers();
+   this->bindBuffers();
 }
 Map::~Map(){}
 
@@ -200,8 +201,8 @@ void Map::bindBuffers(){
    std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
    this->initBinding();
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
-   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_DYNAMIC_DRAW);
+   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_DYNAMIC_DRAW);
 
    glEnable(GL_PRIMITIVE_RESTART);
    glPrimitiveRestartIndex(vertX*vertY);
@@ -238,7 +239,6 @@ void Map::recalculateTriangleMap(){
          index+=3;
 
       }
-
 }
 
 Map& Map::getInstance(){
