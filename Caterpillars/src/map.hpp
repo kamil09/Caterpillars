@@ -30,7 +30,7 @@ private:
 public:
    Map();
    ~Map();
-   void bindBuffers();
+   void bindBuffers(bool newBuffer);
    Map(const Map &);
    static Map& getInstance();
    void draw();

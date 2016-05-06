@@ -1,6 +1,7 @@
 #include "object.hpp"
 
 Object::Object(){
+	this->currentBinding = 0;
 	this->buffersCount = 0;
 	this->verticesCount = 0;
 	this->indicesCount = 0;
@@ -12,12 +13,13 @@ Object::Object(){
 	this->kickTime=0;
 	this->canKick=true;
 }
+
 Object::~Object(){}
 int Object::checkMapCollision(){
 	return this->checkMapCollision(this->posX,this->posY,this->posZ);
 }
-int checkMapCollision(float x, float y, float z){
 
+int Object::checkMapCollision(float x, float y, float z){
 
 	return 0;
 }
@@ -43,23 +45,53 @@ void Object::recalculatePhysics(){
 
 
 
-void Object::initBinding(){
-	std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
+void Object::initBinding(bool newBuffer){
+	if(newBuffer == true){
+		this->newBinding();
+	}
+	else{
+		// std::cout << "HEJ!" << std::endl;
+		this->buffers[currentBinding]->usuwanie();
+	}
+	// if(this->currentBinding!=0){
+	// 	std::cout << "kurcze" << std::endl;
+	// }
+	glGenVertexArrays(1, &this->buffers[this->currentBinding]->VAO);
+	glGenBuffers(1, &this->buffers[this->currentBinding]->VBO);
+	glGenBuffers(1, &this->buffers[this->currentBinding]->EBO);
+	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+	glBindVertexArray(this->buffers[this->currentBinding]->VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[this->currentBinding]->VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->buffers[this->currentBinding]->EBO);
+	// std::cout << "hej" << std::endl;
+}
+
+void Object::newBinding(){
+	if(buffersCount > 5){
+		Buffers *temp = this->buffers[0];
+		this->buffers.erase(this->buffers.begin()+0);
+		delete temp;
+		this->buffersCount--;
+	}
+	// std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
 	this->buffersCount++;
 	this->buffers.push_back(new Buffers());
 	if(this->buffers.empty()){
 		std::cerr << "ERROR::EMPTY BUFFER::ERROR" << std::endl;
 	}
-
-	glGenVertexArrays(1, &this->buffers.back()->VAO);
-	glGenBuffers(1, &this->buffers.back()->VBO);
-	glGenBuffers(1, &this->buffers.back()->EBO);
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(this->buffers.back()->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->buffers.back()->VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->buffers.back()->EBO);
-
+	// if(this->buffersCount==1){
+	// 	this->currentBinding = 0;
+	// }
+	// else{
+		this->currentBinding = this->buffersCount-1;
+	// }
 }
+
+GLuint Object::currentVAO(){
+	return this->buffers[this->currentBinding]->VAO;
+}
+
+
 
 void Object::endBinding(){
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
@@ -87,25 +119,17 @@ void Object::loadTexture2D(const GLchar *texturePath){
 	std::vector<unsigned char> image;
 	unsigned width,height;
 	unsigned error = lodepng::decode(image,width,height,"test.png");
-	std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
-	// std::cout << "error: " << error << std::endl;
+	if(error != 0){
+		std::cout << "ERROR:: " << error << std::endl;
+	}
+	// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
 	errorCheck("Po loadTexture");
-	// Magick::Image *image = new Magick::Image();
-	// image->read("menuLab1.jpg");
-	std::cout << "hej" << std::endl;
-	// unsigned char* image = SOIL_load_image(texturePath, &this->textureWidth, &this->textureHeight, 0, SOIL_LOAD_RGBA);
-	// unsigned char* image = SOIL_load_image("menuLab1.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
-	// std::cout << "Texture width: " << this->textureWidth << " texture height: " << this->textureHeight << std::endl;
-	// Magick::Blob m_blob;
-	// m_pImage->write(&m_blob, "RGBA");
-	// image->write(&m_blob,"RGBA");
-	// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->columns(), image->rows(), 0, GL_RGB, GL_UNSIGNED_BYTE, m_blob.data());
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	// SOIL_free_image_data(image);
-
 }
+
+
 
 GLfloat Object::getPosX(){
 	return this->posX;
