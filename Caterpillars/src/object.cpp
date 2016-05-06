@@ -12,8 +12,14 @@ Object::Object(){
 	this->kickTime=0;
 	this->canKick=true;
 }
-Object::~Object(){
+Object::~Object(){}
+int Object::checkMapCollision(){
+	return this->checkMapCollision(this->posX,this->posY,this->posZ);
+}
+int checkMapCollision(float x, float y, float z){
 
+
+	return 0;
 }
 
 void Object::draw(){
