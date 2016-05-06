@@ -25,7 +25,7 @@ private:
    float air;       //Współczynnik Oporu powietrza Od 0 do 1
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    void generateRandomMap();
-   void recalculateTriangleMap(int rowStart,int rowEnd);
+   void recalculateTriangleMap();
 
 public:
    Map();

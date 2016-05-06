@@ -72,11 +72,14 @@ int main(void){
 	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	   	glClear(GL_COLOR_BUFFER_BIT);
+	   glClear(GL_COLOR_BUFFER_BIT);
 
 		inputActions::getInstance().currentState->run();
 
 		errorCheck("Rysowanie");
+
+		for(int i=0;i<10;i++) Map::getInstance().kaboom(rand()%500,rand()%400+100,rand()%2000, rand()%100+200);
+		puts("10 kaboom");
 		Map::getInstance().draw();
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
@@ -84,7 +87,6 @@ int main(void){
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();
-		// sleep(100);
 	}
 	glfwDestroyCursor(cursor);
 	glfwDestroyWindow(window);

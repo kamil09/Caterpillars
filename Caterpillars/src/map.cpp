@@ -83,7 +83,7 @@ void makeHill(float **map){
          if(toADD<=0)toADD=0;
 
          //printf("%f %f %d %d %f\n",highPerOneX, highPerOneY, rotDifX, rotDifY, toADD);
-         if(map[i][j] < toADD + baseHeight && map[i][j]+toADD <= maxMapHeight)
+         if(map[i][j] < toADD + baseHeight && baseHeight+toADD <= maxMapHeight)
             map[i][j]=toADD+baseHeight;
       }
    }
@@ -121,8 +121,49 @@ void Map::rand(){
 void Map::kaboom(float x, float y, float z, float radius){
    //Zmniejszamy wysokość w punkcie kaboom i okolicznych
    //Dajemy efekt dźwiękowy i odpryski jakieś.
+   int xx = round(x);
+   int yy = round(y);
+   int zz = round(z);
+   int rr = round(radius);
 
-   this->recalculateTriangleMap(1,2);
+   int left = xx-rr;
+   int right= xx+rr;
+   int top = zz-rr;
+   int bottom = zz+rr;
+
+   float minTab[2*rr+1][2*rr+1];
+
+   /**
+   * tablica nowych wartości
+   */
+   for(int j=0;j<=2*rr;j++){
+      for(int i=0;i<=2*rr;i++){
+         float difX=fabs(xx-i);
+         float difY=fabs(zz-j);
+
+         float diff=(difX-difY)/sqrt(pow(difX,2)+pow(difY,2));
+
+         minTab[i][j]=yy-sqrt(pow(rr,2)-pow(diff,2));
+      }
+   }
+
+   int tabKoorX=0;
+   int tabKoorZ=0;
+   for(int i=left;i<=right;i++){
+      tabKoorX=0;
+      for(int j=top;j<=bottom;j++){
+         if(i>=0 && j>=0 && i<vertX && j<vertY)
+            if((this->mapVert[i][j] > minTab[tabKoorX][tabKoorZ]) && (this->mapVert[i][j] <= (float)yy+0.5) ){
+               this->mapVert[i][j] = minTab[tabKoorX][tabKoorZ];
+               if( this->mapVert[i][j] < this->minHeight ) this->mapVert[i][j] = this->minHeight;
+               //printf("%d %d, %f\n",i,j,this->mapVert[i][j]);
+            }
+         tabKoorX++;
+      }
+      tabKoorZ++;
+   }
+
+   this->recalculateTriangleMap();
 }
 
 
@@ -133,9 +174,9 @@ void Map::genTriangleTab(){
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
-         this->vertices[index] = ((GLfloat)i)/1000-1;
-         this->vertices[index+1] = (GLfloat)this->mapVert[i][j]/1000-1;
-         this->vertices[index+2] = ((GLfloat)j)/1000-1;
+         this->vertices[index] = (float)i/1000-1;
+         this->vertices[index+1] = this->mapVert[i][j]/1000-1;
+         this->vertices[index+2] = (float)j/1000-1;
          index+=3;
       }
 
@@ -149,7 +190,7 @@ void Map::genTriangleTab(){
          indiVal++;
          index++;
       }
-      this->indices[index]=2*vertX*vertY;
+      this->indices[index]=vertX*vertY;
       index++;
    }
 }
@@ -163,7 +204,7 @@ void Map::bindBuffers(){
    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 
    glEnable(GL_PRIMITIVE_RESTART);
-   glPrimitiveRestartIndex((GLuint)(2*vertX*vertY));
+   glPrimitiveRestartIndex(vertX*vertY);
 
    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -173,10 +214,9 @@ void Map::bindBuffers(){
 
 
 void Map::draw(){
-
-   //glUseProgram(this->shader->shaderProgram[0]);
    this->shader->useShaderProgram(0);
-	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
+
+   GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
 
    glBindVertexArray(this->buffers[0]->VAO);
@@ -188,7 +228,16 @@ void Map::draw(){
 }
 
 
-void Map::recalculateTriangleMap(int rowStart,int rowEnd){
+void Map::recalculateTriangleMap(){
+   int index=0;
+   for(int j=0;j<vertY;j++)
+      for(int i=0;i<vertX;i++){
+         if(this->vertices[index+1] != this->mapVert[i][j]/1000-1){
+            this->vertices[index+1] = this->mapVert[i][j]/1000-1;
+         }
+         index+=3;
+
+      }
 
 }
 
