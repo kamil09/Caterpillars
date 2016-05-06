@@ -145,13 +145,13 @@ void Map::genTriangleTab(){
    for(int j=0;j<vertY-1;j++){
       for(int i=0;i<vertX;i++){
          this->indices[index]=indiVal;
-         this->indices[++index]=indiVal+4;
+         this->indices[++index]=indiVal+vertX;
          indiVal++;
          index+=2;
       }
       this->indices[++index]=(GLuint)(2*maxMapHeight);
       index++;
-      indiVal+=4;
+      indiVal+=vertX;
    }
 }
 
