@@ -15,6 +15,7 @@ public:
     std::vector<Button*> listaButtonow;
     int buttonCount;
     void draw() override;
+    void draw2();
     void run() override;
     void pressESC() override;
     void releaseLMB() override;

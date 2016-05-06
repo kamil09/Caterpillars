@@ -81,12 +81,14 @@ int main(void){
 		while((err = glGetError())!=GL_NO_ERROR) {
 			std::cerr << "opengl error: " << err << std::endl;
 		}
-		Map::getInstance().draw();
-		glfwPollEvents();
+		// Map::getInstance().draw();
+		if(inputActions::getInstance().currentState->customPollEvents == false){
+			glfwPollEvents();
+		}
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();
-		sleep(100);
+		// sleep(100);
 	}
 	glfwDestroyCursor(cursor);
 	glfwDestroyWindow(window);

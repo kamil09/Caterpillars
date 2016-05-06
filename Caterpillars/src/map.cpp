@@ -158,25 +158,25 @@ void Map::genTriangleTab(){
 void Map::bindBuffers(){
    this->shader = new Shader("../src/shader.vs","../src/shader.frag");
    std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
-
+   this->initBinding();
 	// GLuint VBO, VAO, EBO;
 	// GLuint VBO, EBO;
-	glGenVertexArrays(1, &(this->VAO));
-	glGenBuffers(1, &this->VBO);
-	glGenBuffers(1, &this->EBO);
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(this->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+   // GenVertexArrays(1, &(this->VAO));
+   // GenBuffers(1, &this->VBO);
+   // GenBuffers(1, &this->EBO);
+   //  Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+   // BindVertexArray(this->VAO);
+   // BindBuffer(GL_ARRAY_BUFFER, this->VBO);
+   // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
    glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 
    glEnable(GL_PRIMITIVE_RESTART);
    glPrimitiveRestartIndex((GLuint)(2*maxMapHeight));
@@ -193,11 +193,12 @@ void Map::bindBuffers(){
 
 void Map::draw(){
 
-   glUseProgram(this->shader->shaderProgram);
-	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram, "buttonColor");
+   // glUseProgram(this->shader->shaderProgram[0]);
+   this->shader->useShaderProgram(0);
+	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
 
-   glBindVertexArray(this->VAO);
+   glBindVertexArray(this->buffers[0]->VAO);
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
 
    //Rysujemy i teksturujemy mapę

@@ -4,6 +4,7 @@
 
 State::State(GLFWwindow *currenWindow){
     this->window = currenWindow;
+    this->customPollEvents = false;
 }
 
 void State::key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){

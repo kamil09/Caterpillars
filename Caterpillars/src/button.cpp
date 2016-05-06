@@ -58,24 +58,16 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 
 Button::~Button(){
 	std::cout << "usuwanie buttona" << std::endl;
-	glDeleteVertexArrays(1, &this->VAO);
-	glDeleteBuffers(1, &this->VBO);
-	glDeleteBuffers(1, &this->EBO);
+	// glDeleteVertexArrays(1, &this->VAO);
+	// glDeleteBuffers(1, &this->VBO);
+	// glDeleteBuffers(1, &this->EBO);
 }
 
 
 void Button::bindBuffers(){
-	std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
-	glGenVertexArrays(1, &(this->VAO));
-	glGenBuffers(1, &this->VBO);
-	glGenBuffers(1, &this->EBO);
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(this->VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+	this->initBinding();
+	//Od tego momentu zmieniamy!
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
@@ -85,20 +77,33 @@ void Button::bindBuffers(){
 
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 
-	glDisableVertexAttribArray(0);
 }
 
-void Button::rysuj(){
-	glUseProgram(this->shader->shaderProgram);
-	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram, "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
+void Button::draw(){
+	// glUseProgram(this->shader->);
+	this->shader->useShaderProgram(0);
+	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
     glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
-    glBindVertexArray(this->VAO);
+    glBindVertexArray(this->buffers[0]->VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 }
 
-void Button::wybrano(){
+void Button::draw2(){
+	this->shader->useShaderProgram(1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->texture);
+    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[1], "ourTexture1"), 0);
+	// GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram, "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
+    // glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
+    glBindVertexArray(this->buffers[0]->VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+
+}
+
+void Button::select(){
 	std::cout << "wybrano przycisk o kolorze red: " << this->r/255.0f << " green: " << this->g/255.0f << " blue: " << this->b/255.0f << std::endl;
 
 }

@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "shader.hpp"
+#include "SOIL/SOIL.h"
+#include "buffers.hpp"
 
 class Object{
 private:
@@ -25,9 +27,11 @@ public:
     int indicesCount;
     std::vector<GLfloat> vertices;
     std::vector<GLuint> indices;
-    GLuint VAO;
-    GLuint VBO;
-    GLuint EBO;
+    // GLuint VAO;
+    // GLuint VBO;
+    // GLuint EBO;
+    int buffersCount;
+    std::vector<Buffers*> buffers;
     Shader *shader;
    Object();
    ~Object();
@@ -41,6 +45,14 @@ public:
    void setPosY(GLfloat newValue);
    GLfloat getPosZ();
    void setPosZ(GLfloat newValue);
+   //Funkcje i zmienne do textur 2D
+   void bindTexture2D(const GLchar *texturePath);
+   void loadTexture2D(const GLchar *texturePath);
+   int textureWidth;
+   int textureHeight;
+   GLuint texture;
+   unsigned char* image;
+   void initBinding();
 };
 
 #endif

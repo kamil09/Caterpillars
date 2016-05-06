@@ -22,8 +22,9 @@ GLfloat r;
    GLfloat g;
    GLfloat b;
 void bindBuffers();
-void rysuj();
-void wybrano();
+void draw();
+void draw2();
+void select();
 
 };
 

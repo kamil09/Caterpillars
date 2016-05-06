@@ -18,7 +18,7 @@ public:
     void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
     void mouse_button_callback(GLFWwindow* window, int key, int action, int mods);
     void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
+    bool customPollEvents;
 
     //Obsluga klawiatury:
     //WSAD

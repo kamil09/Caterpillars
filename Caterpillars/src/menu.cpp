@@ -4,18 +4,28 @@
 
 Menu::Menu(GLFWwindow *window) : State(window){
     std::cout << "Tworzenie menu!" << std::endl;
+    this->customPollEvents = true;
     this->buttonCount = 0;
     this->createButtons(4);
 }
 
 void Menu::run(){
     this->draw();
+    glfwPollEvents();
+    // this->draw2();
 }
 
 void Menu::draw(){
     int i;
     for(i=0;i<this->buttonCount;i++){
-        listaButtonow[i]->rysuj();
+        listaButtonow[i]->draw();
+    }
+}
+
+void Menu::draw2(){
+    int i;
+    for(i=0;i<this->buttonCount;i++){
+        listaButtonow[i]->draw2();
     }
 }
 

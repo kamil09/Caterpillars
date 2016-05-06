@@ -8,7 +8,8 @@
 // #include <vector>
 
 #include <GL/glew.h>
-// 
+#include <vector>
+//
 class Shader{
 private:
     // void checkLastLines(std::string lancuch);
@@ -24,11 +25,15 @@ public:
     // GLuint VAO;
     // GLuint VBO;
     // GLuint EBO;
-    GLuint shaderProgram;
+    // GLuint shaderProgram;
+    // GLuint shaderProgram;
+    std::vector<GLuint> shaderProgram;
+    int shaderCount;
     const GLchar *vShaderCode;
     const GLchar *fShaderCode;
     Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
-    void useShaderProgram();
+    void loadShader(const GLchar* vertexPath, const GLchar* fragmentPath);
+    void useShaderProgram(int i);
 };
 
 
