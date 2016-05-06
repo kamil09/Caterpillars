@@ -8,10 +8,10 @@ const int vertY=2000;
 const int baseHeight=50;
 const int minMapHeight=60;
 const int maxMapHeight=600;
-const int maxHillRadius=300;
-const int minHillRadius=50;
-const int minHillNum=20;
-const int maxHillNum=40;
+const int maxHillRadius=350;
+const int minHillRadius=200;
+const int minHillNum=15;
+const int maxHillNum=25;
 
 Map::Map(){
    srand (time(NULL));
@@ -27,7 +27,6 @@ Map::Map(){
    this->generateRandomMap();
    this->genTriangleTab();
    this->bindBuffers();
-   this->bindBuffers();
 }
 Map::~Map(){}
 
@@ -41,11 +40,11 @@ void makeHill(float **map){
    float mulX=1;
    float mulY=1;
    int k=0;
-   while(hillGeometry>-0.5 && hillGeometry< 0.5 && k!=10){
+   while(hillGeometry>-0.7 && hillGeometry< 0.7 && k!=10){
       hillGeometry+=(hillGeometry*1/2);
       k++;
    }
-   if(hillGeometry>-0.5 && hillGeometry< 0.5) hillGeometry=1;
+   if(hillGeometry>-0.7 && hillGeometry< 0.7) hillGeometry=1;
 
    printf("hillH:%f hillRad:%d hillGeo:%f X:%d Y:%d \n",hillHeight,hillRadius,hillGeometry,hillX,hillY);
 
@@ -95,7 +94,6 @@ void makeHill(float **map){
    //    }
 }
 
-
 void Map::generateRandomMap(){
    //DEKLARACJA PAMIĘCI I USTAWIENIE BAZOWEJ WYSOKOŚCI
    this->mapVert = new float*[vertX];
@@ -115,6 +113,7 @@ void Map::generateRandomMap(){
 
    puts("RENDERED MAP!");
 }
+
 void Map::rand(){
    this->windForce = std::rand() % 50;
 }
@@ -167,7 +166,6 @@ void Map::kaboom(float x, float y, float z, float radius){
    this->recalculateTriangleMap();
 }
 
-
 void Map::genTriangleTab(){
    int index=0;
    this->vertices.resize(vertX*vertY*3);
@@ -175,9 +173,9 @@ void Map::genTriangleTab(){
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
-         this->vertices[index] = (float)i/1000-1;
-         this->vertices[index+1] = this->mapVert[i][j]/1000-1;
-         this->vertices[index+2] = (float)j/1000-1;
+         this->vertices[index] = (float)i;
+         this->vertices[index+1] = this->mapVert[i][j];
+         this->vertices[index+2] = (float)j;
          index+=3;
       }
 
@@ -215,14 +213,27 @@ void Map::bindBuffers(){
 
 
 void Map::draw(){
-   this->shader->useShaderProgram(0);
 
+   this->shader->useShaderProgram(0);
    GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
+
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
 
    glBindVertexArray(this->buffers[0]->VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
+   GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
+   GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
 
+   GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+   glm::mat4 mProjection = glm::perspective(2000.0f, (float)viewport[2]/viewport[3] , 0.001f, 10000.0f);
+   glUniformMatrix4fv(iProjectionLoc, 1, GL_FALSE, glm::value_ptr(mProjection));
+
+   glm::mat4 mModelView = glm::lookAt(glm::vec3(2000, 1200, 2000), glm::vec3(1000,0,1000), glm::vec3(0.0f, 1.0f, 0.0f));
+
+   glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mModelView));
+
+	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
+   glBindVertexArray(0);
    //Rysujemy i teksturujemy mapę
    //Rysujemy i teksturujemy mur (4 pionowe sciany)
    //Rysujemy mgłę zamiast wody lub wodę :)
@@ -233,8 +244,8 @@ void Map::recalculateTriangleMap(){
    int index=0;
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
-         if(this->vertices[index+1] != this->mapVert[i][j]/1000-1){
-            this->vertices[index+1] = this->mapVert[i][j]/1000-1;
+         if(this->vertices[index+1] != this->mapVert[i][j]){
+            this->vertices[index+1] = this->mapVert[i][j];
          }
          index+=3;
 

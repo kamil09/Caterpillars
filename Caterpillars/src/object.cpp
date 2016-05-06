@@ -16,7 +16,7 @@ Object::~Object(){}
 int Object::checkMapCollision(){
 	return this->checkMapCollision(this->posX,this->posY,this->posZ);
 }
-int checkMapCollision(float x, float y, float z){
+int Object::checkMapCollision(float x, float y, float z){
 
 
 	return 0;

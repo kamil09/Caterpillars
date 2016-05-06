@@ -61,18 +61,19 @@ int main(void){
 	glViewport(0,0,mode->width,mode->height);
 
 	// Enable depth test
-	// glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
-	// glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 
 	// Cull triangles which normal is not towards the camera
-	// glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 
 	errorCheck("inicjalizacja");
 	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	   glClear(GL_COLOR_BUFFER_BIT);
+	   //glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		inputActions::getInstance().currentState->run();
 
@@ -80,8 +81,8 @@ int main(void){
 
 		Map::getInstance().draw();
 		//TEST KABOOOOOOOMMMMMMM
-		for(int i=0;i<10;i++) Map::getInstance().kaboom(rand()%500,rand()%400+100,rand()%2000, rand()%100+200);
-		puts("10 kaboom");
+		for(int i=0;i<1;i++) Map::getInstance().kaboom(rand()%500,rand()%400+100,rand()%2000, rand()%100+200);
+		//puts("10 kaboom");
 
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
@@ -109,9 +110,7 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	errorCheck("Po glewInit");
 
 	Menu *mainMenu = new Menu(window);
-
 	inputActions::getInstance().currentState = mainMenu;
-
 	inputActions::getInstance().setCallbacks(window,cursor);
 
 	const GLubyte *vendor = glGetString(GL_VENDOR);
