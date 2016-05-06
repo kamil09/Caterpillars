@@ -3,12 +3,12 @@
 /**
  * Ustawienia mapy i genearatora
 */
-const int vertX=2000;
-const int vertY=2000;
+const int vertX=1000;
+const int vertY=1000;
 const int baseHeight=50;
 const int minMapHeight=60;
-const int maxMapHeight=400;
-const int maxHillRadius=300;
+const int maxMapHeight=250;
+const int maxHillRadius=150;
 const int minHillRadius=50;
 const int minHillNum=10;
 const int maxHillNum=25;
@@ -39,8 +39,12 @@ void makeHill(float **map){
 
    float mulX=1;
    float mulY=1;
-   while(hillGeometry>-0.5 && hillGeometry< 0.5)
+   int k=0;
+   while(hillGeometry>-0.5 && hillGeometry< 0.5 && k!=10){
       hillGeometry+=(hillGeometry*1/2);
+      k++;
+   }
+   if(hillGeometry>-0.5 && hillGeometry< 0.5) hillGeometry=1;
 
    printf("hillH:%f hillRad:%d hillGeo:%f X:%d Y:%d \n",hillHeight,hillRadius,hillGeometry,hillX,hillY);
 
@@ -79,12 +83,13 @@ void makeHill(float **map){
             map[i][j]+=toADD;
       }
 
-      for(int i=0;i<vertX;i++)
-         for(int j=0;j<vertY;j++){
-            if (map[i][j] < baseHeight) printf("TO LOW %d - %d",i,j);
-            if (map[i][j] > maxMapHeight) puts("TO HIGH");
-         }
+   for(int i=0;i<vertX;i++)
+      for(int j=0;j<vertY;j++){
+         if (map[i][j] < baseHeight) printf("TO LOW %d - %d",i,j);
+         if (map[i][j] > maxMapHeight) puts("TO HIGH");
+      }
 }
+
 
 void Map::generateRandomMap(){
    //DEKLARACJA PAMIĘCI I USTAWIENIE BAZOWEJ WYSOKOŚCI
@@ -104,7 +109,6 @@ void Map::generateRandomMap(){
       makeHill(this->mapVert);
 
    puts("RENDERED MAP!");
-
 }
 void Map::rand(){
    this->windForce = std::rand() % 50;
@@ -130,27 +134,30 @@ void Map::genTriangleTab(){
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
-         this->vertices[index] = i;
-         this->vertices[index+1] = this->mapVert[i][j];
-         this->vertices[index+2] = j;
+         this->vertices[index] = (GLfloat)i;
+         this->vertices[index+1] = (GLfloat)this->mapVert[i][j];
+         this->vertices[index+2] = (GLfloat)j;
          index+=3;
       }
-   int indiVal=0;
+
+   GLuint indiVal=0;
    index=0;
    for(int j=0;j<vertY-1;j++){
       for(int i=0;i<vertX;i++){
          this->indices[index]=indiVal;
          this->indices[++index]=indiVal+4;
          indiVal++;
+         index+=2;
       }
-      this->indices[++index]=maxMapHeight*2;
+      this->indices[++index]=(GLuint)(2*maxMapHeight);
       index++;
       indiVal+=4;
    }
 }
 
 void Map::bindBuffers(){
-	std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
+   this->shader = new Shader("../src/shader.vs","../src/shader.frag");
+   std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
 
 	// GLuint VBO, VAO, EBO;
 	// GLuint VBO, EBO;
@@ -159,36 +166,39 @@ void Map::bindBuffers(){
 	glGenBuffers(1, &this->EBO);
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 	glBindVertexArray(this->VAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
+   glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
+   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+   glEnable(GL_PRIMITIVE_RESTART);
+   glPrimitiveRestartIndex((GLuint)(2*maxMapHeight));
 
-   glEnable(maxMapHeight*2);
-   glPrimitiveRestartIndex(maxMapHeight*2);
 
-   glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
+	//lBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
-	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
+	//glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 
-	glDisableVertexAttribArray(0);
+	//glDisableVertexAttribArray(0);
 }
 
 
 void Map::draw(){
+
    glUseProgram(this->shader->shaderProgram);
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram, "buttonColor");
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
 
    glBindVertexArray(this->VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_FLOAT, 0);
-	glBindVertexArray(0);
+	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
 
    //Rysujemy i teksturujemy mapę
    //Rysujemy i teksturujemy mur (4 pionowe sciany)

@@ -10,6 +10,7 @@
 #include "src/inputActions.hpp"
 #include "src/state.hpp"
 #include "src/menu.hpp"
+#include <unistd.h>
 
 using namespace std;
 using namespace glm;
@@ -80,11 +81,12 @@ int main(void){
 		while((err = glGetError())!=GL_NO_ERROR) {
 			std::cerr << "opengl error: " << err << std::endl;
 		}
-
+		Map::getInstance().draw();
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();
+		sleep(100);
 	}
 	glfwDestroyCursor(cursor);
 	glfwDestroyWindow(window);
