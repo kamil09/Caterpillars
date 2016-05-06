@@ -78,19 +78,23 @@ void Object::bindTexture2D(const GLchar *texturePath){
 }
 
 void Object::loadTexture2D(const GLchar *texturePath){
-	// int width,height;
+	std::vector<unsigned char> image;
+	unsigned width,height;
+	unsigned error = lodepng::decode(image,width,height,"test.png");
+	std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
+	// std::cout << "error: " << error << std::endl;
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
+	errorCheck("Po loadTexture");
+	// Magick::Image *image = new Magick::Image();
+	// image->read("menuLab1.jpg");
 	std::cout << "hej" << std::endl;
-	Magick::Image *image = new Magick::Image();
-	
 	// unsigned char* image = SOIL_load_image(texturePath, &this->textureWidth, &this->textureHeight, 0, SOIL_LOAD_RGBA);
 	// unsigned char* image = SOIL_load_image("menuLab1.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
 	// std::cout << "Texture width: " << this->textureWidth << " texture height: " << this->textureHeight << std::endl;
-	// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
-	Magick::Blob m_blob;
+	// Magick::Blob m_blob;
 	// m_pImage->write(&m_blob, "RGBA");
-	image->write(&m_blob,"RGBA");
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->columns(), image->rows(), 0, GL_RGB, GL_UNSIGNED_BYTE, m_blob.data());
-	errorCheck("Po loadTexture");
+	// image->write(&m_blob,"RGBA");
+	// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->columns(), image->rows(), 0, GL_RGB, GL_UNSIGNED_BYTE, m_blob.data());
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// SOIL_free_image_data(image);

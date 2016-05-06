@@ -10,7 +10,8 @@
 #include "shader.hpp"
 // #include "SOIL/SOIL.h"
 
-#include <Magick++.h>
+// #include <Magick++.h>
+#include "lodepng.h"
 
 #include "buffers.hpp"
 #include "errorGL.hpp"
