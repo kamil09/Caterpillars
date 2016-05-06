@@ -182,7 +182,7 @@ void Map::bindBuffers(){
    glPrimitiveRestartIndex((GLuint)(2*maxMapHeight));
 
 
-
+   this->endBinding();
 	//lBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
 	//glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO

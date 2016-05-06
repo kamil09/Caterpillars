@@ -11,11 +11,11 @@
 #include "src/state.hpp"
 #include "src/menu.hpp"
 #include <unistd.h>
+#include "src/errorGL.hpp"
 
 using namespace std;
 using namespace glm;
 
-GLenum err;
 
 enum gameCaseType {START,OPTIONS,INFO,GAME,PAUSE,GAME_END,EXIT};
 gameCaseType gameCase;
@@ -68,19 +68,15 @@ int main(void){
 	// Cull triangles which normal is not towards the camera
 	// glEnable(GL_CULL_FACE);
 
-	while((err = glGetError())!=GL_NO_ERROR) {
-		std::cerr << "opengl error: " << err << std::endl;
-	}
-	Map::getInstance();
+	errorCheck("inicjalizacja");
+	// Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	   	glClear(GL_COLOR_BUFFER_BIT);
 
 		inputActions::getInstance().currentState->run();
 
-		while((err = glGetError())!=GL_NO_ERROR) {
-			std::cerr << "opengl error: " << err << std::endl;
-		}
+		errorCheck("Rysowanie");
 		// Map::getInstance().draw();
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
@@ -101,23 +97,15 @@ int main(void){
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
-	while((err = glGetError())!=GL_NO_ERROR) {
-		std::cerr << "opengl error: " << err << std::endl;
-	}
-	std::cout << "CHECKED" << std::endl;
-
+	errorCheck("Przed glewInit");
 	GLenum error_code = glewInit();
 	if(error_code != GLEW_OK) {
 		std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
 	}
-	while((err = glGetError())!=GL_NO_ERROR) {
-		std::cerr << "opengl error: " << err << std::endl;
-	}
+	errorCheck("Po glewInit");
 
-	std::cout << "CHECKED2" << std::endl;
 	Menu *mainMenu = new Menu(window);
 
-	std::cout << "main menu: " << std::endl;
 	inputActions::getInstance().currentState = mainMenu;
 
 	inputActions::getInstance().setCallbacks(window,cursor);

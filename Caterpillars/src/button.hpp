@@ -10,6 +10,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include "object.hpp"
+#include "errorGL.hpp"
 
 class Button : public Object{
 
@@ -22,6 +23,7 @@ GLfloat r;
    GLfloat g;
    GLfloat b;
 void bindBuffers();
+void bindBuffers2();
 void draw();
 void draw2();
 void select();

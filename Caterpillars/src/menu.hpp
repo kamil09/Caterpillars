@@ -6,6 +6,8 @@
 #include "state.hpp"
 #include <vector>
 #include "button.hpp"
+#include "errorGL.hpp"
+
 // #include "inputActions.hpp"
 
 
