@@ -118,7 +118,7 @@ void Object::bindTexture2D(const GLchar *texturePath){
 void Object::loadTexture2D(const GLchar *texturePath){
 	std::vector<unsigned char> image;
 	unsigned width,height;
-	unsigned error = lodepng::decode(image,width,height,"test.png");
+	unsigned error = lodepng::decode(image,width,height,texturePath);
 	if(error != 0){
 		std::cout << "ERROR:: " << error << std::endl;
 	}

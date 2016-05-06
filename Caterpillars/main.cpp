@@ -79,18 +79,9 @@ int main(void){
 
 		errorCheck("Rysowanie");
 
-		// TEST KABOOOOOOOMMMMMMM
-		for(int i=0;i<10;i++){
-			Map::getInstance().kaboom(rand()%2000,rand()%400+100,rand()%2000, rand()%100+200);
-			// puts("kaboom");
-		}
 		Map::getInstance().draw();
-<<<<<<< HEAD
-		//TEST KABOOOOOOOMMMMMMM
-		for(int i=0;i<1;i++) Map::getInstance().kaboom(rand()%500,rand()%400+100,rand()%2000, rand()%100+200);
+		for(int i=0;i<4;i++) Map::getInstance().kaboom(rand()%2000,rand()%400+100,rand()%2000, rand()%100+200);
 		//puts("10 kaboom");
-=======
->>>>>>> 5c38d908d98573d94f30a63d59200a3ca8001b02
 
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
