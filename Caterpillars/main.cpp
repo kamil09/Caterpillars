@@ -69,7 +69,7 @@ int main(void){
 	// glEnable(GL_CULL_FACE);
 
 	errorCheck("inicjalizacja");
-	// Map::getInstance();
+	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	   	glClear(GL_COLOR_BUFFER_BIT);
@@ -77,7 +77,7 @@ int main(void){
 		inputActions::getInstance().currentState->run();
 
 		errorCheck("Rysowanie");
-		// Map::getInstance().draw();
+		Map::getInstance().draw();
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
 		}

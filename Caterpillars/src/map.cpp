@@ -7,8 +7,8 @@ const int vertX=1000;
 const int vertY=1000;
 const int baseHeight=50;
 const int minMapHeight=60;
-const int maxMapHeight=250;
-const int maxHillRadius=150;
+const int maxMapHeight=500;
+const int maxHillRadius=200;
 const int minHillRadius=50;
 const int minHillNum=10;
 const int maxHillNum=25;
@@ -31,7 +31,7 @@ Map::Map(){
 Map::~Map(){}
 
 void makeHill(float **map){
-   float hillHeight = rand() % (maxMapHeight-minMapHeight)+minMapHeight;
+   float hillHeight = rand() % (maxMapHeight/2-minMapHeight)+minMapHeight;
    int hillRadius = rand() % (maxHillRadius-minHillRadius)+minHillRadius;
    float hillGeometry = ((float)(rand() % 101)-50)/50;
    int hillX = rand() % vertX;
@@ -70,7 +70,6 @@ void makeHill(float **map){
    if(top<0) top=0;
    if(bottom>=vertY) bottom=vertY-1;
 
-   map[hillX][hillX]=hillHeight;
    float highPerOneX=(float)(hillHeight-baseHeight)/radX;
    float highPerOneY=(float)(hillHeight-baseHeight)/radX;
 
@@ -79,8 +78,9 @@ void makeHill(float **map){
          int rotDifX=radX-fabs(hillX-i);
          int rotDifY=radY-fabs(hillY-j);
          float toADD = (highPerOneX*(float)rotDifX  +  highPerOneY+(float)rotDifY)/2;
-         if(map[i][j]+toADD <= hillHeight)
-            map[i][j]+=toADD;
+
+         if(map[i][j] < toADD + baseHeight)
+            map[i][j]=toADD+baseHeight;
       }
 
    for(int i=0;i<vertX;i++)
@@ -118,15 +118,10 @@ void Map::kaboom(float x, float y, float z, float radius){
    //Zmniejszamy wysokość w punkcie kaboom i okolicznych
    //Dajemy efekt dźwiękowy i odpryski jakieś.
 
-   this->genTriangleTab();
+   this->recalculateTriangleMap(1,2);
 }
 
 
-/**
-*  0,0     0,1    0,2     0,3    0,4
-*  1,0     1,1    1,2     1,3    1,4
-*
-*/
 void Map::genTriangleTab(){
    int index=0;
    this->vertices.resize(vertX*vertY*3);
@@ -134,24 +129,24 @@ void Map::genTriangleTab(){
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
-         this->vertices[index] = (GLfloat)i;
-         this->vertices[index+1] = (GLfloat)this->mapVert[i][j];
-         this->vertices[index+2] = (GLfloat)j;
+         this->vertices[index] = ((GLfloat)i)/500-1;
+         this->vertices[index+1] = (GLfloat)this->mapVert[i][j]/500-1;
+         this->vertices[index+2] = ((GLfloat)j)/500-1;
          index+=3;
       }
 
    GLuint indiVal=0;
    index=0;
    for(int j=0;j<vertY-1;j++){
+      indiVal=j*vertX;
       for(int i=0;i<vertX;i++){
          this->indices[index]=indiVal;
          this->indices[++index]=indiVal+vertX;
          indiVal++;
-         index+=2;
+         index++;
       }
-      this->indices[++index]=(GLuint)(2*maxMapHeight);
+      this->indices[index]=2*vertX*vertY;
       index++;
-      indiVal+=vertX;
    }
 }
 
@@ -171,23 +166,17 @@ void Map::bindBuffers(){
 
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
-   glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
-
-
-	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 
    glEnable(GL_PRIMITIVE_RESTART);
-   glPrimitiveRestartIndex((GLuint)(2*maxMapHeight));
+   glPrimitiveRestartIndex((GLuint)(2*vertX*vertY));
+
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
 
 
    this->endBinding();
-	//lBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-
-	//glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
-
-	//glDisableVertexAttribArray(0);
 }
 
 
