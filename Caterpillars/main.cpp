@@ -9,7 +9,7 @@
 #include "src/map.hpp"
 #include "src/inputActions.hpp"
 #include "src/state.hpp"
-#include "src/menu.hpp"
+#include "src/menu/menu.hpp"
 #include <unistd.h>
 #include "src/errorGL.hpp"
 

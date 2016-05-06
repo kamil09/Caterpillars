@@ -3,10 +3,10 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "state.hpp"
 #include <vector>
-#include "button.hpp"
-#include "errorGL.hpp"
+#include "../button.hpp"
+#include "../errorGL.hpp"
+#include "../state.hpp"
 
 // #include "inputActions.hpp"
 

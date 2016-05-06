@@ -1,5 +1,5 @@
 #include "menu.hpp"
-#include "inputActions.hpp"
+#include "../inputActions.hpp"
 
 
 Menu::Menu(GLFWwindow *window) : State(window){

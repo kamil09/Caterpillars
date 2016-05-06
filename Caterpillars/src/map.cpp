@@ -3,15 +3,15 @@
 /**
  * Ustawienia mapy i genearatora
 */
-const int vertX=1000;
-const int vertY=1000;
+const int vertX=2000;
+const int vertY=2000;
 const int baseHeight=50;
 const int minMapHeight=60;
-const int maxMapHeight=500;
-const int maxHillRadius=200;
+const int maxMapHeight=700;
+const int maxHillRadius=300;
 const int minHillRadius=50;
-const int minHillNum=10;
-const int maxHillNum=25;
+const int minHillNum=20;
+const int maxHillNum=40;
 
 Map::Map(){
    srand (time(NULL));
@@ -60,10 +60,11 @@ void makeHill(float **map){
    int radX=hillRadius*mulX;
    int radY=hillRadius*mulY;
 
-   int left = hillX-radX;
-   int right = hillX+radX;
-   int top = hillY-radY;
-   int bottom = hillY+radY;
+
+   int left = hillX-radX*1.3;
+   int right = hillX+radX*1.3;
+   int top = hillY-radY*1.3;
+   int bottom = hillY+radY*1.3;
 
    if(left<0) left=0;
    if(right>=vertX) right=vertX-1;
@@ -71,12 +72,14 @@ void makeHill(float **map){
    if(bottom>=vertY) bottom=vertY-1;
 
    float highPerOneX=(float)(hillHeight-baseHeight)/radX;
-   float highPerOneY=(float)(hillHeight-baseHeight)/radX;
+   float highPerOneY=(float)(hillHeight-baseHeight)/radY;
 
    for(int i=left;i<=right;i++)
       for(int j=top;j<=bottom;j++){
-         int rotDifX=radX-fabs(hillX-i);
-         int rotDifY=radY-fabs(hillY-j);
+         int rotDifX=radX-pow(fabs(hillX-i),0.95);
+         int rotDifY=radY-pow(fabs(hillY-j),0.95);
+         if (rotDifX<0) rotDifX=0;
+         if (rotDifY<0) rotDifY=0;
          float toADD = (highPerOneX*(float)rotDifX  +  highPerOneY+(float)rotDifY)/2;
 
          if(map[i][j] < toADD + baseHeight)
@@ -129,9 +132,9 @@ void Map::genTriangleTab(){
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
-         this->vertices[index] = ((GLfloat)i)/500-1;
-         this->vertices[index+1] = (GLfloat)this->mapVert[i][j]/500-1;
-         this->vertices[index+2] = ((GLfloat)j)/500-1;
+         this->vertices[index] = ((GLfloat)i)/1000-1;
+         this->vertices[index+1] = (GLfloat)this->mapVert[i][j]/1000-1;
+         this->vertices[index+2] = ((GLfloat)j)/1000-1;
          index+=3;
       }
 
