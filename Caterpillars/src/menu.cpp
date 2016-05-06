@@ -12,7 +12,7 @@ Menu::Menu(GLFWwindow *window) : State(window){
 void Menu::run(){
     this->draw();
     glfwPollEvents();
-    // this->draw2();
+    this->draw2();
     // errorCheck("Cos jest nie tak");
 }
 

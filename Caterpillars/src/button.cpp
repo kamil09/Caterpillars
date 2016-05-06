@@ -67,7 +67,7 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	errorCheck("Przed bindTexture");
 
 	this->bindBuffers();
-	// this->bindBuffers2();
+	this->bindBuffers2();
 }
 
 Button::~Button(){
