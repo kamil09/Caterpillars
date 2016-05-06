@@ -8,8 +8,12 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "shader.hpp"
-#include "SOIL/SOIL.h"
+// #include "SOIL/SOIL.h"
+
+#include <Magick++.h>
+
 #include "buffers.hpp"
+#include "errorGL.hpp"
 
 class Object{
 private:
@@ -51,8 +55,9 @@ public:
    int textureWidth;
    int textureHeight;
    GLuint texture;
-   unsigned char* image;
+   // unsigned char* image;
    void initBinding();
+   void endBinding();
 };
 
 #endif

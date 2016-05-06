@@ -34,6 +34,9 @@ void Object::recalculatePhysics(){
 
 }
 
+
+
+
 void Object::initBinding(){
 	std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
 	this->buffersCount++;
@@ -52,6 +55,12 @@ void Object::initBinding(){
 
 }
 
+void Object::endBinding(){
+	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
+
+	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
+}
+
 
 void Object::bindTexture2D(const GLchar *texturePath){
 	glGenTextures(1, &this->texture);
@@ -63,13 +72,24 @@ void Object::bindTexture2D(const GLchar *texturePath){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	this->loadTexture2D(texturePath);
+	// std::cout << "hej" << std::endl;
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
+	// errorCheck("Po loadTexture");
 }
 
 void Object::loadTexture2D(const GLchar *texturePath){
-	this->image = SOIL_load_image(texturePath, &this->textureWidth, &this->textureHeight, 0, SOIL_LOAD_RGB);
+	// int width,height;
+	// unsigned char* image = SOIL_load_image(texturePath, &this->textureWidth, &this->textureHeight, 0, SOIL_LOAD_RGBA);
+	// unsigned char* image = SOIL_load_image("menuLab1.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
+	// std::cout << "Texture width: " << this->textureWidth << " texture height: " << this->textureHeight << std::endl;
+	// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
+	// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->textureWidth, this->textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	// std::cout << "hej" << std::endl;
+	errorCheck("Po loadTexture");
 	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
+
+	// SOIL_free_image_data(image);
+
 }
 
 GLfloat Object::getPosX(){

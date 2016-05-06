@@ -13,6 +13,7 @@ void Menu::run(){
     this->draw();
     glfwPollEvents();
     // this->draw2();
+    // errorCheck("Cos jest nie tak");
 }
 
 void Menu::draw(){
@@ -26,6 +27,7 @@ void Menu::draw2(){
     int i;
     for(i=0;i<this->buttonCount;i++){
         listaButtonow[i]->draw2();
+
     }
 }
 

@@ -107,5 +107,6 @@ void Shader::loadShader(const GLchar *vertexPath, const GLchar *fragmentPath){
 }
 
 void Shader::useShaderProgram(int i){
+	// std::cout << "Shader count: " << this->shaderCount << std::endl;
     glUseProgram(this->shaderProgram[i]);
 }
