@@ -68,6 +68,7 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 
 	this->bindBuffers();
 	this->bindBuffers2();
+	std::cout << "Koniec tworzenia buttona" << std::endl;
 }
 
 Button::~Button(){
@@ -79,7 +80,7 @@ Button::~Button(){
 
 
 void Button::bindBuffers(){
-	this->initBinding();
+	this->initBinding(true);
 	//Od tego momentu zmieniamy!
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
@@ -96,7 +97,7 @@ void Button::bindBuffers(){
 
 void Button::bindBuffers2(){
 	this->shader->loadShader("../src/buttonShader.vs", "../src/buttonShader.frag");
-	this->initBinding();
+	this->initBinding(true);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
@@ -104,21 +105,23 @@ void Button::bindBuffers2(){
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
    	glEnableVertexAttribArray(1);
 	this->endBinding();
-	this->bindTexture2D("../src/img/menuLab1.jpg");
+	this->bindTexture2D("../src/img/menuLab1.png");
 }
 
 void Button::draw(){
 	// glUseProgram(this->shader->);
+	this->currentBinding = 0;
 	this->shader->useShaderProgram(0);
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
     glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
-    glBindVertexArray(this->buffers[0]->VAO);
+    glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
 }
 
 void Button::draw2(){
+	this->currentBinding = 1;
 	errorCheck("Przed draw2");
 	this->shader->useShaderProgram(1);
 	errorCheck("Po draw2");
@@ -127,7 +130,7 @@ void Button::draw2(){
     glUniform1i(glGetUniformLocation(this->shader->shaderProgram[1], "ourTexture1"), 0);
 	// GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram, "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
     // glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
-    glBindVertexArray(this->buffers[1]->VAO);
+    glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }

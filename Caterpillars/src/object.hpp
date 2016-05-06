@@ -32,14 +32,11 @@ public:
     int indicesCount;
     std::vector<GLfloat> vertices;
     std::vector<GLuint> indices;
-    // GLuint VAO;
-    // GLuint VBO;
-    // GLuint EBO;
     int buffersCount;
     std::vector<Buffers*> buffers;
     Shader *shader;
-   Object();
-   ~Object();
+    Object();
+    ~Object();
    /**
     * 0-no collistion; 2-Z ; 3-X ; 4-Y;    5-XZ ;  6-YZ ; 7-YX    9-XYZ
     * przykład: jeżeli 0 to można wykonac dowolny ruch. jeżeli >=5 to mamy kolizję w 2 kierunkach
@@ -56,6 +53,7 @@ public:
    void setPosY(GLfloat newValue);
    GLfloat getPosZ();
    void setPosZ(GLfloat newValue);
+
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
    void loadTexture2D(const GLchar *texturePath);
@@ -63,8 +61,11 @@ public:
    int textureHeight;
    GLuint texture;
    // unsigned char* image;
-   void initBinding();
+   void newBinding();
+   void initBinding(bool newBuffer);
+   int currentBinding;
    void endBinding();
+   GLuint currentVAO();
 };
 
 #endif

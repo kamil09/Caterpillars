@@ -22,11 +22,12 @@ Map::Map(){
    this->windMul=0;
    this->air=0.4;
    this->fogHeight=0;
-
+   this->shader = new Shader("../src/shader.vs","../src/shader.frag");
    this->rand();
    this->generateRandomMap();
    this->genTriangleTab();
-   this->bindBuffers();
+   // this->bindBuffers();
+   this->bindBuffers(true);
 }
 Map::~Map(){}
 
@@ -164,6 +165,7 @@ void Map::kaboom(float x, float y, float z, float radius){
    }
 
    this->recalculateTriangleMap();
+   this->bindBuffers(false);
 }
 
 void Map::genTriangleTab(){
@@ -192,14 +194,14 @@ void Map::genTriangleTab(){
       this->indices[index]=vertX*vertY;
       index++;
    }
+   // this->bindBuffers(false);
 }
 
-void Map::bindBuffers(){
-   this->shader = new Shader("../src/shader.vs","../src/shader.frag");
-   std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
-   this->initBinding();
+void Map::bindBuffers(bool newBuffer){
+   // std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
+   this->initBinding(newBuffer);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_DYNAMIC_DRAW);
+   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_DYNAMIC_DRAW);
    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_DYNAMIC_DRAW);
 
    glEnable(GL_PRIMITIVE_RESTART);
@@ -216,10 +218,10 @@ void Map::draw(){
 
    this->shader->useShaderProgram(0);
    GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
-
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
 
-   glBindVertexArray(this->buffers[0]->VAO);
+   glBindVertexArray(this->currentVAO());
+
    GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
    GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
 
@@ -234,6 +236,7 @@ void Map::draw(){
 
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
    glBindVertexArray(0);
+
    //Rysujemy i teksturujemy mapę
    //Rysujemy i teksturujemy mur (4 pionowe sciany)
    //Rysujemy mgłę zamiast wody lub wodę :)
@@ -248,7 +251,6 @@ void Map::recalculateTriangleMap(){
             this->vertices[index+1] = this->mapVert[i][j];
          }
          index+=3;
-
       }
 }
 
