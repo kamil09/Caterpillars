@@ -7,7 +7,7 @@ const int vertX=2000;
 const int vertY=2000;
 const int baseHeight=50;
 const int minMapHeight=60;
-const int maxMapHeight=700;
+const int maxMapHeight=600;
 const int maxHillRadius=300;
 const int minHillRadius=50;
 const int minHillNum=20;
@@ -31,7 +31,7 @@ Map::Map(){
 Map::~Map(){}
 
 void makeHill(float **map){
-   float hillHeight = rand() % (maxMapHeight/2-minMapHeight)+minMapHeight;
+   float hillHeight = rand() % (maxMapHeight*4/5-minMapHeight)+minMapHeight;
    int hillRadius = rand() % (maxHillRadius-minHillRadius)+minHillRadius;
    float hillGeometry = ((float)(rand() % 101)-50)/50;
    int hillX = rand() % vertX;
@@ -60,37 +60,38 @@ void makeHill(float **map){
    int radX=hillRadius*mulX;
    int radY=hillRadius*mulY;
 
-
-   int left = hillX-radX*1.3;
-   int right = hillX+radX*1.3;
-   int top = hillY-radY*1.3;
-   int bottom = hillY+radY*1.3;
+   int left = hillX-(float)radX;
+   int right = hillX+(float)radX;
+   int top = hillY-(float)radY;
+   int bottom = hillY+(float)radY;
 
    if(left<0) left=0;
    if(right>=vertX) right=vertX-1;
    if(top<0) top=0;
    if(bottom>=vertY) bottom=vertY-1;
 
-   float highPerOneX=(float)(hillHeight-baseHeight)/radX;
-   float highPerOneY=(float)(hillHeight-baseHeight)/radY;
-
-   for(int i=left;i<=right;i++)
+   for(int i=left;i<=right;i++){
       for(int j=top;j<=bottom;j++){
-         int rotDifX=radX-pow(fabs(hillX-i),0.95);
-         int rotDifY=radY-pow(fabs(hillY-j),0.95);
-         if (rotDifX<0) rotDifX=0;
-         if (rotDifY<0) rotDifY=0;
-         float toADD = (highPerOneX*(float)rotDifX  +  highPerOneY+(float)rotDifY)/2;
+         float rotDifX=fabs(hillX-i);
+         float rotDifY=fabs(hillY-j);
 
-         if(map[i][j] < toADD + baseHeight)
+         float odl=sqrt(pow(rotDifX,2)+pow(rotDifY,2));
+         float maxOdl=sqrt(pow(radX,2)+pow(radY,2));
+         float odlNor=(odl/maxOdl);
+
+         float toADD = cos(odlNor*3.14/2)*hillHeight;
+         if(toADD<=0)toADD=0;
+
+         //printf("%f %f %d %d %f\n",highPerOneX, highPerOneY, rotDifX, rotDifY, toADD);
+         if(map[i][j] < toADD + baseHeight && map[i][j]+toADD <= maxMapHeight)
             map[i][j]=toADD+baseHeight;
       }
-
-   for(int i=0;i<vertX;i++)
-      for(int j=0;j<vertY;j++){
-         if (map[i][j] < baseHeight) printf("TO LOW %d - %d",i,j);
-         if (map[i][j] > maxMapHeight) puts("TO HIGH");
-      }
+   }
+   // for(int i=0;i<vertX;i++)
+   //    for(int j=0;j<vertY;j++){
+   //       if (map[i][j] < baseHeight) printf("TO LOW %d - %d",i,j);
+   //       if (map[i][j] > maxMapHeight) puts("TO HIGH");
+   //    }
 }
 
 
@@ -157,16 +158,6 @@ void Map::bindBuffers(){
    this->shader = new Shader("../src/shader.vs","../src/shader.frag");
    std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
    this->initBinding();
-	// GLuint VBO, VAO, EBO;
-	// GLuint VBO, EBO;
-   // GenVertexArrays(1, &(this->VAO));
-   // GenBuffers(1, &this->VBO);
-   // GenBuffers(1, &this->EBO);
-   //  Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-   // BindVertexArray(this->VAO);
-   // BindBuffer(GL_ARRAY_BUFFER, this->VBO);
-   // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
@@ -177,15 +168,13 @@ void Map::bindBuffers(){
    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-
-
    this->endBinding();
 }
 
 
 void Map::draw(){
 
-   // glUseProgram(this->shader->shaderProgram[0]);
+   //glUseProgram(this->shader->shaderProgram[0]);
    this->shader->useShaderProgram(0);
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
