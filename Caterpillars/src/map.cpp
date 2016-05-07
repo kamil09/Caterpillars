@@ -7,8 +7,8 @@ const int vertX=2000;
 const int vertY=2000;
 const int baseHeight=50;
 const int minMapHeight=60;
-const int maxMapHeight=600;
-const int maxHillRadius=350;
+const int maxMapHeight=500;
+const int maxHillRadius=500;
 const int minHillRadius=200;
 const int minHillNum=15;
 const int maxHillNum=25;
@@ -32,7 +32,7 @@ Map::Map(){
 Map::~Map(){}
 
 void makeHill(float **map){
-   float hillHeight = rand() % (maxMapHeight*4/5-minMapHeight)+minMapHeight;
+   float hillHeight = rand() % (maxMapHeight-minMapHeight)+minMapHeight;
    int hillRadius = rand() % (maxHillRadius-minHillRadius)+minHillRadius;
    float hillGeometry = ((float)(rand() % 101)-50)/50;
    int hillX = rand() % vertX;
@@ -49,6 +49,7 @@ void makeHill(float **map){
 
    printf("hillH:%f hillRad:%d hillGeo:%f X:%d Y:%d \n",hillHeight,hillRadius,hillGeometry,hillX,hillY);
 
+   hillGeometry=1;
    if(hillGeometry < 0){
       mulX/=fabs(hillGeometry);
       mulY*=fabs(hillGeometry);
@@ -61,10 +62,10 @@ void makeHill(float **map){
    int radX=hillRadius*mulX;
    int radY=hillRadius*mulY;
 
-   int left = hillX-(float)radX;
-   int right = hillX+(float)radX;
-   int top = hillY-(float)radY;
-   int bottom = hillY+(float)radY;
+   int left = hillX-(float)radX*1.3;
+   int right = hillX+(float)radX*1.3;
+   int top = hillY-(float)radY*1.3;
+   int bottom = hillY+(float)radY*1.3;
 
    if(left<0) left=0;
    if(right>=vertX) right=vertX-1;
@@ -81,11 +82,12 @@ void makeHill(float **map){
          float odlNor=(odl/maxOdl);
 
          float toADD = cos(odlNor*3.14/2)*hillHeight;
-         if(toADD<=0)toADD=0;
+         if(toADD<=0) toADD=0;
 
          //printf("%f %f %d %d %f\n",highPerOneX, highPerOneY, rotDifX, rotDifY, toADD);
          if(map[i][j] < toADD + baseHeight && baseHeight+toADD <= maxMapHeight)
             map[i][j]=toADD+baseHeight;
+
       }
    }
    // for(int i=0;i<vertX;i++)
@@ -139,12 +141,12 @@ void Map::kaboom(float x, float y, float z, float radius){
    */
    for(int j=0;j<=2*rr;j++){
       for(int i=0;i<=2*rr;i++){
-         float difX=fabs(xx-i);
-         float difY=fabs(zz-j);
+         float difX=fabs(xx-(i+left));
+         float difY=fabs(zz-(j+top));
 
-         float diff=(difX-difY)/sqrt(pow(difX,2)+pow(difY,2));
+         float diff=sqrt(pow((float)difX,2)+pow((float)difY,2));
 
-         minTab[i][j]=yy-sqrt(pow(rr,2)-pow(diff,2));
+         minTab[i][j]=sqrt(pow((float)rr,2)-pow((float)diff,2));
       }
    }
 
@@ -153,12 +155,13 @@ void Map::kaboom(float x, float y, float z, float radius){
    for(int i=left;i<=right;i++){
       tabKoorX=0;
       for(int j=top;j<=bottom;j++){
-         if(i>=0 && j>=0 && i<vertX && j<vertY)
-            if((this->mapVert[i][j] > minTab[tabKoorX][tabKoorZ]) && (this->mapVert[i][j] <= (float)yy+0.5) ){
-               this->mapVert[i][j] = minTab[tabKoorX][tabKoorZ];
-               if( this->mapVert[i][j] < this->minHeight ) this->mapVert[i][j] = this->minHeight;
+         if(i>=0 && j>=0 && i<vertX && j<vertY){
+            if((this->mapVert[i][j] > yy+minTab[tabKoorX][tabKoorZ]) ){
+               this->mapVert[i][j] -= minTab[tabKoorX][tabKoorZ];
                //printf("%d %d, %f\n",i,j,this->mapVert[i][j]);
             }
+            if( this->mapVert[i][j] < this->minHeight ) this->mapVert[i][j] = this->minHeight;
+         }
          tabKoorX++;
       }
       tabKoorZ++;
@@ -166,6 +169,7 @@ void Map::kaboom(float x, float y, float z, float radius){
 
    this->recalculateTriangleMap();
    this->bindBuffers(false);
+   puts("kaboom done");
 }
 
 void Map::genTriangleTab(){
@@ -230,7 +234,7 @@ void Map::draw(){
    glm::mat4 mProjection = glm::perspective(2000.0f, (float)viewport[2]/viewport[3] , 0.001f, 10000.0f);
    glUniformMatrix4fv(iProjectionLoc, 1, GL_FALSE, glm::value_ptr(mProjection));
 
-   glm::mat4 mModelView = glm::lookAt(glm::vec3(2000, 1200, 2000), glm::vec3(1000,0,1000), glm::vec3(0.0f, 1.0f, 0.0f));
+   glm::mat4 mModelView = glm::lookAt(glm::vec3(0, 1200, 0), glm::vec3(1000,0,1000), glm::vec3(0.0f, 1.0f, 0.0f));
 
    glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mModelView));
 
