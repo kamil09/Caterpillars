@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include "object.hpp"
 #include "errorGL.hpp"
+#include "shader.hpp"
 
 class Button : public Object{
 

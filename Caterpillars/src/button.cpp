@@ -1,7 +1,7 @@
 #include "button.hpp"
 
 Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight){
-	this->shader = new Shader("../src/shader.vs","../src/shader.frag");
+	this->shader = new Shader("../src/shaders/shader.vs","../src/shaders/shader.frag");
 
 	this->r = ((i & 0x000000FF) >>  0);
 	this->g = ((i & 0x0000FF00) >>  8);
@@ -96,7 +96,7 @@ void Button::bindBuffers(){
 }
 
 void Button::bindBuffers2(){
-	this->shader->loadShader("../src/buttonShader.vs", "../src/buttonShader.frag");
+	this->shader->loadShader("../src/shaders/buttonShader.vs", "../src/shaders/buttonShader.frag");
 	this->initBinding(true);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);

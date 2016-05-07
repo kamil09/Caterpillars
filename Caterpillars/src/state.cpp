@@ -22,7 +22,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		this->pressS();
 	}
 	if(key == GLFW_KEY_S && action == GLFW_RELEASE) {
-		inputActions::getInstance().s_pressed=true;
+		inputActions::getInstance().s_pressed=false;
 		this->releaseS();
 	}
 	if(key == GLFW_KEY_A && action == GLFW_PRESS) {
@@ -30,7 +30,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		this->pressA();
 	}
 	if(key == GLFW_KEY_A && action == GLFW_RELEASE) {
-		inputActions::getInstance().a_pressed=true;
+		inputActions::getInstance().a_pressed=false;
 		this->releaseA();
 	}
 	if(key == GLFW_KEY_D && action == GLFW_PRESS) {
@@ -38,7 +38,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		this->pressD();
 	}
 	if(key == GLFW_KEY_D && action == GLFW_RELEASE) {
-		inputActions::getInstance().d_pressed=true;
+		inputActions::getInstance().d_pressed=false;
 		this->releaseD();
 	}
 	//ESC
@@ -47,7 +47,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		this->pressESC();
 	}
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-		inputActions::getInstance().escape_pressed=true;
+		inputActions::getInstance().escape_pressed=false;
 		this->releaseESC();
 	}
 	//Space
@@ -57,7 +57,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		this->pressSpace();
 	}
 	if(key == GLFW_KEY_SPACE && action == GLFW_RELEASE) {
-		inputActions::getInstance().space_pressed=true;
+		inputActions::getInstance().space_pressed=false;
 		this->releaseSpace();
 	}
 	//I
@@ -66,7 +66,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		this->pressI();
 	}
 	if(key == GLFW_KEY_I && action == GLFW_RELEASE) {
-		inputActions::getInstance().i_pressed=true;
+		inputActions::getInstance().i_pressed=false;
 		this->releaseI();
 	}
 

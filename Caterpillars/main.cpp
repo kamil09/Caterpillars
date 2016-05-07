@@ -63,7 +63,7 @@ int main(void){
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 
 	// Cull triangles which normal is not towards the camera
 	//glEnable(GL_CULL_FACE);
@@ -78,9 +78,9 @@ int main(void){
 	   inputActions::getInstance().currentState->run();
 
 		errorCheck("Rysowanie");
-
+		Map::getInstance().testViewMov();
 		Map::getInstance().draw();
-		for(int i=0;i<4;i++) Map::getInstance().kaboom(rand()%2000,rand()%400+100,rand()%2000, rand()%100+50);
+		//for(int i=0;i<4;i++) Map::getInstance().kaboom(rand()%2000,rand()%400+100,rand()%2000, rand()%100+50);
 		//puts("10 kaboom");
 
 		if(inputActions::getInstance().currentState->customPollEvents == false){

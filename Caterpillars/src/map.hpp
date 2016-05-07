@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "inputActions.hpp"
 
 using namespace std;
 
@@ -26,7 +27,9 @@ private:
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    void generateRandomMap();
    void recalculateTriangleMap();
-
+   glm::mat4 projection;
+   glm::mat4 modelView;
+   glm::vec3 lookFrom;
 public:
    Map();
    ~Map();
@@ -37,6 +40,7 @@ public:
    void rand();     //Losuje wiatr itp
    void kaboom(float x, float y, float z, float radius);    //Robi kaboom na mapie
    void genTriangleTab();
+   void testViewMov();
 };
 
 #endif
