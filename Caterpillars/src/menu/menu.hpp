@@ -36,6 +36,7 @@ public:
     // void addNewButton();
     void createButtons(int count,GLfloat x,GLfloat y);
     void checkCursor();
+    void checkButtons();
 };
 
 #endif

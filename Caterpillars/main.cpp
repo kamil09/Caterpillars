@@ -30,6 +30,7 @@ int main(void){
 	glfwSetErrorCallback(error_callback);
 	if(!glfwInit()) return 1;
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	// std::cout << "Monitor width: " << mode->width << " monitor height: " << mode->height << std::endl;
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -45,6 +46,8 @@ int main(void){
 		if (Setting::getInstance().getFullResolution() ) window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",NULL, NULL);
 		else window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
 	}
+
+	// glfwSetWindowSize(window, mode->width, mode->height);
 
 	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);
 

@@ -54,6 +54,10 @@ class inputActions{
       static void mouse_button_callback(GLFWwindow* window, int key, int action, int mods);
       static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+      void changeCursor(int shape);
+      float *pixelData;
+      int cursorShape;
+
 };
 
 

@@ -5,11 +5,14 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	this->shader = new Shader("../src/shaders/buttonShader.vs","../src/shaders/buttonShader.frag");
 	// this->shader->loadShader("../src/shaders/buttonShader.vs", "../src/shaders/buttonShader.frag");
 
-	this->r = ((i & 0x000000FF) >>  0)/255.0f;
-	this->g = ((i & 0x0000FF00) >>  8)/255.0f;
-	this->b = ((i & 0x00FF0000) >> 16)/255.0f;
+	int red = ((i & 0x000000FF) >>  0);
+	int green = ((i & 0x0000FF00) >>  8);
+	int blue = ((i & 0x00FF0000) >> 16);
+	this->r = red/255.0f;
+	this->g = green/255.0f;
+	this->b = blue/255.0f;
 
-	std::cout << "Kolor red: " << this->r << std::endl;
+	std::cout << "Kolory: r = " << this->r << " g = " << this->g << " b = " << this->b << std::endl;
 	this->setPosX(newX);
     this->setPosY(newY);
 
@@ -115,7 +118,8 @@ void Button::draw(){
 	this->shader->useShaderProgram(0);
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
     // glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
-    glUniform4f(vertexColorLocation, this->r, this->g, this->b, 1.0f);
+	// std::cout << "kolory: r = " << this->r << " g = " << this->g << " b = " << this->b << std::endl;
+	glUniform4f(vertexColorLocation, this->r, this->g, this->b, 1.0f);
     glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -139,5 +143,4 @@ void Button::draw2(){
 
 void Button::select(){
 	std::cout << "wybrano przycisk o kolorze red: " << this->r << " green: " << this->g << " blue: " << this->b << std::endl;
-
 }

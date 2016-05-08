@@ -44,7 +44,7 @@ void inputActions::getMouseCurrentPosition(GLFWwindow* window){
     glfwGetCursorPos(window, &xpos, &ypos);
     this->cursorLastX=xpos;
     this->cursorLastY=ypos;
-    std::cout << "Cursor X: " << this->cursorLastX << " Cursor Y: " << this->cursorLastY << std::endl;
+    // std::cout << "Cursor X: " << this->cursorLastX << " Cursor Y: " << this->cursorLastY << std::endl;
 }
 
 
@@ -79,4 +79,12 @@ void inputActions::setCallbacks(GLFWwindow* window,GLFWcursor* cursor){
 	glfwSetMouseButtonCallback(window, inputActions::getInstance().mouse_button_callback);
 	glfwSetScrollCallback(window, inputActions::getInstance().scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void inputActions::changeCursor(int shape){
+    if(this->cursorShape != shape){
+        this->cursorShape = shape;
+        GLFWcursor* cursor = glfwCreateStandardCursor(shape);
+        glfwSetCursor(this->currentState->window, cursor);
+    }
 }
