@@ -1,23 +1,20 @@
 #include "button.hpp"
 
-Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight){
-	this->shader = new Shader("../src/shaders/shader.vs","../src/shaders/shader.frag");
+// Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,std::string texturePath){
+Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,const char* texturePath){
+	this->shader = new Shader("../src/shaders/buttonShader.vs","../src/shaders/buttonShader.frag");
+	// this->shader->loadShader("../src/shaders/buttonShader.vs", "../src/shaders/buttonShader.frag");
 
-	this->r = ((i & 0x000000FF) >>  0);
-	this->g = ((i & 0x0000FF00) >>  8);
-	this->b = ((i & 0x00FF0000) >> 16);
+	this->r = ((i & 0x000000FF) >>  0)/255.0f;
+	this->g = ((i & 0x0000FF00) >>  8)/255.0f;
+	this->b = ((i & 0x00FF0000) >> 16)/255.0f;
 
+	std::cout << "Kolor red: " << this->r << std::endl;
 	this->setPosX(newX);
     this->setPosY(newY);
-    std::cout << "Pozycja X: " << this->getPosX() << " Pozycja Y:" << this->getPosY() << std::endl;
-
 
     this->width = newWidth;
     this->height = newHeight;
-
-    std::cout << "Szerokosc: " << this->width << " Wysokosc:" << this->height << std::endl;
-
-	std::cout << "Tworznenie buttonu" << std::endl;
 
 	this->vertices.resize(20);
 	this->vertices[0] = this->getPosX() + this->width/2.0f;
@@ -60,14 +57,18 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	this->indices[5] = 3;
 
 	//
-// this->indices[] = {  // Note that we start from 0!
 	//     0, 1, 3,  // First Triangle
+	// this->indices[] = {  // Note that we start from 0!
 	//     1, 2, 3   // Second Triangle
 	// };
 	errorCheck("Przed bindTexture");
 
 	this->bindBuffers();
 	this->bindBuffers2();
+
+	// std::cout << "texture path: " << texturePath << std::endl;
+	this->bindTexture2D(texturePath);
+	// this->bindTexture2D(texturePath.c_str());
 	std::cout << "Koniec tworzenia buttona" << std::endl;
 }
 
@@ -96,7 +97,7 @@ void Button::bindBuffers(){
 }
 
 void Button::bindBuffers2(){
-	this->shader->loadShader("../src/shaders/buttonShader.vs", "../src/shaders/buttonShader.frag");
+	this->shader->loadShader("../src/shaders/buttonShaderTexture.vs", "../src/shaders/buttonShaderTexture.frag");
 	this->initBinding(true);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
@@ -105,15 +106,16 @@ void Button::bindBuffers2(){
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
    	glEnableVertexAttribArray(1);
 	this->endBinding();
-	this->bindTexture2D("../src/img/menuLab1.png");
 }
 
 void Button::draw(){
+	// std::cout << "hej" << std::endl;
 	// glUseProgram(this->shader->);
 	this->currentBinding = 0;
 	this->shader->useShaderProgram(0);
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
-    glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
+    // glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
+    glUniform4f(vertexColorLocation, this->r, this->g, this->b, 1.0f);
     glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -136,6 +138,6 @@ void Button::draw2(){
 }
 
 void Button::select(){
-	std::cout << "wybrano przycisk o kolorze red: " << this->r/255.0f << " green: " << this->g/255.0f << " blue: " << this->b/255.0f << std::endl;
+	std::cout << "wybrano przycisk o kolorze red: " << this->r << " green: " << this->g << " blue: " << this->b << std::endl;
 
 }

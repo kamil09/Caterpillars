@@ -8,19 +8,21 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <string.h>
 #include <glm/glm.hpp>
-#include "object.hpp"
-#include "errorGL.hpp"
-#include "shader.hpp"
+#include "../object.hpp"
+#include "../errorGL.hpp"
+#include "../shader.hpp"
 
 class Button : public Object{
 
 public:
-    Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight);
+    // Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,std::string texturePath);
+    Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,const char* texturePath);
    ~Button();
    GLfloat width;
    GLfloat height;
-GLfloat r;
+   GLfloat r;
    GLfloat g;
    GLfloat b;
 void bindBuffers();

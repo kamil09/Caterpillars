@@ -4,9 +4,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
-#include "../button.hpp"
+#include "button.hpp"
 #include "../errorGL.hpp"
 #include "../state.hpp"
+#include <string.h>
 
 // #include "inputActions.hpp"
 
@@ -14,16 +15,27 @@
 class Menu : public State{
 public:
     Menu(GLFWwindow *window);
+    // std::vector<std::string> listaTekstur;
+    const char* listaTekstur[4];
+    void loadTextureFiles();
+
     std::vector<Button*> listaButtonow;
+    Button *background;
     int buttonCount;
+    GLfloat buttonWidth;
+    GLfloat buttonHeight;
+    GLfloat buttonDistance;
+
+    void createBackgroud(const char*);
     void draw() override;
     void draw2();
     void run() override;
     void pressESC() override;
     void releaseLMB() override;
-    void readPixel(GLFWwindow *window);
+    float* readPixel(GLFWwindow *window);
     // void addNewButton();
-    void createButtons(int count);
+    void createButtons(int count,GLfloat x,GLfloat y);
+    void checkCursor();
 };
 
 #endif

@@ -5,17 +5,17 @@
 #include <glm/glm.hpp>
 #include "src/settings.hpp"
 // #include "src/2dView.hpp"
-#include "src/button.hpp"
+// #include "src/button.hpp"
 #include "src/map.hpp"
 #include "src/inputActions.hpp"
 #include "src/state.hpp"
 #include "src/menu/menu.hpp"
+#include "src/menu/subMenu/mainMenu.hpp"
 #include <unistd.h>
 #include "src/errorGL.hpp"
 
 using namespace std;
 using namespace glm;
-
 
 enum gameCaseType {START,OPTIONS,INFO,GAME,PAUSE,GAME_END,EXIT};
 gameCaseType gameCase;
@@ -46,6 +46,8 @@ int main(void){
 		else window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
 	}
 
+	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);
+
 	std::cout << Setting::getInstance().getHeight() << std::endl;
 	std::cout << Setting::getInstance().getWidth() << std::endl;
 
@@ -59,9 +61,14 @@ int main(void){
 
 
 	glViewport(0,0,mode->width,mode->height);
+	// glViewport(0,0,800,600);
+
+
+	// glEnable(GL_ALPHA);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
+
 	// Accept fragment if it closer to the camera than the former one
 	//glDepthFunc(GL_LESS);
 
@@ -72,14 +79,18 @@ int main(void){
 	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	   //glClear(GL_COLOR_BUFFER_BIT);
+		// glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	   inputActions::getInstance().currentState->run();
 
 		errorCheck("Rysowanie");
-		Map::getInstance().testViewMov();
-		Map::getInstance().draw();
+
+		//Należy od komentować!!!!!!!!
+
+		// Map::getInstance().testViewMov();
+		// Map::getInstance().draw();
+		// //TO nie!!!!!!
 		//for(int i=0;i<4;i++) Map::getInstance().kaboom(rand()%2000,rand()%400+100,rand()%2000, rand()%100+50);
 		//puts("10 kaboom");
 
@@ -108,7 +119,8 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	}
 	errorCheck("Po glewInit");
 
-	Menu *mainMenu = new Menu(window);
+	// MainMenu *mainMenu = new MainMenu(window);
+	MainMenu *mainMenu = new MainMenu(window);
 	inputActions::getInstance().currentState = mainMenu;
 	inputActions::getInstance().setCallbacks(window,cursor);
 
