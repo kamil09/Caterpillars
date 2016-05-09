@@ -10,15 +10,15 @@
 #include <iostream>
 #include <string.h>
 #include <glm/glm.hpp>
-#include "../object.hpp"
-#include "../errorGL.hpp"
-#include "../shader.hpp"
+#include "../../errorGL.hpp"
+#include "../../shaders/shader.hpp"
+#include "../../object.hpp"
 
 class Button : public Object{
 
 public:
     // Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,std::string texturePath);
-    Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,const char* texturePath);
+    Button(int i,GLfloat newX, GLfloat newY,GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath);
    ~Button();
    GLfloat width;
    GLfloat height;

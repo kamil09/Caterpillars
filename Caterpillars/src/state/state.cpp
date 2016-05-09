@@ -1,5 +1,5 @@
 #include "state.hpp"
-#include "inputActions.hpp"
+#include "../inputActions.hpp"
 
 
 State::State(GLFWwindow *currenWindow){

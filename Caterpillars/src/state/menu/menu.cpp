@@ -1,5 +1,5 @@
 #include "menu.hpp"
-#include "../inputActions.hpp"
+#include "../../inputActions.hpp"
 
 
 Menu::Menu(GLFWwindow *window) : State(window){
@@ -14,6 +14,7 @@ void Menu::run(){
     this->draw();
     this->checkCursor();
     glfwPollEvents();
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->draw2();
     // errorCheck("Cos jest nie tak");
 }
@@ -28,11 +29,15 @@ void Menu::draw(){
 
 void Menu::draw2(){
     int i;
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glBlendFunc (GL_ONE, GL_ONE);
+    this->background->draw2();
     for(i=0;i<this->buttonCount;i++){
         listaButtonow[i]->draw2();
 
     }
-    this->background->draw2();
+    glDisable(GL_BLEND);
 }
 
 void Menu::pressESC(){
@@ -62,7 +67,7 @@ float* Menu::readPixel(GLFWwindow *window){
 }
 
 void Menu::createBackgroud(const char* texturePath){
-    this->background = new Button(0,0,0,2.0f,2.0f,texturePath);
+    this->background = new Button(0,0.0f,0.0f,0.0f,2.0f,2.0f,texturePath);
 }
 
 void Menu::createButtons(int count,GLfloat x,GLfloat y){
@@ -77,25 +82,13 @@ void Menu::createButtons(int count,GLfloat x,GLfloat y){
             baseY = y - i*(this->buttonHeight/2 + this->buttonDistance);
         // }
 		// Button *nowyButton = new Button(255 + (i*200),0.0f,0.60f-(i*0.4f),0.5f,0.3f);
-        Button *nowyButton = new Button(this->buttonCount,x,baseY,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1]);
+        Button *nowyButton = new Button(this->buttonCount,x,baseY,0.0f,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1]);
         std::cout << "X: " << x << " Y: " << baseY << std::endl;
         this->listaButtonow.push_back(nowyButton);
     }
 }
 
-void Menu::loadTextureFiles(){
-    // this->listaTekstur.resize(this->listaTekstur.size()+4);
-    // std::string temp = "../src/img/menuLab1.png";
-    // this->listaTekstur[0] = std::string("../src/img/menuLab1.png");
-    this->listaTekstur[0] = "../src/img/menuLab1.png";
-    this->listaTekstur[1] = "../src/img/menuLab2.png";
-    this->listaTekstur[2] = "../src/img/menuLab3.png";
-    this->listaTekstur[3] = "../src/img/menuLab4.png";
 
-    // this->listaTekstur.pop_back("../src/img/m    enuLab2.png");
-    // this->listaTekstur.pop_back("../src/img/menuLab3.png");
-    // this->listaTekstur.pop_back("../src/img/menuLab4.png");
-}
 
 void Menu::checkCursor(){
     float *data = this->readPixel(this->window);

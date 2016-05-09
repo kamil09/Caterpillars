@@ -1,8 +1,8 @@
 #include "button.hpp"
 
 // Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,std::string texturePath){
-Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,const char* texturePath){
-	this->shader = new Shader("../src/shaders/buttonShader.vs","../src/shaders/buttonShader.frag");
+Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath){
+	this->shader = new Shader("../src/shaders/button/buttonShader.vs","../src/shaders/button/buttonShader.frag");
 	// this->shader->loadShader("../src/shaders/buttonShader.vs", "../src/shaders/buttonShader.frag");
 
 	int red = ((i & 0x000000FF) >>  0);
@@ -15,6 +15,7 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	std::cout << "Kolory: r = " << this->r << " g = " << this->g << " b = " << this->b << std::endl;
 	this->setPosX(newX);
     this->setPosY(newY);
+	this->setPosZ(newZ);
 
     this->width = newWidth;
     this->height = newHeight;
@@ -22,25 +23,25 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHei
 	this->vertices.resize(20);
 	this->vertices[0] = this->getPosX() + this->width/2.0f;
 	this->vertices[1] = this->getPosY() + this->height/2.0f;
-	this->vertices[2] = 0.0f;
+	this->vertices[2] = this->getPosZ();
 	this->vertices[3] = 1.0f;
 	this->vertices[4] = 1.0f;
 
 	this->vertices[5] = this->getPosX() + this->width/2.0f;
 	this->vertices[6] = this->getPosY() - this->height/2.0f;
-	this->vertices[7] = 0.0f;
+	this->vertices[7] = this->getPosZ();
 	this->vertices[8] = 1.0f;
 	this->vertices[9] = 0.0f;
 
 	this->vertices[10] = this->getPosX() - this->width/2.0f;
 	this->vertices[11] = this->getPosY() - this->height/2.0f;
-	this->vertices[12] = 0.0f;
+	this->vertices[12] = this->getPosZ();
 	this->vertices[13] = 0.0f;
 	this->vertices[14] = 0.0f;
 
 	this->vertices[15] = this->getPosX() - this->width/2.0f;
 	this->vertices[16] = this->getPosY() + this->height/2.0f;
-	this->vertices[17] = 0.0f;
+	this->vertices[17] = this->getPosZ();
 	this->vertices[18] = 0.0f;
 	this->vertices[19] = 1.0f;
 
@@ -100,7 +101,7 @@ void Button::bindBuffers(){
 }
 
 void Button::bindBuffers2(){
-	this->shader->loadShader("../src/shaders/buttonShaderTexture.vs", "../src/shaders/buttonShaderTexture.frag");
+	this->shader->loadShader("../src/shaders/button/buttonShaderTexture.vs", "../src/shaders/button/buttonShaderTexture.frag");
 	this->initBinding(true);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
@@ -119,7 +120,7 @@ void Button::draw(){
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
     // glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
 	// std::cout << "kolory: r = " << this->r << " g = " << this->g << " b = " << this->b << std::endl;
-	glUniform4f(vertexColorLocation, this->r, this->g, this->b, 1.0f);
+	glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
     glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -134,6 +135,16 @@ void Button::draw2(){
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->texture);
     glUniform1i(glGetUniformLocation(this->shader->shaderProgram[1], "ourTexture1"), 0);
+	GLint uniformLocation = glGetUniformLocation(this->shader->shaderProgram[1], "positionZ"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
+	if(this->r > 0 || this->g > 0.0f || this->b > 0.0f){
+		// std::cout << "button" << std::endl;
+		glUniform1f(uniformLocation, -1.0f);
+	}
+	else{
+		// std::cout << "background" << std::endl;
+		glUniform1f(uniformLocation, -0.5f);
+	}
+
 	// GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram, "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
     // glUniform4f(vertexColorLocation, this->r/255.0f, this->g/255.0f, this->b/255.0f, 1.0f);
     glBindVertexArray(this->currentVAO());
