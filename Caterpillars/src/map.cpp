@@ -29,10 +29,10 @@ Map::Map(){
    // this->bindBuffers();
    this->bindBuffers(true);
    GLint viewport[4];
-   this->lookFrom=glm::vec3(0, 600, 0);
+   this->lookFrom=glm::vec3(0, 1000, 0);
 	glGetIntegerv(GL_VIEWPORT, viewport);
    this->projection = glm::perspective(2000.0f, (float)viewport[2]/viewport[3] , 0.001f, 20000.0f);
-   this->modelView = glm::lookAt(this->lookFrom, glm::vec3(300,0,300), glm::vec3(0.0f, 1.0f, 0.0f));
+   this->modelView = glm::lookAt(this->lookFrom, glm::vec3(1000,0,1000), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 Map::~Map(){}
 
