@@ -1,9 +1,14 @@
 project(Caterpillars)
 cmake_minimum_required(VERSION 2.8)
-aux_source_directory(./src/shaders SHADER_LIST)
 aux_source_directory(./src/ SRC_LIST)
-aux_source_directory(./src/menu/ MENU_LIST)
-aux_source_directory(./src/menu/subMenu SUBMENU_LIST)
+
+aux_source_directory(./src/state STATE_LIST)
+aux_source_directory(./src/state/menu/ MENU_LIST)
+aux_source_directory(./src/shaders SHADER_LIST)
+aux_source_directory(src/state/menu/mainMenu SUBMENU_LIST)
+aux_source_directory(./src/state/game GAME_LIST)
+aux_source_directory(./src/state/game/map MAP_LIST)
+
 
 
 if(UNIX)
@@ -37,9 +42,15 @@ include_directories(${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLFW_INCLUDE_DIR
 
 aux_source_directory(. MAIN)
 add_executable(${PROJECT_NAME}
-    ${SRC_LIST} ${MAIN}
+    ${SRC_LIST}
+    ${MAIN}
+    ${SHADER_LIST}
+    ${STATE_LIST}
     ${MENU_LIST}
     ${SUBMENU_LIST}
+    ${GAME_LIST}
+    ${MAP_LIST}
+
 )
 
 target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} ${GLUT_LIBRARIES}  ${GLEW_LIBRARIES}  glfw ${GLFW_LIBRARIES} GL ${OPENGL_LIBRARIES} )

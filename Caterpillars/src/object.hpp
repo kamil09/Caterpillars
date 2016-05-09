@@ -7,7 +7,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <vector>
-#include "shader.hpp"
+#include "shaders/shader.hpp"
 // #include "SOIL/SOIL.h"
 
 // #include <Magick++.h>

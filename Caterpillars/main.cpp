@@ -6,11 +6,11 @@
 #include "src/settings.hpp"
 // #include "src/2dView.hpp"
 // #include "src/button.hpp"
-#include "src/map.hpp"
+#include "src/state/game/map/map.hpp"
 #include "src/inputActions.hpp"
-#include "src/state.hpp"
-#include "src/menu/menu.hpp"
-#include "src/menu/subMenu/mainMenu.hpp"
+#include "src/state/state.hpp"
+#include "src/state/menu/menu.hpp"
+#include "src/state/menu/mainMenu/mainMenu.hpp"
 #include <unistd.h>
 #include "src/errorGL.hpp"
 
@@ -68,9 +68,13 @@ int main(void){
 
 
 	// glEnable(GL_ALPHA);
+	// glEnable(GL_BLEND);
+	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
+
+
 
 	// Accept fragment if it closer to the camera than the former one
 	//glDepthFunc(GL_LESS);
@@ -81,7 +85,7 @@ int main(void){
 	errorCheck("inicjalizacja");
 	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
 		// glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

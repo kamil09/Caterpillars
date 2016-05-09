@@ -5,19 +5,18 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "button.hpp"
-#include "../errorGL.hpp"
+#include "../../errorGL.hpp"
 #include "../state.hpp"
 #include <string.h>
 
-// #include "inputActions.hpp"
+//#include "inputActions.hpp"
 
 
 class Menu : public State{
 public:
     Menu(GLFWwindow *window);
-    // std::vector<std::string> listaTekstur;
-    const char* listaTekstur[4];
-    void loadTextureFiles();
+    std::vector<const char*> listaTekstur;
+    // const char* listaTekstur[4];
 
     std::vector<Button*> listaButtonow;
     Button *background;
@@ -37,6 +36,7 @@ public:
     void createButtons(int count,GLfloat x,GLfloat y);
     void checkCursor();
     void checkButtons();
+    virtual void loadTextureFiles(){}
 };
 
 #endif

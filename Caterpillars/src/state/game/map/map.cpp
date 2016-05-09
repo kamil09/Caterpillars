@@ -22,7 +22,7 @@ Map::Map(){
    this->windMul=0;
    this->air=0.4;
    this->fogHeight=0;
-   this->shader = new Shader("../src/shaders/mapShader.vs","../src/shaders/mapShader.frag");
+   this->shader = new Shader("../src/shaders/map/mapShader.vs","../src/shaders/map/mapShader.frag");
    this->rand();
    this->generateRandomMap();
    this->genTriangleTab();
