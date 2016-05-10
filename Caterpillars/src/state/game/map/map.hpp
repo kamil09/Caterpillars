@@ -20,16 +20,18 @@ class Map : public Object{
 private:
    float windForce; //predkosc wiatru [m/s]
    float gravity;   //grawitacja [m/s^2]
-   int minHeight;   //wysokość do jakiej można rozwalić teren
    float fogSpeed;  //Prędkość podnoszenia się mgły [m/s] (zamiast wody :) )
    float fogHeight; //Wysokość na jakiej jest mgła
    float air;       //Współczynnik Oporu powietrza Od 0 do 1
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
+   int minHeight;   //wysokość do jakiej można rozwalić teren
    void generateRandomMap();
    void recalculateTriangleMap();
-   glm::mat4 projection;
-   glm::mat4 modelView;
-   glm::vec3 lookFrom;
+
+   glm::mat4 projection;   //perspektywa
+   glm::mat4 modelView;    //cała maciez kamery
+   glm::vec3 lookAt;       //na co patrzymy
+   glm::vec3 lookFrom;     //umiejscowanie kamery
 public:
    Map();
    ~Map();

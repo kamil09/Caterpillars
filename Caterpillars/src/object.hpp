@@ -12,7 +12,8 @@
 
 // #include <Magick++.h>
 #include "lodepng.h"
-
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "buffers.hpp"
 #include "errorGL.hpp"
 
@@ -27,6 +28,10 @@ private:
    bool canKick;     //Czy można zadziałać na dany obiekt. Jezeli false to obiekt znajduje się w powietrzu i nie da rady w niego ingerować
    double kickTime;  //Czas od rozpoczęcia rzutu
 
+   glm::mat4 modM;   //Maciez modelu
+   glm::mat4 posM;   //Maciez przesuniecia
+   glm::mat4 rotM;   //Maciez obrotu
+   glm::mat4 sclM;   //Maciez skalowania
 public:
     int verticesCount;
     int indicesCount;

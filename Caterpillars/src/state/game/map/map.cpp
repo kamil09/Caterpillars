@@ -3,8 +3,8 @@
 /**
  * Ustawienia mapy i genearatora
 */
-const int vertX=2000;
-const int vertY=2000;
+const int vertX=1000;
+const int vertY=1000;
 const int baseHeight=50;
 const int minMapHeight=60;
 const int maxMapHeight=500;
@@ -12,6 +12,7 @@ const int maxHillRadius=500;
 const int minHillRadius=200;
 const int minHillNum=15;
 const int maxHillNum=25;
+const int murHeight=600;
 
 Map::Map(){
    srand (time(NULL));
@@ -26,10 +27,9 @@ Map::Map(){
    this->rand();
    this->generateRandomMap();
    this->genTriangleTab();
-   // this->bindBuffers();
    this->bindBuffers(true);
-   GLint viewport[4];
    this->lookFrom=glm::vec3(0, 1000, 0);
+   GLint viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
    this->projection = glm::perspective(2000.0f, (float)viewport[2]/viewport[3] , 0.001f, 20000.0f);
    this->modelView = glm::lookAt(this->lookFrom, glm::vec3(1000,0,1000), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -63,9 +63,7 @@ void makeHill(float **map){
       k++;
    }
    if(hillGeometry>-0.7 && hillGeometry< 0.7) hillGeometry=1;
-
    printf("hillH:%f hillRad:%d hillGeo:%f X:%d Y:%d \n",hillHeight,hillRadius,hillGeometry,hillX,hillY);
-
    hillGeometry=1;
    if(hillGeometry < 0){
       mulX/=fabs(hillGeometry);
@@ -75,10 +73,8 @@ void makeHill(float **map){
       mulX*=fabs(hillGeometry);
       mulY/=fabs(hillGeometry);
    }
-
    int radX=hillRadius*mulX;
    int radY=hillRadius*mulY;
-
    int left = hillX-(float)radX*1.3;
    int right = hillX+(float)radX*1.3;
    int top = hillY-(float)radY*1.3;
