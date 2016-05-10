@@ -5,13 +5,13 @@
 #include <GLFW/glfw3.h>
 // #include "inputActions.hpp"
 #include <iostream>
-
+#include "../inputActions.hpp"
 
 class State{
 public:
-
-    State(GLFWwindow *currentWindow);
+    State(GLFWwindow *currentWindow,GLFWcursor *cur);
     GLFWwindow *window;
+    GLFWcursor *cursor;
     virtual void draw() = 0;
     virtual void run() = 0;
     void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );
@@ -46,7 +46,6 @@ public:
     virtual void releaseLMB(){}
     virtual void pressRMB(){}
     virtual void releaseRMB(){}
-
 };
 
 

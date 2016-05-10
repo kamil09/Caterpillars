@@ -8,7 +8,7 @@
 #include "state/state.hpp"
 
 class State;
-
+enum class gameCaseType {MAIN=0,START=1,START_WIELU=2,OPTIONS=3,EXIT=4,INFO=5,GAME_ST=6,PAUSE=7,GAME_END=8};
 class inputActions{
    public:
       inputActions();
@@ -17,6 +17,8 @@ class inputActions{
       static inputActions& getInstance();
       void getMouseCurrentPosition(GLFWwindow *window);
       State *currentState;
+      gameCaseType nextState;
+      bool changeState;
       //Będziemy zapamiętywać wciśnięcie przycisku i sprawdzać przy każdym przeliczaniu fizyki (co klatkę)
       bool w_pressed;
       bool a_pressed;

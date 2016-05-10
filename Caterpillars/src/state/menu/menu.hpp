@@ -14,7 +14,7 @@
 
 class Menu : public State{
 public:
-    Menu(GLFWwindow *window);
+    Menu(GLFWwindow *window,GLFWcursor *cur);
     std::vector<const char*> listaTekstur;
     // const char* listaTekstur[4];
 

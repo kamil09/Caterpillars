@@ -29,19 +29,16 @@ void Setting::loadFromFile(FILE *in){
             value[i]=0;
     	}
 	 	if(buffer[0]!='#' || buffer[0]!='\n'){
-
 			for(i=0;i<20;i++){
 	      	if(buffer[i]!=':') name[i]=buffer[i];
 	      	else break;
 	    	}
 	    	i++;
-
 	    	for(j=-1;i<40;i++){
 	      	j++;
 	      	if(buffer[i]!=0) value[j]=buffer[i];
 	      	else break;
 	    	}
-
 			if(!strcmp(name,"width")) this->width = atoi(value);
 		   if(!strcmp(name,"height")) this->height = atoi(value);
 		   if(!strcmp(name,"fullWindow")) this->fullWindow = atoi(value)==0?false:true;

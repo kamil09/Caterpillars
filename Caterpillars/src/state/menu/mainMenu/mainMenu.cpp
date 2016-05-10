@@ -1,6 +1,6 @@
 #include "mainMenu.hpp"
 
-MainMenu::MainMenu(GLFWwindow *window) : Menu(window){
+MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
     this->loadTextureFiles();
     this->createBackgroud("../src/img/menuBack.png");
     this->buttonWidth = 0.5f;

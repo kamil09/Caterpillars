@@ -5,7 +5,8 @@
 #include "map/map.hpp"
 
 class Game : public State{
-    Game();
+public:
+    Game(GLFWwindow *window,GLFWcursor *cur);
     void run() override;
     void draw() override;
     Map *map;

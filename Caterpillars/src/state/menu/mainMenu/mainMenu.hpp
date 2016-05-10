@@ -7,7 +7,7 @@
 
 class MainMenu : public Menu{
 public:
-    MainMenu(GLFWwindow *window);
+    MainMenu(GLFWwindow *window,GLFWcursor *cur);
     void loadTextureFiles() override;
     // ~MainMenu();
 };

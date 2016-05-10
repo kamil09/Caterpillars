@@ -5,13 +5,13 @@
 */
 const int vertX=1000;
 const int vertY=1000;
-const int baseHeight=50;
-const int minMapHeight=60;
-const int maxMapHeight=500;
-const int maxHillRadius=500;
-const int minHillRadius=200;
-const int minHillNum=15;
-const int maxHillNum=25;
+const int baseHeight=30;
+const int minMapHeight=50;
+const int maxMapHeight=400;
+const int maxHillRadius=400;
+const int minHillRadius=50;
+const int minHillNum=25;
+const int maxHillNum=40;
 const int murHeight=600;
 
 Map::Map(){
@@ -49,7 +49,7 @@ void Map::testViewMov(){
 }
 
 void makeHill(float **map){
-   float hillHeight = rand() % (maxMapHeight-minMapHeight)+minMapHeight;
+   float hillHeight = rand() % (maxMapHeight*3/5-minMapHeight)+minMapHeight;
    int hillRadius = rand() % (maxHillRadius-minHillRadius)+minHillRadius;
    float hillGeometry = ((float)(rand() % 101)-50)/50;
    int hillX = rand() % vertX;
@@ -93,6 +93,7 @@ void makeHill(float **map){
          float odl=sqrt(pow(rotDifX,2)+pow(rotDifY,2));
          float maxOdl=sqrt(pow(radX,2)+pow(radY,2));
          float odlNor=(odl/maxOdl);
+         if(odlNor < 0  )puts("k");
 
          float toADD = cos(odlNor*3.14/2)*hillHeight;
          if(toADD<=0) toADD=0;
@@ -232,7 +233,6 @@ void Map::bindBuffers(bool newBuffer){
 
 
 void Map::draw(){
-
    this->shader->useShaderProgram(0);
    GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);

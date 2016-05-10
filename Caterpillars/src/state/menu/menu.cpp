@@ -2,7 +2,7 @@
 #include "../../inputActions.hpp"
 
 
-Menu::Menu(GLFWwindow *window) : State(window){
+Menu::Menu(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     std::cout << "Tworzenie menu!" << std::endl;
     this->customPollEvents = true;
     this->buttonCount = 0;
@@ -127,6 +127,8 @@ void Menu::checkButtons(){
                 // if(this->listaButtonow[i]->b == data[2]){
                     std::cout << "Wybraleś przycisk numer: " << i << std::endl;
                     this->listaButtonow[i]->select();
+                    inputActions::getInstance().nextState = static_cast<gameCaseType>(i+1);
+                    inputActions::getInstance().changeState = true;
                 // }
             // }
         }

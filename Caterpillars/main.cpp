@@ -9,6 +9,7 @@
 #include "src/state/game/map/map.hpp"
 #include "src/inputActions.hpp"
 #include "src/state/state.hpp"
+#include "src/state/game/game.hpp"
 #include "src/state/menu/menu.hpp"
 #include "src/state/menu/mainMenu/mainMenu.hpp"
 #include <unistd.h>
@@ -17,13 +18,12 @@
 using namespace std;
 using namespace glm;
 
-enum gameCaseType {START,OPTIONS,INFO,GAME,PAUSE,GAME_END,EXIT};
-gameCaseType gameCase;
-
 //ERROR
 static void error_callback(int error, const char* description);
 //INICJALIZACJA
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor);
+//ZMIANA stanu
+void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor);
 
 //MAIN
 int main(void){
@@ -48,7 +48,6 @@ int main(void){
 	}
 
 	// glfwSetWindowSize(window, mode->width, mode->height);
-
 	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);
 
 	std::cout << Setting::getInstance().getHeight() << std::endl;
@@ -74,8 +73,6 @@ int main(void){
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 
-
-
 	// Accept fragment if it closer to the camera than the former one
 	//glDepthFunc(GL_LESS);
 
@@ -83,24 +80,14 @@ int main(void){
 	//glEnable(GL_CULL_FACE);
 
 	errorCheck("inicjalizacja");
-	Map::getInstance();
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
 		// glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
 	   inputActions::getInstance().currentState->run();
-
 		errorCheck("Rysowanie");
-
-		//Należy od komentować!!!!!!!!
-
-		// Map::getInstance().testViewMov();
-		// Map::getInstance().draw();
-		// //TO nie!!!!!!
-		//for(int i=0;i<4;i++) Map::getInstance().kaboom(rand()%2000,rand()%400+100,rand()%2000, rand()%100+50);
-		//puts("10 kaboom");
-
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
 		}
@@ -125,9 +112,7 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 		std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
 	}
 	errorCheck("Po glewInit");
-
-	// MainMenu *mainMenu = new MainMenu(window);
-	MainMenu *mainMenu = new MainMenu(window);
+	MainMenu *mainMenu = new MainMenu(window,cursor);
 	inputActions::getInstance().currentState = mainMenu;
 	inputActions::getInstance().setCallbacks(window,cursor);
 
@@ -140,4 +125,47 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 
 static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
+}
+
+
+void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor){
+	inputActions::getInstance().changeState = false;
+	   switch (statNum) {
+        case gameCaseType::MAIN:{
+		  		MainMenu *mainMenu = new MainMenu(window,cursor);
+				inputActions::getInstance().currentState = mainMenu;
+			}
+        break;
+        case gameCaseType::START:{
+		  		Game *game = new Game(window,cursor);
+				inputActions::getInstance().currentState = game;
+			}
+        break;
+        case gameCaseType::OPTIONS:{
+
+		  }
+        break;
+        case gameCaseType::INFO:{
+
+		  }
+        break;
+        case gameCaseType::GAME_ST:{
+
+		  }
+        break;
+        case gameCaseType::PAUSE:{
+
+		  }
+        break;
+        case gameCaseType::GAME_END:{
+
+		  }
+        break;
+        case gameCaseType::EXIT:{
+			  exit(0);
+		  }
+        break;
+		  default:;
+    }
+	 inputActions::getInstance().setCallbacks(window,cursor);
 }

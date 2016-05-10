@@ -2,7 +2,8 @@
 #include "../inputActions.hpp"
 
 
-State::State(GLFWwindow *currenWindow){
+State::State(GLFWwindow *currenWindow, GLFWcursor *cur){
+    this->cursor = cur;
     this->window = currenWindow;
     this->customPollEvents = false;
 }
@@ -69,7 +70,6 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		inputActions::getInstance().i_pressed=false;
 		this->releaseI();
 	}
-
 }
 
 void State::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
@@ -97,9 +97,8 @@ void State::mouse_button_callback(GLFWwindow* window, int key, int action, int m
 		inputActions::getInstance().rightClick=false;
 		this->releaseRMB();
 	}
-
 }
 
 void State::scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
-	inputActions::getInstance().escape_pressed+=yoffset;
+	inputActions::getInstance().scroll+=yoffset;
 }
