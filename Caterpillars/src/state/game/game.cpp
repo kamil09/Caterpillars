@@ -37,15 +37,16 @@ void Game::testViewMov(){
    prosVec[0]=prosVec[2];
    prosVec[2]=tmp;
    prosVec[2]!=0? prosVec[2]=-prosVec[2] : prosVec[0]=-prosVec[0];
-   printf("%f / %f\n",prosVec[0],prosVec[2] );
 
    if(inputActions::getInstance().w_pressed){
       glm::vec3 add = glm::normalize(viewVec);
-      this->lookFrom-=add;
+      this->lookFrom-=add*2.0f;
+      this->lookAt-=add*2.0f;
    }
    if(inputActions::getInstance().s_pressed){
       glm::vec3 add = glm::normalize(viewVec);
-      this->lookFrom+=add;
+      this->lookFrom+=add*2.0f;
+      this->lookAt-=add*2.0f;
    }
    if(inputActions::getInstance().a_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
@@ -66,9 +67,18 @@ void Game::testViewMov(){
       viewVec=rotM*viewVec;
       this->lookAt=-viewVec+this->lookFrom;
    }
-   //TO DO POPRAWY!!!
    if(inputActions::getInstance().movedY!=0){
-      //this->lookAt[1]-=(float)inputActions::getInstance().movedY/10.0f;
-      //this->lookAt[1]=0;
+      viewVec=this->lookFrom-this->lookAt;
+      float vecLen = sqrt(pow(viewVec[0],2)+pow(viewVec[1],2)+pow(viewVec[2],2));
+      this->lookAt[1]-=inputActions::getInstance().movedY/2;
+      viewVec=this->lookFrom-this->lookAt;
+      //Przekształcenia wzorów na długość wektora aby uzyskać nowe współrzędne (inna współrzędna Y, ale ta sama długość)
+      float rightVal = -(pow(vecLen,2)-pow((this->lookFrom[1]-this->lookAt[1]),2)-pow(this->lookFrom[0],2)-pow(this->lookFrom[2],2));
+      //No nie no... delta :)
+      float wspA = pow(this->lookAt[0],2)+pow(this->lookAt[2],2);
+      float wspB = -2*(this->lookFrom[0]*this->lookAt[0] + this->lookFrom[2]*this->lookAt[2]);
+      float coef = (-wspB- sqrt(pow(wspB,2)-(4*rightVal*wspA) ) )/(2*wspA);
+      if(coef < 0)
+         coef = (-wspB+ sqrt(pow(wspB,2)-(4*rightVal*wspA) ) )/(2*wspA);
    }
 }
