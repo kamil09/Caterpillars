@@ -12,6 +12,8 @@ public:
     State(GLFWwindow *currentWindow,GLFWcursor *cur);
     GLFWwindow *window;
     GLFWcursor *cursor;
+    int windowXsize;
+    int windowYsize;
     virtual void draw() = 0;
     virtual void run() = 0;
     void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );

@@ -24,12 +24,14 @@ inputActions::inputActions(){
    this->lastY=0;
 
    this->changeState=false;
+   this->cursorFixedCenterPos=false;
 }
 
 void inputActions::clear(){
    this->scroll=0;
    this->movedX=0;
    this->movedY=0;
+
 }
 
 inputActions::~inputActions(){

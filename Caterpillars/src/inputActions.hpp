@@ -45,6 +45,7 @@ class inputActions{
       //Tych 2 zmiennych poniżej nie używać! potrzebne do wyliczanie tych 2 zmiennych wyżej ;)
       double lastX;
       double lastY;
+      bool cursorFixedCenterPos;
 
       void clear();
       double getCursorLastX();

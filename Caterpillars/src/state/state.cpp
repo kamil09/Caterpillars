@@ -6,6 +6,11 @@ State::State(GLFWwindow *currenWindow, GLFWcursor *cur){
     this->cursor = cur;
     this->window = currenWindow;
     this->customPollEvents = false;
+    inputActions::getInstance().cursorFixedCenterPos=false;
+    GLint viewport[4];
+	 glGetIntegerv(GL_VIEWPORT, viewport);
+    this->windowXsize=viewport[2];
+    this->windowYsize=viewport[3];
 }
 
 void State::key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
@@ -73,10 +78,17 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 }
 
 void State::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
-	inputActions::getInstance().movedX=xpos-inputActions::getInstance().lastX;
-	inputActions::getInstance().movedY=ypos-inputActions::getInstance().lastY;
-	inputActions::getInstance().lastX=xpos;
-	inputActions::getInstance().lastY=ypos;
+   inputActions::getInstance().movedX-=inputActions::getInstance().lastX-xpos;
+	inputActions::getInstance().movedY-=inputActions::getInstance().lastY-ypos;
+   if(inputActions::getInstance().cursorFixedCenterPos){
+      glfwSetCursorPos(window,windowXsize/2,windowYsize/2);
+      inputActions::getInstance().lastX=windowXsize/2;
+      inputActions::getInstance().lastY=windowYsize/2;
+   }
+   else{
+      inputActions::getInstance().lastX=xpos;
+      inputActions::getInstance().lastY=ypos;
+   }
 }
 
 void State::mouse_button_callback(GLFWwindow* window, int key, int action, int mods){

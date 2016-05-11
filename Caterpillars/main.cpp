@@ -84,13 +84,14 @@ int main(void){
 		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
 		// glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		if(inputActions::getInstance().currentState->customPollEvents == false){
+			glfwPollEvents();
+		}
 
 		if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
 	   inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
-		if(inputActions::getInstance().currentState->customPollEvents == false){
-			glfwPollEvents();
-		}
+
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();

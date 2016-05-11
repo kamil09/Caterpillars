@@ -27,11 +27,6 @@ private:
    int minHeight;   //wysokość do jakiej można rozwalić teren
    void generateRandomMap();
    void recalculateTriangleMap();
-
-   glm::mat4 projection;   //perspektywa
-   glm::mat4 modelView;    //cała maciez kamery
-   glm::vec3 lookAt;       //na co patrzymy
-   glm::vec3 lookFrom;     //umiejscowanie kamery
 public:
    Map();
    ~Map();
@@ -42,7 +37,6 @@ public:
    void rand();     //Losuje wiatr itp
    void kaboom(float x, float y, float z, float radius);    //Robi kaboom na mapie
    void genTriangleTab();
-   void testViewMov();
 };
 
 #endif

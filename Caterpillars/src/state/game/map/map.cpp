@@ -28,25 +28,8 @@ Map::Map(){
    this->generateRandomMap();
    this->genTriangleTab();
    this->bindBuffers(true);
-   this->lookFrom=glm::vec3(0, 1000, 0);
-   GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-   this->projection = glm::perspective(2000.0f, (float)viewport[2]/viewport[3] , 0.001f, 20000.0f);
-   this->modelView = glm::lookAt(this->lookFrom, glm::vec3(1000,0,1000), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 Map::~Map(){}
-
-void Map::testViewMov(){
-   if(inputActions::getInstance().w_pressed){
-      this->lookFrom[0]+=3;
-      this->lookFrom[2]+=3;
-   }
-   if(inputActions::getInstance().s_pressed){
-      this->lookFrom[0]-=3;
-      this->lookFrom[2]-=3;
-   }
-   this->modelView = glm::lookAt(this->lookFrom, this->lookFrom+glm::vec3(300,-600,300), glm::vec3(0.0f, 1.0f, 0.0f));
-}
 
 void makeHill(float **map){
    float hillHeight = rand() % (maxMapHeight*3/5-minMapHeight)+minMapHeight;
@@ -99,7 +82,7 @@ void makeHill(float **map){
          if(toADD<=0) toADD=0;
 
          //printf("%f %f %d %d %f\n",highPerOneX, highPerOneY, rotDifX, rotDifY, toADD);
-         if(map[i][j] < toADD + baseHeight && baseHeight+toADD <= maxMapHeight)
+         if(map[i][j] < toADD + baseHeight)
             map[i][j]=toADD+baseHeight;
 
       }
@@ -238,17 +221,6 @@ void Map::draw(){
    glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
 
    glBindVertexArray(this->currentVAO());
-
-   GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
-   GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
-
-
-   glm::mat4 mProjection = this->projection;
-   glUniformMatrix4fv(iProjectionLoc, 1, GL_FALSE, glm::value_ptr(mProjection));
-
-   glm::mat4 mModelView = this->modelView;
-
-   glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mModelView));
 
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
    glBindVertexArray(0);
