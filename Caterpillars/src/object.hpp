@@ -43,12 +43,7 @@ public:
     Shader *shader;
     Object();
     ~Object();
-   /**
-    * 0-no collistion; 2-Z ; 3-X ; 4-Y;    5-XZ ;  6-YZ ; 7-YX    9-XYZ
-    * przykład: jeżeli 0 to można wykonac dowolny ruch. jeżeli >=5 to mamy kolizję w 2 kierunkach
-   */
-   int checkMapCollision();
-   int checkMapCollision(float x, float y, float z);
+   
    void draw();
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);

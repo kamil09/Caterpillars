@@ -1,6 +1,20 @@
 #ifndef mapCl
 #define mapCl
 
+/**
+ * Ustawienia mapy i genearatora
+*/
+const int vertX=1000;
+const int vertY=1000;
+const int baseHeight=30;
+const int minMapHeight=50;
+const int maxMapHeight=400;
+const int maxHillRadius=400;
+const int minHillRadius=50;
+const int minHillNum=25;
+const int maxHillNum=40;
+const int murHeight=600;
+
 #include "../../../object.hpp"
 #include <stdlib.h>
 #include <stdio.h>
@@ -23,17 +37,17 @@ private:
    float fogSpeed;  //Prędkość podnoszenia się mgły [m/s] (zamiast wody :) )
    float fogHeight; //Wysokość na jakiej jest mgła
    float air;       //Współczynnik Oporu powietrza Od 0 do 1
-   float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    int minHeight;   //wysokość do jakiej można rozwalić teren
    void generateRandomMap();
    void recalculateTriangleMap();
 public:
+   float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    Map();
    ~Map();
    void bindBuffers(bool newBuffer);
    Map(const Map &);
    static Map& getInstance();
-   void draw();
+   void draw(glm::mat4 projection, glm::mat4 modelView);
    void rand();     //Losuje wiatr itp
    void kaboom(float x, float y, float z, float radius);    //Robi kaboom na mapie
    void genTriangleTab();

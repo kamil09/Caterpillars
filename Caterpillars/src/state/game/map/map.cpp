@@ -1,19 +1,5 @@
 #include "map.hpp"
 
-/**
- * Ustawienia mapy i genearatora
-*/
-const int vertX=1000;
-const int vertY=1000;
-const int baseHeight=30;
-const int minMapHeight=50;
-const int maxMapHeight=400;
-const int maxHillRadius=400;
-const int minHillRadius=50;
-const int minHillNum=25;
-const int maxHillNum=40;
-const int murHeight=600;
-
 Map::Map(){
    srand (time(NULL));
    this->windForce=10;
@@ -215,10 +201,13 @@ void Map::bindBuffers(bool newBuffer){
 }
 
 
-void Map::draw(){
+void Map::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
-   GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor");
-   glUniform4f(vertexColorLocation, 0.2f, 1.0f, 0.1f, 1.0f);
+   GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
+   GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
+
+   glUniformMatrix4fv(iProjectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+   glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(modelView));
 
    glBindVertexArray(this->currentVAO());
 
