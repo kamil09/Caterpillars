@@ -1,9 +1,10 @@
 #version 330 core
+in vec2 TexCoord;
 
 out vec4 color;
 
-uniform vec4 buttonColor;
+uniform sampler2D ourTexture1;
 
 void main(){
-	color = buttonColor;
+	color = texture(ourTexture1, TexCoord);
 }

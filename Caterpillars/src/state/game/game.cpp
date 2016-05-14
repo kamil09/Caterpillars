@@ -4,7 +4,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    glfwSetCursor(window, NULL);  //DLACZEGO TO NIE DZIAŁĄ :(((((
 
    this->map= & Map::getInstance();
-   this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight);
+   this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*4/5);
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
    this->projection = glm::perspective(800.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 20000.0f);
@@ -20,6 +20,7 @@ void Game::draw(){
 }
 
 void Game::run(){
+   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%50+50 );
    this->testViewMov();
    this->draw();
 }
