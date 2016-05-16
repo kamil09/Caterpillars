@@ -42,7 +42,7 @@ void Wall::bindBuffers(bool newBuffer){
 void Wall::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
    glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, this->texture);
+	glBindTexture(GL_TEXTURE_2D, this->texture2D);
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 
    GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");

@@ -17,6 +17,17 @@
 #include "buffers.hpp"
 #include "errorGL.hpp"
 
+
+class OurTexture {
+public:
+    const char* texturePath;
+    std::vector<unsigned char> image;
+    int textureWidth;
+    int textureHeight;
+    int textureDepth;
+};
+
+
 class Object{
 private:
    float speedX;
@@ -43,7 +54,7 @@ public:
     Shader *shader;
     Object();
     ~Object();
-   
+
    void draw();
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);
@@ -60,8 +71,17 @@ public:
    void loadTexture2D(const GLchar *texturePath);
    int textureWidth;
    int textureHeight;
-   GLuint texture;
+   GLuint texture2D;
+
+   void bindTexture3D();
+   void loadTexture3D();
+
+
+   // GLuint texture3D;
+   // std::vector<const char*> listaTekstur;
    // unsigned char* image;
+   std::vector<OurTexture*> listaTekstur;
+   int teksturCount;
    void newBinding();
    void initBinding(bool newBuffer);
    int currentBinding;

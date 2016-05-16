@@ -1,6 +1,9 @@
 #include "object.hpp"
 
 Object::Object(){
+	this->teksturCount = 0;
+
+
 	this->currentBinding = 0;
 	this->buffersCount = 0;
 	this->verticesCount = 0;
@@ -14,7 +17,8 @@ Object::Object(){
 	this->canKick=true;
 }
 
-Object::~Object(){}
+Object::~Object(){
+}
 
 void Object::draw(){
 
@@ -38,7 +42,7 @@ void Object::recalculatePhysics(){
 
 
 void Object::initBinding(bool newBuffer){
-	if(newBuffer == true){
+	if(newBuffer == true) {
 		this->newBinding();
 	}
 	else{
@@ -46,7 +50,7 @@ void Object::initBinding(bool newBuffer){
 		this->buffers[currentBinding]->usuwanie();
 	}
 	// if(this->currentBinding!=0){
-	// 	std::cout << "kurcze" << std::endl;
+	//      std::cout << "kurcze" << std::endl;
 	// }
 	glGenVertexArrays(1, &this->buffers[this->currentBinding]->VAO);
 	glGenBuffers(1, &this->buffers[this->currentBinding]->VBO);
@@ -59,7 +63,7 @@ void Object::initBinding(bool newBuffer){
 }
 
 void Object::newBinding(){
-	if(buffersCount > 5){
+	if(buffersCount > 5) {
 		Buffers *temp = this->buffers[0];
 		this->buffers.erase(this->buffers.begin()+0);
 		delete temp;
@@ -68,14 +72,14 @@ void Object::newBinding(){
 	// std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
 	this->buffersCount++;
 	this->buffers.push_back(new Buffers());
-	if(this->buffers.empty()){
+	if(this->buffers.empty()) {
 		std::cerr << "ERROR::EMPTY BUFFER::ERROR" << std::endl;
 	}
 	// if(this->buffersCount==1){
-	// 	this->currentBinding = 0;
+	//      this->currentBinding = 0;
 	// }
 	// else{
-		this->currentBinding = this->buffersCount-1;
+	this->currentBinding = this->buffersCount-1;
 	// }
 }
 
@@ -87,14 +91,13 @@ GLuint Object::currentVAO(){
 
 void Object::endBinding(){
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 }
 
 
 void Object::bindTexture2D(const GLchar *texturePath){
-	glGenTextures(1, &this->texture);
-	glBindTexture(GL_TEXTURE_2D, this->texture); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
+	glGenTextures(1, &this->texture2D);
+	glBindTexture(GL_TEXTURE_2D, this->texture2D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
 // Set our texture parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Set texture wrapping to GL_REPEAT
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -113,16 +116,44 @@ void Object::loadTexture2D(const GLchar *texturePath){
 	std::vector<unsigned char> image;
 	unsigned width,height;
 	unsigned error = lodepng::decode(image,width,height,texturePath);
-	if(error != 0){
+	if(error != 0) {
 		std::cout << "ERROR:: " << error << std::endl;
 	}
 	// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
+	// std::cout << "0: " << image.data() << std::endl;
+	std::cout << "0: " << image.size() << std::endl;
+	std::cout << "1: " << image[1] << std::endl;
+	std::cout << "2: " << image[2] << std::endl;
+
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
 	errorCheck("Po loadTexture");
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 }
 
+void Object::bindTexture3D(){
+
+}
+
+void Object::loadTexture3D(){
+	int i;
+	for(i=0; i<this->teksturCount; i++) {
+		// std::vector<unsigned char> image;
+		unsigned width,height;
+		unsigned error = lodepng::decode(this->listaTekstur[i]->image,width,height,this->listaTekstur[i]->texturePath);
+		if(error != 0) {
+			std::cout << "ERROR:: " << error << std::endl;
+		}
+		this->listaTekstur[i]->textureWidth = width;
+		this->listaTekstur[i]->textureHeight = height;
+
+		// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
+		// glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
+		// glGenerateMipmap(GL_TEXTURE_3D);
+	}
+	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[i]->textureWidth,this->listaTekstur[i]->textureHeight,this->listaTekstur[i]->textureDepth);
+	errorCheck("Po loadTexture");
+}
 
 
 GLfloat Object::getPosX(){
