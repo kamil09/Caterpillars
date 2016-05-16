@@ -121,9 +121,9 @@ void Object::loadTexture2D(const GLchar *texturePath){
 	}
 	// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
 	// std::cout << "0: " << image.data() << std::endl;
-	std::cout << "0: " << image.size() << std::endl;
-	std::cout << "1: " << image[1] << std::endl;
-	std::cout << "2: " << image[2] << std::endl;
+	//std::cout << "0: " << image.size() << std::endl;
+	//std::cout << "1: " << image[1] << std::endl;
+	//std::cout << "2: " << image[2] << std::endl;
 
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
 	errorCheck("Po loadTexture");
@@ -131,28 +131,48 @@ void Object::loadTexture2D(const GLchar *texturePath){
 
 }
 
-void Object::bindTexture3D(){
+void Object::bindTexture3D(int number,GLchar *texturePath[]){
 
+	glGenTextures(1, &this->texture3D);
+	glBindTexture(GL_TEXTURE_3D, this->texture3D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
+// Set our texture parameters
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Set texture wrapping to GL_REPEAT
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+// Set texture filtering
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	listaTekstur.resize(number);
+	for( int i=0;i<number;i++ ) this->listaTekstur[i].texturePath = texturePath[i];
+
+	this->loadTexture3D(number);
+	glBindTexture(GL_TEXTURE_3D, 0);
+	errorCheck("Po loadTexture");
 }
 
-void Object::loadTexture3D(){
+void Object::loadTexture3D(int number){
 	int i;
-	for(i=0; i<this->teksturCount; i++) {
+	this->teksturCount = number;
+	for(i=0; i < number; i++) {
+		std::cout << this->listaTekstur[i].texturePath << std::endl;
 		// std::vector<unsigned char> image;
-		unsigned width,height;
-		unsigned error = lodepng::decode(this->listaTekstur[i]->image,width,height,this->listaTekstur[i]->texturePath);
+		unsigned int width,height;
+		unsigned error = lodepng::decode(this->listaTekstur[i].image,width,height,this->listaTekstur[i].texturePath);
 		if(error != 0) {
 			std::cout << "ERROR:: " << error << std::endl;
 		}
-		this->listaTekstur[i]->textureWidth = width;
-		this->listaTekstur[i]->textureHeight = height;
-
-		// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
-		// glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
-		// glGenerateMipmap(GL_TEXTURE_3D);
+		this->listaTekstur[i].textureWidth = width;
+		this->listaTekstur[i].textureHeight = height;
 	}
-	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[i]->textureWidth,this->listaTekstur[i]->textureHeight,this->listaTekstur[i]->textureDepth);
-	errorCheck("Po loadTexture");
+
+	unsigned char **imageTab = new unsigned char*[number];
+	for(int i=0;i<number;i++)
+		imageTab[i]=this->listaTekstur[i].image.data();
+
+	glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE,  imageTab);
+	glGenerateMipmap(GL_TEXTURE_3D);
+	for(int i=0;i<number;i++)
+		delete imageTab[i];
+	delete imageTab;
 }
 
 

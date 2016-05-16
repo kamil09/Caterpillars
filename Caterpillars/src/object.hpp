@@ -24,7 +24,6 @@ public:
     std::vector<unsigned char> image;
     int textureWidth;
     int textureHeight;
-    int textureDepth;
 };
 
 
@@ -72,15 +71,16 @@ public:
    int textureWidth;
    int textureHeight;
    GLuint texture2D;
+   GLuint texture3D;
 
-   void bindTexture3D();
-   void loadTexture3D();
+   void bindTexture3D(int number,GLchar *texturePath[]);
+   void loadTexture3D(int number);
 
 
    // GLuint texture3D;
    // std::vector<const char*> listaTekstur;
    // unsigned char* image;
-   std::vector<OurTexture*> listaTekstur;
+   std::vector<OurTexture> listaTekstur;
    int teksturCount;
    void newBinding();
    void initBinding(bool newBuffer);

@@ -14,6 +14,14 @@ Map::Map(){
    this->generateRandomMap();
    this->genTriangleTab();
    this->bindBuffers(true);
+   int numOfTex = 8;
+   GLchar *texturePath[numOfTex];
+   texturePath[0] = (char*)"../src/img/map/map1.png";texturePath[1] = (char*)"../src/img/map/map2.png";
+   texturePath[2] = (char*)"../src/img/map/map3.png";texturePath[3] = (char*)"../src/img/map/map4.png";
+   texturePath[4] = (char*)"../src/img/map/map5.png";texturePath[5] = (char*)"../src/img/map/map6.png";
+   texturePath[6] = (char*)"../src/img/map/map7.png";texturePath[7] = (char*)"../src/img/map/map8.png";
+   this->bindTexture3D(numOfTex,texturePath);
+
 }
 Map::~Map(){}
 
@@ -157,7 +165,7 @@ void Map::kaboom(float x, float y, float z, float radius){
 
 void Map::genTriangleTab(){
    int index=0;
-   this->vertices.resize(vertX*vertY*3);
+   this->vertices.resize(vertX*vertY*6);
    this->indices.resize(2*vertX*(vertY-1)+vertY-1);
 
    for(int j=0;j<vertY;j++)
@@ -165,7 +173,10 @@ void Map::genTriangleTab(){
          this->vertices[index] = (float)i;
          this->vertices[index+1] = this->mapVert[i][j];
          this->vertices[index+2] = (float)j;
-         index+=3;
+         this->vertices[index+3] = (float)(vertX%101)/100; //tesktura
+         this->vertices[index+4] = (float)(vertY%101)/100;
+         this->vertices[index+5] = this->mapVert[i][j]/maxMapHeight;
+         index+=6;
       }
 
    GLuint indiVal=0;
@@ -194,8 +205,11 @@ void Map::bindBuffers(bool newBuffer){
    glEnable(GL_PRIMITIVE_RESTART);
    glPrimitiveRestartIndex(vertX*vertY);
 
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+
+   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+   glEnableVertexAttribArray(1);
 
    this->endBinding();
 }
@@ -203,6 +217,10 @@ void Map::bindBuffers(bool newBuffer){
 
 void Map::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
+   glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_3D, this->texture3D);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+
    GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
    GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
 

@@ -66,30 +66,31 @@ void Game::testViewMov(){
    }
    if(inputActions::getInstance().movedY!=0){
       //Wg moich obliczeń na kartce to powinno działać, ale działa tak se :/
-      //Pomysł był taki: obrócić wektor tak, żeby był prostopadły do osi X (vec.x =0), zapamiętać kąt
-      //Standardowo obrócić go wokół OX
-      //Obrócić o kąt wyliczony wczesniej
 
+      // float kat = inputActions::getInstance().movedY/500;
       // viewVec=this->lookFrom-this->lookAt;
       //
-      // glm::vec3 vecX = viewVec;
-      // vecX.x=0;
+      // glm::vec3 vecX = glm::vec3(0.0f,viewVec[1]/2,viewVec[2]);
+      // glm::vec3 vecZ = glm::vec3(viewVec[0],viewVec[1]/2,0.0f);
+      // float sum = fabs(viewVec.x)+fabs(viewVec.z);
+      // float katX = -kat*viewVec.x/sum;
+      // float katZ =  -kat*viewVec.z/sum;
       //
-      // float kat=atan(viewVec[0]/viewVec[2]);
-      // vecX[2]=viewVec[2]/cos(kat);
-      //  viewVec=vecX;
-      // printf("%f\n",kat );
-      //
-      // viewVec = glm::mat3(
+      // glm::mat3 rotXM = glm::mat3(
       //    glm::vec3(1.0f,0.0f,0.0f),
-      //    glm::vec3(0.0f,cos(-inputActions::getInstance().movedY/500),-sin(-inputActions::getInstance().movedY/500)),
-      //    glm::vec3(0.0f,sin(-inputActions::getInstance().movedY/500), cos(-inputActions::getInstance().movedY/500))
-      // )*viewVec;
-      // viewVec=glm::mat3(
-      //    glm::vec3(cos(-kat),0.0f,sin(-kat)),
-      //    glm::vec3(0.0f,1.0f,0.0f),
-      //    glm::vec3(-sin(-kat),0.0f,cos(-kat))
-      // )*viewVec;
+      //    glm::vec3(0.0f,cos(katX),-sin(katX)),
+      //    glm::vec3(0.0f,sin(katX), cos(katX))
+      // );
+      // glm::mat3 rotZM = glm::mat3(
+      //    glm::vec3(cos(katZ),-sin(katZ),0.0f),
+      //    glm::vec3(sin(katZ),cos(katZ),0.0f),
+      //    glm::vec3(0.0f,0.0f, 1.0f)
+      // );
+      //
+      // vecX = rotXM*vecX;
+      // vecZ = rotZM*vecZ;
+      //
+      // viewVec = vecX+vecZ;
       //
       // this->lookAt=-viewVec+this->lookFrom;
 
