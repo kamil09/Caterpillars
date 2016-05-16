@@ -82,6 +82,7 @@ void State::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
 	inputActions::getInstance().movedY-=inputActions::getInstance().lastY-ypos;
    if(inputActions::getInstance().cursorFixedCenterPos){
       glfwSetCursorPos(window,windowXsize/2,windowYsize/2);
+      glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_DISABLED);
       inputActions::getInstance().lastX=windowXsize/2;
       inputActions::getInstance().lastY=windowYsize/2;
    }
