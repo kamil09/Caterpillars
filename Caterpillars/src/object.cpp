@@ -135,7 +135,7 @@ void Object::bindTexture3D(int number,GLchar *texturePath[]){
 
 	glGenTextures(1, &this->texture3D);
 	glBindTexture(GL_TEXTURE_3D, this->texture3D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
-// Set our texture parameters
+	//Set our texture parameters
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Set texture wrapping to GL_REPEAT
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
@@ -145,11 +145,11 @@ void Object::bindTexture3D(int number,GLchar *texturePath[]){
 	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 
 // Set texture filtering
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	listaTekstur.resize(number);
 	for( int i=0;i<number;i++ ) this->listaTekstur[i].texturePath = texturePath[i];
@@ -183,17 +183,11 @@ void Object::loadTexture3D(int number){
 	// 			imageTab[i][j][k]=new unsigned char[4];
 	// 	}
 	// }
-	// for(int i=0; i<number; i++){
-	//
-	// }
-	// unsigned char **imageTab = new unsigned char*[number];
+
 	std::vector<unsigned char> imageTab;
-	for(int i=number-1;i>=0;i--){
-		for(int j=0; j < this->listaTekstur[i].image.size();j++){
+	for(int i=number-1;i>=0;i--)
+		for(int j=0; j < (int)this->listaTekstur[i].image.size();j++)
 			imageTab.push_back(this->listaTekstur[i].image[j]);
-		}
-		// imageTab[i]=this->listaTekstur[i].image.data();
-	}
 
 	glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageTab.data());
 	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) imageTab.data());

@@ -26,7 +26,7 @@ Map::Map(){
 Map::~Map(){}
 
 void makeHill(float **map){
-   float hillHeight = rand() % (maxMapHeight*3/5-minMapHeight)+minMapHeight;
+   float hillHeight = rand() % (maxMapHeight-minMapHeight)+minMapHeight;
    int hillRadius = rand() % (maxHillRadius-minHillRadius)+minHillRadius;
    float hillGeometry = ((float)(rand() % 101)-50)/50;
    int hillX = rand() % vertX;
@@ -173,9 +173,9 @@ void Map::genTriangleTab(){
          this->vertices[index] = (float)i;
          this->vertices[index+1] = this->mapVert[i][j];
          this->vertices[index+2] = (float)j;
-         this->vertices[index+3] = (float)(i%101)/100; //tesktura
-         this->vertices[index+4] = (float)(j%101)/100;
-         this->vertices[index+5] = (float)this->mapVert[i][j]/maxMapHeight;
+         this->vertices[index+3] = (float)(i%301)/300; //tesktura
+         this->vertices[index+4] = (float)(j%301)/300;
+         this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+1)/2;
          // this->vertices[index+5] = 0.0f;
          index+=6;
       }
