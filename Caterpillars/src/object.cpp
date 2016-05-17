@@ -138,9 +138,19 @@ void Object::bindTexture3D(int number,GLchar *texturePath[]){
 // Set our texture parameters
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Set texture wrapping to GL_REPEAT
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+
+	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_BORDER); // Set texture wrapping to GL_REPEAT
+	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+
 // Set texture filtering
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	listaTekstur.resize(number);
 	for( int i=0;i<number;i++ ) this->listaTekstur[i].texturePath = texturePath[i];
 
@@ -163,18 +173,42 @@ void Object::loadTexture3D(int number){
 		this->listaTekstur[i].textureWidth = width;
 		this->listaTekstur[i].textureHeight = height;
 	}
+	//Czy to zadziała???? ;)
+	// unsigned char ****imageTab = new unsigned char***[this->listaTekstur[0].textureWidth];
+	// for(int i=0; i< this->listaTekstur[0].textureWidth; i++){
+	// 	imageTab[i]=new unsigned char**[this->listaTekstur[0].textureHeight];
+	// 	for(int j=0;j<this->listaTekstur[0].textureHeight;j++){
+	// 		imageTab[i][j]=new unsigned char*[number];
+	// 		for(int k=0;k<number;k++)
+	// 			imageTab[i][j][k]=new unsigned char[4];
+	// 	}
+	// }
+	// for(int i=0; i<number; i++){
+	//
+	// }
+	// unsigned char **imageTab = new unsigned char*[number];
+	std::vector<unsigned char> imageTab;
+	for(int i=number-1;i>=0;i--){
+		for(int j=0; j < this->listaTekstur[i].image.size();j++){
+			imageTab.push_back(this->listaTekstur[i].image[j]);
+		}
+		// imageTab[i]=this->listaTekstur[i].image.data();
+	}
 
-	unsigned char **imageTab = new unsigned char*[number];
-	for(int i=0;i<number;i++)
-		imageTab[i]=this->listaTekstur[i].image.data();
+	glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageTab.data());
+	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) imageTab.data());
+	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	// this->listaTekstur[0].image.data());
 
-	glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE,  imageTab);
+	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	// imageTab.data());
+
 	glGenerateMipmap(GL_TEXTURE_3D);
-	for(int i=0;i<number;i++)
-		delete imageTab[i];
-	delete imageTab;
-}
 
+	// for(int i=0;i<number;i++)
+	// delete imageTab[i];
+	// delete imageTab;
+}
 
 GLfloat Object::getPosX(){
 	return this->posX;

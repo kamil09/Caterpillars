@@ -173,9 +173,10 @@ void Map::genTriangleTab(){
          this->vertices[index] = (float)i;
          this->vertices[index+1] = this->mapVert[i][j];
          this->vertices[index+2] = (float)j;
-         this->vertices[index+3] = (float)(vertX%101)/100; //tesktura
-         this->vertices[index+4] = (float)(vertY%101)/100;
-         this->vertices[index+5] = this->mapVert[i][j]/maxMapHeight;
+         this->vertices[index+3] = (float)(i%101)/100; //tesktura
+         this->vertices[index+4] = (float)(j%101)/100;
+         this->vertices[index+5] = (float)this->mapVert[i][j]/maxMapHeight;
+         // this->vertices[index+5] = 0.0f;
          index+=6;
       }
 
@@ -233,7 +234,6 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView){
    glBindVertexArray(0);
 
    //Rysujemy i teksturujemy mapę
-   //Rysujemy i teksturujemy mur (4 pionowe sciany)
    //Rysujemy mgłę zamiast wody lub wodę :)
 }
 
@@ -245,7 +245,7 @@ void Map::recalculateTriangleMap(){
          if(this->vertices[index+1] != this->mapVert[i][j]){
             this->vertices[index+1] = this->mapVert[i][j];
          }
-         index+=3;
+         index+=6;
       }
 }
 
