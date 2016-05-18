@@ -167,14 +167,18 @@ void Map::genTriangleTab(){
    int index=0;
    this->vertices.resize(vertX*vertY*6);
    this->indices.resize(2*vertX*(vertY-1)+vertY-1);
+   int modX=300;
+   int modY=300;
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
          this->vertices[index] = (float)i;
          this->vertices[index+1] = this->mapVert[i][j];
          this->vertices[index+2] = (float)j;
-         this->vertices[index+3] = (float)(i%301)/300; //tesktura
-         this->vertices[index+4] = (float)(j%301)/300;
+         this->vertices[index+3] = (float)(i%modX)/(modX); //tesktura
+         if(i/modX % 2 == 1)this->vertices[index+3]=1-this->vertices[index+3];
+         this->vertices[index+4] = (float)(j%modY)/(modY);
+         if(j/modY % 2 == 1)this->vertices[index+4]=1-this->vertices[index+4];
          this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+1)/2;
          // this->vertices[index+5] = 0.0f;
          index+=6;
@@ -233,7 +237,6 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView){
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
    glBindVertexArray(0);
 
-   //Rysujemy i teksturujemy mapę
    //Rysujemy mgłę zamiast wody lub wodę :)
 }
 

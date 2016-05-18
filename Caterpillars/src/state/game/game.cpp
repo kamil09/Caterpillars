@@ -1,7 +1,6 @@
 #include "game.hpp"
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
-   glfwSetCursor(window, NULL);  //DLACZEGO TO NIE DZIAŁĄ :(((((
 
    this->map= & Map::getInstance();
    this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
