@@ -45,11 +45,11 @@ void Wall::draw(glm::mat4 projection, glm::mat4 modelView){
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 
-   GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
-   GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
+   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
+   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
 
-   glUniformMatrix4fv(iProjectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-   glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(modelView));
+   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
+   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
 
    glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLE_STRIP, 10, GL_UNSIGNED_INT, 0);

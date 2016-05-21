@@ -26,7 +26,7 @@ Map::Map(){
 Map::~Map(){}
 
 void makeHill(float **map){
-   float hillHeight = rand() % (maxMapHeight-minMapHeight)+minMapHeight;
+   float hillHeight = rand() % (maxMapHeight*5/6-minMapHeight)+minMapHeight;
    int hillRadius = rand() % (maxHillRadius-minHillRadius)+minHillRadius;
    float hillGeometry = ((float)(rand() % 101)-50)/50;
    int hillX = rand() % vertX;
@@ -91,7 +91,12 @@ void makeHill(float **map){
 void Map::generateRandomMap(){
    //DEKLARACJA PAMIĘCI I USTAWIENIE BAZOWEJ WYSOKOŚCI
    this->mapVert = new float*[vertX];
-   for(int i=0;i<vertX;i++) mapVert[i]=new float[vertY];
+   this->mapVertFirst = new float*[vertX];
+   for(int i=0;i<vertX;i++) {
+      mapVert[i] = new float[vertY];
+      mapVertFirst[i] = new float[vertY];
+   }
+
 
    for(int i=0;i<vertX;i++)
       for(int j=0;j<vertY;j++)
@@ -167,8 +172,8 @@ void Map::genTriangleTab(){
    int index=0;
    this->vertices.resize(vertX*vertY*6);
    this->indices.resize(2*vertX*(vertY-1)+vertY-1);
-   int modX=300;
-   int modY=300;
+   int modX=200;
+   int modY=200;
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
@@ -180,7 +185,6 @@ void Map::genTriangleTab(){
          this->vertices[index+4] = (float)(j%modY)/(modY);
          if(j/modY % 2 == 1)this->vertices[index+4]=1-this->vertices[index+4];
          this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+1)/2;
-         // this->vertices[index+5] = 0.0f;
          index+=6;
       }
 
@@ -226,11 +230,11 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView){
 	glBindTexture(GL_TEXTURE_3D, this->texture3D);
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 
-   GLint iProjectionLoc = glGetUniformLocation(this->shader->shaderProgram[0], "projectionMatrix");
-   GLint iModelViewLoc = glGetUniformLocation(this->shader->shaderProgram[0], "modelViewMatrix");
+   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
+   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
 
-   glUniformMatrix4fv(iProjectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-   glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(modelView));
+   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
+   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
 
    glBindVertexArray(this->currentVAO());
 
@@ -247,6 +251,7 @@ void Map::recalculateTriangleMap(){
       for(int i=0;i<vertX;i++){
          if(this->vertices[index+1] != this->mapVert[i][j]){
             this->vertices[index+1] = this->mapVert[i][j];
+            this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+0.2)/1.2;
          }
          index+=6;
       }

@@ -8,6 +8,7 @@ aux_source_directory(./src/shaders SHADER_LIST)
 aux_source_directory(src/state/menu/mainMenu SUBMENU_LIST)
 aux_source_directory(./src/state/game GAME_LIST)
 aux_source_directory(./src/state/game/map MAP_LIST)
+aux_source_directory(./src/loadData LOAD_DATA)
 
 
 
@@ -50,6 +51,7 @@ add_executable(${PROJECT_NAME}
     ${SUBMENU_LIST}
     ${GAME_LIST}
     ${MAP_LIST}
+    ${LOAD_DATA}
 
 )
 

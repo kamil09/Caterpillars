@@ -19,7 +19,7 @@ void Game::draw(){
 }
 
 void Game::run(){
-   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%50+50 );
+   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    this->testViewMov();
    this->draw();
 }

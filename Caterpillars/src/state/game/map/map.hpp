@@ -42,6 +42,7 @@ private:
    void recalculateTriangleMap();
 public:
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
+   float **mapVertFirst;
    Map();
    ~Map();
    void bindBuffers(bool newBuffer);
