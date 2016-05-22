@@ -1,9 +1,15 @@
 #include "game.hpp"
 
+
+
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    this->map= & Map::getInstance();
    this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
+   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
+   this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
+   this->rose->setTraM(0.8,-0.8,0.0f);
+
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
    this->projection = glm::perspective(800.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 20000.0f);
@@ -16,8 +22,40 @@ void Game::draw(){
 
    this->map->draw(this->projection,this->modelView);
    this->wall->draw(this->projection,this->modelView);
-}
 
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   this->targetView->draw();
+
+   this->drawRose();
+   glDisable(GL_BLEND);
+}
+/*
+ * DO POPRAWY !!!
+*/
+void Game::drawRose(){
+   glm::vec2 look,wind;
+   look.x=this->lookAt.z-this->lookFrom.z;
+   look.y=this->lookAt.x-this->lookFrom.x;
+   wind.x=this->map->windForce.x;
+   wind.y=this->map->windForce.z;
+
+   double lookD = sqrt((look.x*look.x)+(look.y+look.y));
+   double windD = sqrt((wind.x*wind.x)+(wind.y+wind.y));
+   double cosK= ((look.x*wind.x) + (look.y+wind.y)) / (lookD*windD);
+   double kat = acos(cosK);
+   //kat=1;
+   std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
+   if(kat!=kat) kat=0;
+   glm::mat4 rotM = glm::mat4(
+      glm::vec4(cos(-kat),-sin(-kat),0.0f,0.0f),
+      glm::vec4(sin(-kat),cos(-kat),0.0f,0.0f),
+      glm::vec4(0.0f,0.0f,1.0f,0.0f),
+      glm::vec4(0.0f,0.0f,0.0f,1.0f)
+   );
+   this->rose->rotM=rotM;
+   this->rose->draw();
+}
 void Game::run(){
    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    this->testViewMov();
@@ -61,6 +99,7 @@ void Game::testViewMov(){
          glm::vec3(-sin(inputActions::getInstance().movedX/500),0.0f,cos(inputActions::getInstance().movedX/500))
       );
       viewVec=rotM*viewVec;
+
       this->lookAt=-viewVec+this->lookFrom;
    }
    if(inputActions::getInstance().movedY!=0){
@@ -108,7 +147,7 @@ bool Game::checkMapCollisionZ(Object o){
    return this->checkMapCollisionZ((float)o.getPosZ());
 }
 bool Game::checkMapCollisionX(float k){
-   if(k<=0 || k>vertX) return true;
+   if(k<=3 || k>vertX-3) return true;
    //Kolizja z mapą X
    //.............................
    return false;
@@ -120,7 +159,7 @@ bool Game::checkMapCollisionY(float k){
    return false;
 }
 bool Game::checkMapCollisionZ(float k){
-   if(k<0 || k> vertY) return true;
+   if(k<=3 || k>vertY-3) return true;
    //kolizja z mapą Z
    //.............................
    return false;

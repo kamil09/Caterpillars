@@ -1,14 +1,10 @@
 Co robimy w pierwszej kolejności:
 
-1. Ustawienia czyli globalne zmienne które mają jakieś wartości domyślne i są później wczytywane z pliku ustawień
-2. Menu ustawień czyli wyświetlanie informacji, żeby zmienić sobie w pliku dane :)
-3. Główny ekran czyli : jakiś obrazek i 4 buttony start, opcje, info i exit
-4. ekrany info i exitu W info : informacje o nas i projekcie, a w exit potwierdzenie wyjscia
-5. przychywanie przycisków i wywoływanie jakiś metod które coś zrobią w zależności w którym miejscu gry jesteśmy
-6. Stworzenie klasy obiekt które ma podstawowe pola (macierze itp), oraz obiektów po nim dziedziczących typu mapa, ludzik, pocisk, zapychacz miejsca itp (pamiętać o wskaźnikach :) )
-7.Stworzenie metod dotyczących fizyki (grawitacja, rzut ukośny) - które można wywołać na rzecz obiektu (bo np trzał i skok to to samo, tylko inny obiekt i wartości parametrów)
-8. Rysowanie mapy (wielka tablica z wartościami wierzchołków którą później rysujemny)
-... A delej pomyślimy ;)
+1. Główny ekran czyli : jakiś obrazek i 4 buttony start, opcje, info i exit
+2. ekrany info i exitu W info : informacje o nas i projekcie, a w exit potwierdzenie wyjscia
+3.Stworzenie metod dotyczących fizyki (grawitacja, rzut ukośny) - które można wywołać na rzecz obiektu (bo np trzał i skok to to samo, tylko inny obiekt i wartości parametrów)
+
+4. Ogarnąć czcionki w OPENGL!!!!
 
 
 MENU:

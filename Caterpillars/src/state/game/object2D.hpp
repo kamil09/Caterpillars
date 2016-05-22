@@ -19,11 +19,12 @@ using namespace std;
 class object2D : public Object{
 
 public:
-   object2D(float x, float y, int width, int height, string fileName);
+   object2D(float x, float y, float width, float height, GLchar *fileName);
    ~object2D();
 
-   void bindBuffers(bool newBuffer);
+   void bindBuffers();
    void draw();
+   void setTraM(float x,float y,float z);
 };
 
 #endif

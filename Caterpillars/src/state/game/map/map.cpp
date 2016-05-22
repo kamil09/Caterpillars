@@ -2,7 +2,6 @@
 
 Map::Map(){
    srand (time(NULL));
-   this->windForce=10;
    this->gravity=9.81;
    this->minHeight=0;
    this->fogSpeed=0.005;
@@ -114,7 +113,9 @@ void Map::generateRandomMap(){
 }
 
 void Map::rand(){
-   this->windForce = std::rand() % 50;
+   this->windForce.x = std::rand() % 50;
+   this->windForce.y = std::rand() % 50;
+   this->windForce.z = std::rand() % 50;
 }
 
 void Map::kaboom(float x, float y, float z, float radius){

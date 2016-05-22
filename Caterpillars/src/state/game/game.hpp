@@ -10,14 +10,19 @@
 #include "../../object.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "object2D.hpp"
 
 class Game : public State{
+private:
+   void drawRose();
 public:
    Game(GLFWwindow *window,GLFWcursor *cur);
    void run() override;
    void draw() override;
    Map *map;
    Wall *wall;
+   object2D *targetView;
+   object2D *rose;
    void testViewMov();
 
    glm::mat4 projection;   //perspektywa

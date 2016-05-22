@@ -66,9 +66,9 @@ int main(void){
 	// glViewport(0,0,800,600);
 
 
-	// glEnable(GL_ALPHA);
-	// glEnable(GL_BLEND);
-	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
