@@ -12,10 +12,12 @@
 
 // #include <Magick++.h>
 #include "loadData/lodepng.h"
+#include "loadData/loadOBJ.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "buffers.hpp"
 #include "errorGL.hpp"
+//#include "state/game/map/map.hpp"
 
 
 class OurTexture {

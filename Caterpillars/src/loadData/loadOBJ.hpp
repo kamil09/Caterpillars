@@ -12,7 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
    namespace loadObj{
-      bool load(char * path,std::vector<GLfloat> vertices, std::vector<GLuint> indices);
+      bool load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuint> *indices);
 
    }
 

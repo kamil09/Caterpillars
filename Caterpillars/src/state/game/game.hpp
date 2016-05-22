@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "../../object.hpp"
+#include "../../caterpillar.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "object2D.hpp"
@@ -23,6 +24,7 @@ public:
    Wall *wall;
    object2D *targetView;
    object2D *rose;
+   std::vector< Caterpillar* > caterrVec;
    void testViewMov();
 
    glm::mat4 projection;   //perspektywa

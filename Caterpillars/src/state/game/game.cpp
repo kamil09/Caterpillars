@@ -10,6 +10,9 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
    this->rose->setTraM(0.8,-0.8,0.0f);
 
+   this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
+   this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight,rand()%vertY);
+
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
    this->projection = glm::perspective(800.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 20000.0f);
@@ -25,6 +28,8 @@ void Game::draw(){
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   for(int i=0;i < (int)this->caterrVec.size(); i++)
+      this->caterrVec[i]->draw(this->projection,this->modelView);
    this->targetView->draw();
 
    this->drawRose();
@@ -45,7 +50,7 @@ void Game::drawRose(){
    double cosK= ((look.x*wind.x) + (look.y+wind.y)) / (lookD*windD);
    double kat = acos(cosK);
    //kat=1;
-   std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
+   //std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;
    glm::mat4 rotM = glm::mat4(
       glm::vec4(cos(-kat),-sin(-kat),0.0f,0.0f),
