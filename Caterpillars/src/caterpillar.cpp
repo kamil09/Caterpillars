@@ -2,10 +2,10 @@
 
 Caterpillar::Caterpillar(char *filename){
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-   this->posM = glm::mat4(1.0f);
-   this->rotM = glm::mat4(1.0f);
-   this->sclM = glm::mat4(20.0f);
-   this->sclM[3][3]=1.0f;
+   this->sclX=20;
+   this->sclY=20;
+   this->sclZ=20;
+   this->recalculateMatrix();
 
    this->windMul=0.1;
    this->life=100;
@@ -18,9 +18,10 @@ Caterpillar::~Caterpillar(){
 
 }
 void Caterpillar::setPos(float x,float y,float z){
-   this->posM[3][0]=x;
-   this->posM[3][1]=y;
-   this->posM[3][2]=z;
+   this->posX=x;
+   this->posY=y;
+   this->posZ=z;
+   this->recalculateMatrix();
 }
 void Caterpillar::bindBuffers(bool newBuffer){
    this->initBinding(newBuffer);
