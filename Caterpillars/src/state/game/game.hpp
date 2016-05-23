@@ -33,12 +33,12 @@ public:
    glm::vec3 lookFrom;     //umiejscowanie kamery
 
 
-   bool checkMapCollisionX(Object o);
-   bool checkMapCollisionY(Object o);
-   bool checkMapCollisionZ(Object o);
-   bool checkMapCollisionX(float k);
-   bool checkMapCollisionY(float k);
-   bool checkMapCollisionZ(float k);
+    static bool checkMapCollisionX(Object o);
+    static bool checkMapCollisionY(Object o);
+    static bool checkMapCollisionZ(Object o);
+    static bool checkMapCollisionX(float k);
+    static bool checkMapCollisionY(float k);
+    static bool checkMapCollisionZ(float k);
 
 };
 

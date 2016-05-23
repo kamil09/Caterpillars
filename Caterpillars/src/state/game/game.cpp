@@ -45,19 +45,21 @@ void Game::drawRose(){
    wind.x=this->map->windForce.x;
    wind.y=this->map->windForce.z;
 
-   double lookD = sqrt( (look.x*look.x)+(look.y+look.y) );
-   double windD = sqrt( (wind.x*wind.x)+(wind.y+wind.y) );
+   double lookD = sqrt( (look.x*look.x)+(look.y*look.y) );
+   double windD = sqrt( (wind.x*wind.x)+(wind.y*wind.y) );
    double cosK;
-   if(lookD != 0 && windD != 0)
-      cosK= ((look.x*wind.x) + (look.y+wind.y)) / (lookD*windD);
+
+   cosK= ((look.x*wind.x) + (look.y*wind.y)) / (lookD*windD);
+
 
    double kat = -acos(cosK);
+   
    //kat=1;
    std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;
    glm::mat4 rotM = glm::mat4(
-      glm::vec4(cos(-kat),-sin(-kat),0.0f,0.0f),
-      glm::vec4(sin(-kat),cos(-kat),0.0f,0.0f),
+      glm::vec4(cos(kat),-sin(kat),0.0f,0.0f),
+      glm::vec4(sin(kat),cos(kat),0.0f,0.0f),
       glm::vec4(0.0f,0.0f,1.0f,0.0f),
       glm::vec4(0.0f,0.0f,0.0f,1.0f)
    );
@@ -145,28 +147,28 @@ void Game::testViewMov(){
    }
 }
 
-bool Game::checkMapCollisionX(Object o){
-   return this->checkMapCollisionX((float)o.posX);
+ bool Game::checkMapCollisionX(Object o){
+   return checkMapCollisionX((float)o.posX);
 }
-bool Game::checkMapCollisionY(Object o){
-   return this->checkMapCollisionY((float)o.posY);
+ bool Game::checkMapCollisionY(Object o){
+   return checkMapCollisionY((float)o.posY);
 }
-bool Game::checkMapCollisionZ(Object o){
-   return this->checkMapCollisionZ((float)o.posZ);
+ bool Game::checkMapCollisionZ(Object o){
+   return checkMapCollisionZ((float)o.posZ);
 }
-bool Game::checkMapCollisionX(float k){
+ bool Game::checkMapCollisionX(float k){
    if(k<=3 || k>vertX-3) return true;
    //Kolizja z mapą X
    //.............................
    return false;
 }
-bool Game::checkMapCollisionY(float k){
+ bool Game::checkMapCollisionY(float k){
    if( k <= 0 ) return true;
    //Kolizja z mapą Y
    //.............................
    return false;
 }
-bool Game::checkMapCollisionZ(float k){
+ bool Game::checkMapCollisionZ(float k){
    if(k<=3 || k>vertY-3) return true;
    //kolizja z mapą Z
    //.............................
