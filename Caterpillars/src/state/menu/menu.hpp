@@ -8,16 +8,22 @@
 #include "../../errorGL.hpp"
 #include "../state.hpp"
 #include <string.h>
-
+#include <functional>
 //#include "inputActions.hpp"
 
+// typedef void (*functionArray)();
+typedef std::function<void(GLFWwindow*,GLFWcursor*)> functionArray;
 
 class Menu : public State{
 public:
     Menu(GLFWwindow *window,GLFWcursor *cur);
     std::vector<const char*> listaTekstur;
     // const char* listaTekstur[4];
-
+    // std::vector<functionArray> callBackArray;
+    std::vector<functionArray> callBackArray;
+    // std::vector<std::function > callBackArray;
+    // std::vector<void (*)()> callBackArray;
+    // functionArray *callBackArray;
     std::vector<Button*> listaButtonow;
     Button *background;
     int buttonCount;

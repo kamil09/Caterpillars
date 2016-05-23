@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 // #include "inputActions.hpp"
 #include <iostream>
-#include "../inputActions.hpp"
+// #include "../inputActions.hpp"
 
 class State{
 public:

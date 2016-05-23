@@ -1,4 +1,6 @@
 #include "map.hpp"
+#include "../../../inputActions.hpp"
+
 
 Map::Map(){
    srand (time(NULL));

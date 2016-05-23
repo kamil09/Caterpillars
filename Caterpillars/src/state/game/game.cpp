@@ -1,5 +1,5 @@
 #include "game.hpp"
-
+#include "../../inputActions.hpp"
 
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
@@ -10,8 +10,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
    this->rose->setTraM(0.8,-0.8,0.0f);
 
-   this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
-   this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight,rand()%vertY);
+   // this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
+   // this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight,rand()%vertY);
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
@@ -28,8 +28,8 @@ void Game::draw(){
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   for(int i=0;i < (int)this->caterrVec.size(); i++)
-      this->caterrVec[i]->draw(this->projection,this->modelView);
+   // for(int i=0;i < (int)this->caterrVec.size(); i++)
+   //    this->caterrVec[i]->draw(this->projection,this->modelView);
    this->targetView->draw();
 
    this->drawRose();

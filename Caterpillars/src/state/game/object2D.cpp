@@ -1,4 +1,5 @@
 #include "object2D.hpp"
+#include "../../inputActions.hpp"
 
 
 object2D::object2D(float x, float y, float width, float height, GLchar *fileName){

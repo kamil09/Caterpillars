@@ -1,4 +1,5 @@
 #include "bigWall.hpp"
+#include "../../../inputActions.hpp"
 
 
 Wall::Wall(int x, int width, int z, int depth, int min, int max){

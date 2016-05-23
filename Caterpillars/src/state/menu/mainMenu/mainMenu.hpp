@@ -4,6 +4,7 @@
 #include "../menu.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
 class MainMenu : public Menu{
 public:

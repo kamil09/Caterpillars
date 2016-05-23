@@ -1,7 +1,9 @@
 #include "button.hpp"
 
-// Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,std::string texturePath){
-Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath){
+// Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath){
+// Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath,void(*callBack)(void)){
+Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath,std::function<void(GLFWwindow* ,GLFWcursor*)> callBack){
+	this->callBackFunction = callBack;
 	this->shader = new Shader("../src/shaders/button/buttonShader.vs","../src/shaders/button/buttonShader.frag");
 	// this->shader->loadShader("../src/shaders/buttonShader.vs", "../src/shaders/buttonShader.frag");
 
@@ -152,6 +154,6 @@ void Button::draw2(){
 	glBindVertexArray(0);
 }
 
-void Button::select(){
-	std::cout << "wybrano przycisk o kolorze red: " << this->r << " green: " << this->g << " blue: " << this->b << std::endl;
-}
+// void Button::select(){
+// 	std::cout << "wybrano przycisk o kolorze red: " << this->r << " green: " << this->g << " blue: " << this->b << std::endl;
+// }

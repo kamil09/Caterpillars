@@ -23,7 +23,7 @@ static void error_callback(int error, const char* description);
 //INICJALIZACJA
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor);
 //ZMIANA stanu
-void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor);
+// void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor);
 
 //MAIN
 int main(void){
@@ -88,7 +88,7 @@ int main(void){
 			glfwPollEvents();
 		}
 
-		if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
+		// if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
 	   inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
 
@@ -128,45 +128,45 @@ static void error_callback(int error, const char* description){
 	std::cerr << "Error: " << description << std::endl;
 }
 
-
-void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor){
-	inputActions::getInstance().changeState = false;
-	   switch (statNum) {
-        case gameCaseType::MAIN:{
-		  		MainMenu *mainMenu = new MainMenu(window,cursor);
-				inputActions::getInstance().currentState = mainMenu;
-			}
-        break;
-        case gameCaseType::START:{
-		  		Game *game = new Game(window,cursor);
-				inputActions::getInstance().currentState = game;
-			}
-        break;
-        case gameCaseType::OPTIONS:{
-
-		  }
-        break;
-        case gameCaseType::INFO:{
-
-		  }
-        break;
-        case gameCaseType::GAME_ST:{
-
-		  }
-        break;
-        case gameCaseType::PAUSE:{
-
-		  }
-        break;
-        case gameCaseType::GAME_END:{
-
-		  }
-        break;
-        case gameCaseType::EXIT:{
-			  exit(0);
-		  }
-        break;
-		  default:;
-    }
-	 inputActions::getInstance().setCallbacks(window,cursor);
-}
+//
+// void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor){
+// 	inputActions::getInstance().changeState = false;
+// 	   switch (statNum) {
+//         case gameCaseType::MAIN:{
+// 		  		MainMenu *mainMenu = new MainMenu(window,cursor);
+// 				inputActions::getInstance().currentState = mainMenu;
+// 			}
+//         break;
+//         case gameCaseType::START:{
+// 		  		Game *game = new Game(window,cursor);
+// 				inputActions::getInstance().currentState = game;
+// 			}
+//         break;
+//         case gameCaseType::OPTIONS:{
+//
+// 		  }
+//         break;
+//         case gameCaseType::INFO:{
+//
+// 		  }
+//         break;
+//         case gameCaseType::GAME_ST:{
+//
+// 		  }
+//         break;
+//         case gameCaseType::PAUSE:{
+//
+// 		  }
+//         break;
+//         case gameCaseType::GAME_END:{
+//
+// 		  }
+//         break;
+//         case gameCaseType::EXIT:{
+// 			  exit(0);
+// 		  }
+//         break;
+// 		  default:;
+//     }
+// 	 inputActions::getInstance().setCallbacks(window,cursor);
+// }

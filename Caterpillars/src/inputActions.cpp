@@ -2,35 +2,35 @@
 
 
 inputActions::inputActions(){
-   this->w_pressed=false;
-   this->a_pressed=false;
-   this->s_pressed=false;
-   this->d_pressed=false;
-   this->space_pressed=false;
-   this->i_pressed=false;
-   this->escape_pressed=false;
-   this->scroll=0;
+	this->w_pressed=false;
+	this->a_pressed=false;
+	this->s_pressed=false;
+	this->d_pressed=false;
+	this->space_pressed=false;
+	this->i_pressed=false;
+	this->escape_pressed=false;
+	this->scroll=0;
 
-   this->leftClick=false;
-   this->rightClick=false;
-   this->lastLeftClick=false;
+	this->leftClick=false;
+	this->rightClick=false;
+	this->lastLeftClick=false;
 
-   this->cursorLastX=0;
-   this->cursorLastY=0;
-   this->movedX=0;
-   this->movedY=0;
+	this->cursorLastX=0;
+	this->cursorLastY=0;
+	this->movedX=0;
+	this->movedY=0;
 
-   this->lastX=0;
-   this->lastY=0;
+	this->lastX=0;
+	this->lastY=0;
 
-   this->changeState=false;
-   this->cursorFixedCenterPos=false;
+	// this->changeState=false;
+	this->cursorFixedCenterPos=false;
 }
 
 void inputActions::clear(){
-   this->scroll=0;
-   this->movedX=0;
-   this->movedY=0;
+	this->scroll=0;
+	this->movedX=0;
+	this->movedY=0;
 
 }
 
@@ -44,33 +44,33 @@ inputActions& inputActions::getInstance(){
 }
 
 void inputActions::getMouseCurrentPosition(GLFWwindow* window){
-    double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
-    this->cursorLastX=xpos;
-    this->cursorLastY=ypos;
-    // std::cout << "Cursor X: " << this->cursorLastX << " Cursor Y: " << this->cursorLastY << std::endl;
+	double xpos, ypos;
+	glfwGetCursorPos(window, &xpos, &ypos);
+	this->cursorLastX=xpos;
+	this->cursorLastY=ypos;
+	// std::cout << "Cursor X: " << this->cursorLastX << " Cursor Y: " << this->cursorLastY << std::endl;
 }
 
 
 double inputActions::getCursorLastX(){
-    return this->cursorLastX;
+	return this->cursorLastX;
 }
 
 double inputActions::getCursorLastY(){
-    return this->cursorLastY;
+	return this->cursorLastY;
 }
 
 void inputActions::key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
-    inputActions().getInstance().currentState->key_callback(window, key, scancode, action, mods);
+	inputActions().getInstance().currentState->key_callback(window, key, scancode, action, mods);
 }
 void inputActions::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
-    inputActions::getInstance().currentState->cursor_pos_callback(window, xpos, ypos);
+	inputActions::getInstance().currentState->cursor_pos_callback(window, xpos, ypos);
 }
 void inputActions::mouse_button_callback(GLFWwindow* window, int key, int action, int mods){
-    inputActions::getInstance().currentState->mouse_button_callback(window, key, action, mods);
+	inputActions::getInstance().currentState->mouse_button_callback(window, key, action, mods);
 }
 void inputActions::scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
-    inputActions::getInstance().currentState->scroll_callback(window, xoffset, yoffset);
+	inputActions::getInstance().currentState->scroll_callback(window, xoffset, yoffset);
 }
 
 
@@ -86,9 +86,18 @@ void inputActions::setCallbacks(GLFWwindow* window,GLFWcursor* cursor){
 }
 
 void inputActions::changeCursor(int shape){
-    if(this->cursorShape != shape){
-        this->cursorShape = shape;
-        GLFWcursor* cursor = glfwCreateStandardCursor(shape);
-        glfwSetCursor(this->currentState->window, cursor);
-    }
+	if(this->cursorShape != shape) {
+		this->cursorShape = shape;
+		GLFWcursor* cursor = glfwCreateStandardCursor(shape);
+		glfwSetCursor(this->currentState->window, cursor);
+	}
+}
+
+void inputActions::changeMenu(GLFWwindow* window,GLFWcursor* cursor){
+}
+
+void inputActions::changeGame(GLFWwindow* window,GLFWcursor* cursor){
+	Game *game = new Game(window,cursor);
+	inputActions::getInstance().currentState = game;
+	std::cout << "HEJ!" << std::endl;
 }

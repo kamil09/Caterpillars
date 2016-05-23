@@ -67,7 +67,7 @@ float* Menu::readPixel(GLFWwindow *window){
 }
 
 void Menu::createBackgroud(const char* texturePath){
-    this->background = new Button(0,0.0f,0.0f,0.0f,2.0f,2.0f,texturePath);
+    this->background = new Button(0,0.0f,0.0f,0.0f,2.0f,2.0f,texturePath,NULL);
 }
 
 void Menu::createButtons(int count,GLfloat x,GLfloat y){
@@ -82,7 +82,9 @@ void Menu::createButtons(int count,GLfloat x,GLfloat y){
             baseY = y - i*(this->buttonHeight/2 + this->buttonDistance);
         // }
 		// Button *nowyButton = new Button(255 + (i*200),0.0f,0.60f-(i*0.4f),0.5f,0.3f);
-        Button *nowyButton = new Button(this->buttonCount,x,baseY,0.0f,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1]);
+        // this->callBackArray[i];
+        // Button *nowyButton = new Button(this->buttonCount,x,baseY,0.0f,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1],this->callBackArray[i]);
+        Button *nowyButton = new Button(this->buttonCount,x,baseY,0.0f,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1],this->callBackArray[i]);
         std::cout << "X: " << x << " Y: " << baseY << std::endl;
         this->listaButtonow.push_back(nowyButton);
     }
@@ -126,9 +128,10 @@ void Menu::checkButtons(){
             // if(this->listaButtonow[i]->g == data[1]){
                 // if(this->listaButtonow[i]->b == data[2]){
                     std::cout << "Wybraleś przycisk numer: " << i << std::endl;
-                    this->listaButtonow[i]->select();
-                    inputActions::getInstance().nextState = static_cast<gameCaseType>(i+1);
-                    inputActions::getInstance().changeState = true;
+                    this->listaButtonow[i]->callBackFunction(this->window,this->cursor);
+                    // this->listaButtonow[i]->select();
+                    // inputActions::getInstance().nextState = static_cast<gameCaseType>(i+1);
+                    // inputActions::getInstance().changeState = true;
                 // }
             // }
         }
