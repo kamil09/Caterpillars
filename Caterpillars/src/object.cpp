@@ -1,4 +1,5 @@
 #include "object.hpp"
+#include "state/game/map/map.hpp"
 
 Object::Object(){
 	this->teksturCount = 0;
@@ -23,7 +24,19 @@ Object::~Object(){
 void Object::draw(){
 
 };
+void Object::recalculateMatrix(){
+	this->rotM = glm::mat4(1);
+	this->sclM = glm::mat4(1);
+	this->posM = glm::mat4(1);
+	this->sclM[0][0]=this->sclX;
+	this->sclM[1][1]=this->sclY;
+	this->sclM[2][2]=this->sclZ;
+	this->posM[3][0]=this->posX;
+	this->posM[3][1]=this->posY;
+	this->posM[3][2]=this->posZ;
 
+
+}
 void Object::kick(float x,float y, float z){
 	this->speedX=x;
 	this->speedY=y;
@@ -202,25 +215,4 @@ void Object::loadTexture3D(int number){
 	// for(int i=0;i<number;i++)
 	// delete imageTab[i];
 	// delete imageTab;
-}
-
-GLfloat Object::getPosX(){
-	return this->posX;
-}
-void Object::setPosX(GLfloat newValue){
-	this->posX = newValue;
-}
-
-GLfloat Object::getPosY(){
-	return this->posY;
-}
-void Object::setPosY(GLfloat newValue){
-	this->posY = newValue;
-}
-
-GLfloat Object::getPosZ(){
-	return this->posZ;
-}
-void Object::setPosZ(GLfloat newValue){
-	this->posZ = newValue;
 }

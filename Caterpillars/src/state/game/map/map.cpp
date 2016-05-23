@@ -122,7 +122,7 @@ void Map::kaboom(float x, float y, float z, float radius){
    //Zmniejszamy wysokość w punkcie kaboom i okolicznych
    //Dajemy efekt dźwiękowy i odpryski jakieś.
    int xx = round(x);
-   int yy = round(y);
+   //int yy = round(y);
    int zz = round(z);
    int rr = round(radius);
 
@@ -142,8 +142,9 @@ void Map::kaboom(float x, float y, float z, float radius){
          float difY=fabs(zz-(j+top));
 
          float diff=sqrt(pow((float)difX,2)+pow((float)difY,2));
-
-         minTab[i][j]=sqrt(pow((float)rr,2)-pow((float)diff,2));
+         float tmp = (pow((float)rr,2)-pow((float)diff,2))/2;
+         if(tmp<0)tmp=0;
+         minTab[i][j]=sqrt(tmp);
       }
    }
 
@@ -153,10 +154,9 @@ void Map::kaboom(float x, float y, float z, float radius){
       tabKoorX=0;
       for(int j=top;j<=bottom;j++){
          if(i>=0 && j>=0 && i<vertX && j<vertY){
-            if((this->mapVert[i][j] > yy+minTab[tabKoorX][tabKoorZ]) ){
+            //if((this->mapVert[i][j] > yy+minTab[tabKoorX][tabKoorZ]) ){
                this->mapVert[i][j] -= minTab[tabKoorX][tabKoorZ];
-               //printf("%d %d, %f\n",i,j,this->mapVert[i][j]);
-            }
+            //}
             if( this->mapVert[i][j] < this->minHeight ) this->mapVert[i][j] = this->minHeight;
          }
          tabKoorX++;

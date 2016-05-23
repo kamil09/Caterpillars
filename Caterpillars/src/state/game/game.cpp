@@ -40,17 +40,20 @@ void Game::draw(){
 */
 void Game::drawRose(){
    glm::vec2 look,wind;
-   look.x=this->lookAt.z-this->lookFrom.z;
-   look.y=this->lookAt.x-this->lookFrom.x;
+   look.x=this->lookAt.x-this->lookFrom.x;
+   look.y=this->lookAt.z-this->lookFrom.z;
    wind.x=this->map->windForce.x;
    wind.y=this->map->windForce.z;
 
-   double lookD = sqrt((look.x*look.x)+(look.y+look.y));
-   double windD = sqrt((wind.x*wind.x)+(wind.y+wind.y));
-   double cosK= ((look.x*wind.x) + (look.y+wind.y)) / (lookD*windD);
-   double kat = acos(cosK);
+   double lookD = sqrt( (look.x*look.x)+(look.y+look.y) );
+   double windD = sqrt( (wind.x*wind.x)+(wind.y+wind.y) );
+   double cosK;
+   if(lookD != 0 && windD != 0)
+      cosK= ((look.x*wind.x) + (look.y+wind.y)) / (lookD*windD);
+
+   double kat = -acos(cosK);
    //kat=1;
-   //std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
+   std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;
    glm::mat4 rotM = glm::mat4(
       glm::vec4(cos(-kat),-sin(-kat),0.0f,0.0f),
@@ -68,7 +71,7 @@ void Game::run(){
 }
 
 void Game::testViewMov(){
-   glm::vec3 viewVec=this->lookFrom-this->lookAt;
+   glm::vec3 viewVec=this->lookAt-this->lookFrom;
    glm::vec3 prosVec=viewVec;
    prosVec[1]=0;
    float tmp=prosVec[0];
@@ -79,23 +82,23 @@ void Game::testViewMov(){
 
    if(inputActions::getInstance().w_pressed){
       glm::vec3 add = glm::normalize(viewVec);
-      this->lookFrom-=add*2.0f;
-      this->lookAt-=add*2.0f;
+      this->lookFrom+=add*2.0f;
+      this->lookAt+=add*2.0f;
    }
    if(inputActions::getInstance().s_pressed){
       glm::vec3 add = glm::normalize(viewVec);
-      this->lookFrom+=add*2.0f;
-      this->lookAt-=add;
+      this->lookFrom-=add*2.0f;
+      this->lookAt-=add*2.0f;
    }
    if(inputActions::getInstance().a_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      this->lookFrom-=add;
-      this->lookAt-=add;
+      this->lookFrom+=add;
+      this->lookAt+=add;
    }
    if(inputActions::getInstance().d_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      this->lookFrom+=add;
-      this->lookAt+=add;
+      this->lookFrom-=add;
+      this->lookAt-=add;
    }
    if(inputActions::getInstance().movedX!=0){
       glm::mat3 rotM = glm::mat3(
@@ -105,7 +108,7 @@ void Game::testViewMov(){
       );
       viewVec=rotM*viewVec;
 
-      this->lookAt=-viewVec+this->lookFrom;
+      this->lookAt=viewVec+this->lookFrom;
    }
    if(inputActions::getInstance().movedY!=0){
       //Wg moich obliczeń na kartce to powinno działać, ale działa tak se :/
@@ -143,13 +146,13 @@ void Game::testViewMov(){
 }
 
 bool Game::checkMapCollisionX(Object o){
-   return this->checkMapCollisionX((float)o.getPosX());
+   return this->checkMapCollisionX((float)o.posX);
 }
 bool Game::checkMapCollisionY(Object o){
-   return this->checkMapCollisionY((float)o.getPosY());
+   return this->checkMapCollisionY((float)o.posY);
 }
 bool Game::checkMapCollisionZ(Object o){
-   return this->checkMapCollisionZ((float)o.getPosZ());
+   return this->checkMapCollisionZ((float)o.posZ);
 }
 bool Game::checkMapCollisionX(float k){
    if(k<=3 || k>vertX-3) return true;

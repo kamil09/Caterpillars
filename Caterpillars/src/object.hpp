@@ -34,9 +34,7 @@ private:
    float speedX;
    float speedY;
    float speedZ;
-   GLfloat posX;
-   GLfloat posY;
-   GLfloat posZ;
+
    bool canKick;     //Czy można zadziałać na dany obiekt. Jezeli false to obiekt znajduje się w powietrzu i nie da rady w niego ingerować
    double kickTime;  //Czas od rozpoczęcia rzutu
 
@@ -60,12 +58,6 @@ public:
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);
    void recalculatePhysics();
-   GLfloat getPosX();
-   void setPosX(GLfloat newValue);
-   GLfloat getPosY();
-   void setPosY(GLfloat newValue);
-   GLfloat getPosZ();
-   void setPosZ(GLfloat newValue);
 
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
@@ -89,6 +81,18 @@ public:
    int currentBinding;
    void endBinding();
    GLuint currentVAO();
+
+
+   GLfloat posX;
+   GLfloat posY;
+   GLfloat posZ;
+   GLfloat rotX;
+   GLfloat rotY;
+   GLfloat rotZ;
+   GLfloat sclX;
+   GLfloat sclY;
+   GLfloat sclZ;
+   void recalculateMatrix();
 };
 
 #endif
