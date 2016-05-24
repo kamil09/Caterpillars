@@ -44,7 +44,8 @@ void Game::drawRose(){
    look.y=this->lookAt.z-this->lookFrom.z;
    wind.x=this->map->windForce.x;
    wind.y=this->map->windForce.z;
-
+   look=glm::normalize(look);
+   wind=glm::normalize(wind);
    double lookD = sqrt( (look.x*look.x)+(look.y*look.y) );
    double windD = sqrt( (wind.x*wind.x)+(wind.y*wind.y) );
    double cosK;
@@ -53,9 +54,11 @@ void Game::drawRose(){
 
 
    double kat = -acos(cosK);
-   
+   float p = look.x*wind.y-look.y*wind.x;
+   if(p>0) kat*=-1;
+
    //kat=1;
-   std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
+   //std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;
    glm::mat4 rotM = glm::mat4(
       glm::vec4(cos(kat),-sin(kat),0.0f,0.0f),
