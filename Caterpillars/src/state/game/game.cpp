@@ -11,7 +11,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose->setTraM(0.8,-0.8,0.0f);
 
    this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
-   this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight,rand()%vertY);
+   this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight + 200,rand()%vertY); // Tutaj usunac 200 Pawelek
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
@@ -53,7 +53,7 @@ void Game::drawRose(){
 
 
    double kat = -acos(cosK);
-   
+
    //kat=1;
    std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;
@@ -70,6 +70,9 @@ void Game::run(){
    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    this->testViewMov();
    this->draw();
+
+   for(int i=0;i < (int)this->caterrVec.size(); i++)
+      this->caterrVec[i]->recalculateGravity();
 }
 
 void Game::testViewMov(){
@@ -151,6 +154,14 @@ void Game::testViewMov(){
    return checkMapCollisionX((float)o.posX);
 }
  bool Game::checkMapCollisionY(Object o){
+
+    //Pawelek
+    if((float)o.posY - 25 <= Map::getInstance().mapVert[(int)o.posX][(int)o.posZ]) // Tu ta 30 jest troche slaba
+    {
+      cout << "Mniejsze niz mapa!" << endl;
+      return true;
+    }
+
    return checkMapCollisionY((float)o.posY);
 }
  bool Game::checkMapCollisionZ(Object o){
@@ -163,7 +174,8 @@ void Game::testViewMov(){
    return false;
 }
  bool Game::checkMapCollisionY(float k){
-   if( k <= 0 ) return true;
+   if( k <= 0 )
+    return true;
    //Kolizja z mapą Y
    //.............................
    return false;

@@ -32,7 +32,7 @@ using namespace std;
 //MAPA MOŻE BYĆ TYLKO JEDNA :)
 class Map : public Object{
 private:
-   float gravity;   //grawitacja [m/s^2]
+   //float gravity;   //grawitacja [m/s^2]
    float fogSpeed;  //Prędkość podnoszenia się mgły [m/s] (zamiast wody :) )
    float fogHeight; //Wysokość na jakiej jest mgła
    float air;       //Współczynnik Oporu powietrza Od 0 do 1
@@ -40,6 +40,7 @@ private:
    void generateRandomMap();
    void recalculateTriangleMap();
 public:
+   float gravity;   //grawitacja [m/s^2]
    glm::vec3 windForce;
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    float **mapVertFirst;

@@ -10,6 +10,8 @@
 #include "shaders/shader.hpp"
 // #include "SOIL/SOIL.h"
 
+#include <time.h>//Pawelek
+
 // #include <Magick++.h>
 #include "loadData/lodepng.h"
 #include "loadData/loadOBJ.hpp"
@@ -38,6 +40,10 @@ private:
    bool canKick;     //Czy można zadziałać na dany obiekt. Jezeli false to obiekt znajduje się w powietrzu i nie da rady w niego ingerować
    double kickTime;  //Czas od rozpoczęcia rzutu
 
+   int in_meter;
+   float bet_time;
+   time_t start, end;
+
 public:
    glm::mat4 modM;   //Maciez modelu
    glm::mat4 posM;   //Maciez przesuniecia
@@ -58,6 +64,7 @@ public:
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);
    void recalculatePhysics();
+   void recalculateGravity(); //Pawelek
 
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
