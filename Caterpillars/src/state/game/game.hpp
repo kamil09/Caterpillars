@@ -16,6 +16,9 @@
 class Game : public State{
 private:
    void drawRose();
+   static bool checkMapCollisionX(Object *o,float k);
+   static bool checkMapCollisionY(Object *o,float k);
+   static bool checkMapCollisionZ(Object *o,float k);
 public:
    Game(GLFWwindow *window,GLFWcursor *cur);
    void run() override;
@@ -34,13 +37,11 @@ public:
    glm::vec3 lookAt;       //na co patrzymy
    glm::vec3 lookFrom;     //umiejscowanie kamery
 
-
-    static bool checkMapCollisionX(Object o);
-    static bool checkMapCollisionY(Object o);
-    static bool checkMapCollisionZ(Object o);
-    static bool checkMapCollisionX(float k);
-    static bool checkMapCollisionY(float k);
-    static bool checkMapCollisionZ(float k);
+   /**
+   * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
+   * Zwraca kolizję na Osi Y
+   */
+   static bool checkCollisionAndMove(Object *o,float x, float y, float z );
 
 };
 

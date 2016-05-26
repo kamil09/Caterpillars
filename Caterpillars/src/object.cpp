@@ -55,40 +55,42 @@ void Object::recalculatePhysics(){
 void Object::recalculateGravity(){
 	//Tu bedzie wszystko zwiazanego z grawitacja
 
-  //Tu trzeba bedzie na biezaca liczyc predkosc speedY
+   //Tu trzeba bedzie na biezaca liczyc predkosc speedY
 	//speedY > 0 oznaczac bedzie ruch w gore a < 0 spadanie
 	//Nie mam pojecia czy to jest dobra koncepcja
+	cout << "PosX: " << this->posX << "SpeedX: "<< this->speedX << endl;
+	cout << "PosY: " << this->posY << "SpeedY: "<< this->speedY << endl;
+	cout << "PosZ: " << this->posZ << "SpeedZ: "<< this->speedZ << endl;
+	/*
 
-
-
-	//end = time(NULL);
-
-  //if(!start)
-		bet_time = 0.01; //difftime( end, start );
-
-	in_meter = 1;//ile jednostek mamy w pseudo metrze
+	end = clock();
+	diff = ((float)end - (float)start);
+	bet_time = diff/CLOCKS_PER_SEC;
+	//cout<<"bet_time: "<< bet_time<<endl;
+	in_meter = 10;//ile jednostek mamy w pseudo metrze
 
 	if(Game::checkMapCollisionY(*this)){
 		//gdy mamy kolizje obiektu z podloga mapy
-		//this->posY += 1;
-		this->speedY = 0;
-		this->recalculateMatrix();
+		this->posY += 1;
+		this->speedY = 10;
 	}
 	else if(!Game::checkMapCollisionY(*this)) {
 
-		//if(this->speedY > 0)
+		//tutaj nalezy uwzglednic jeszcze sile wiatru
+		this->speedX =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
+		//this->speedY =
+		this->speedZ =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
+		this->posX += this->speedX;
+		//this->posY += this->speedY;
+		this->posZ += this->speedZ;
 
-		this->speedY -= Map::getInstance().gravity * bet_time * in_meter;
-
+		this->speedY -= Map::getInstance().gravity * bet_time* in_meter;
 		//nie ma kolizji czyli skacze co znaczy ze ma go sciagac w doł
-
 		this->posY += this->speedY;
-		this->recalculateMatrix();
-
-		//cout<< "PosY:" <<posY << "SpeedY: "<< speedY << endl;
 	}
+	*/
+	start = clock();
 
-	//start = time(NULL);
 }
 
 

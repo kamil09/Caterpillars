@@ -11,6 +11,7 @@
 // #include "SOIL/SOIL.h"
 
 #include <time.h>//Pawelek
+#include <ctime>//Pawelek
 
 // #include <Magick++.h>
 #include "loadData/lodepng.h"
@@ -42,7 +43,8 @@ private:
 
    int in_meter;
    float bet_time;
-   time_t start, end;
+   float diff;
+   clock_t start, end;
 
 public:
    glm::mat4 modM;   //Maciez modelu

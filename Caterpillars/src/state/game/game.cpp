@@ -11,7 +11,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose->setTraM(0.8,-0.8,0.0f);
 
    this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
-   this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight + 200,rand()%vertY); // Tutaj usunac 200 Pawelek
+   this->caterrVec[0]->setPos(rand() % vertX,maxMapHeight + 200,rand() % vertY); // Tutaj usunac 200 Pawelek
    this->currentCutterpillar = this->caterrVec[0];
 
    this->lookFrom=glm::vec3(0, 400, 0);
@@ -75,8 +75,10 @@ void Game::run(){
    this->testViewMov();
    this->draw();
 
-   for(int i=0;i < (int)this->caterrVec.size(); i++)
+   for(int i=0;i < (int)this->caterrVec.size(); i++){
       this->caterrVec[i]->recalculateGravity();
+      this->caterrVec[i]->recalculateMatrix();
+   }
 }
 void Game::catterMove(){
 
@@ -157,41 +159,32 @@ void Game::testViewMov(){
 }
 
 
-
-
- bool Game::checkMapCollisionX(Object o){
-   return checkMapCollisionX((float)o.posX);
+bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ){
+   if( !checkMapCollisionX(o,x) ) o->posX = x;
+   bool ret = checkMapCollisionY(o,y);
+   if( !ret ) o->posY = y;
+   if( !checkMapCollisionZ(o,z) ) o->posZ = z;
+   return !ret;
 }
- bool Game::checkMapCollisionY(Object o){
-
-    //Pawelek
-    if((float)o.posY - 25 <= Map::getInstance().mapVert[(int)o.posX][(int)o.posZ]) // Tu ta 30 jest troche slaba
-    {
+bool Game::checkMapCollisionX(Object *o,float k){
+   if(k<=5 || k>vertX-5) return true;
+   //Kolizja z mapą X
+   //ZROBIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!
+   return false;
+}
+ bool Game::checkMapCollisionY(Object *o,float k){
+   if( k <= 0 )return true;
+   //Pawelek
+   if(k-25 <= Map::getInstance().mapVert[(int)o->posX][(int)o->posZ]) // Tu ta 30 jest troche slaba
+   {
       cout << "Mniejsze niz mapa!" << endl;
       return true;
-    }
-
-   return checkMapCollisionY((float)o.posY);
-}
- bool Game::checkMapCollisionZ(Object o){
-   return checkMapCollisionZ((float)o.posZ);
-}
- bool Game::checkMapCollisionX(float k){
-   if(k<=3 || k>vertX-3) return true;
-   //Kolizja z mapą X
-   //.............................
+   }
    return false;
 }
- bool Game::checkMapCollisionY(float k){
-   if( k <= 0 )
-    return true;
-   //Kolizja z mapą Y
-   //.............................
-   return false;
-}
- bool Game::checkMapCollisionZ(float k){
-   if(k<=3 || k>vertY-3) return true;
+ bool Game::checkMapCollisionZ(Object *o,float k){
+   if(k<=5 || k>vertY-5) return true;
    //kolizja z mapą Z
-   //.............................
+   //ZROBIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!
    return false;
 }
