@@ -11,7 +11,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose->setTraM(0.8,-0.8,0.0f);
 
    this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
-   this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight + 200,rand()%vertY); // Tutaj usunac 200 Pawelek
+   //this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight + 300,rand()%vertY); // Tutaj usunac 200 Pawelek
+   this->caterrVec[0]->setPos(0,0,0);
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
@@ -56,7 +57,7 @@ void Game::drawRose(){
    double kat = -acos(cosK);
    float p = look.x*wind.y-look.y*wind.x;
    if(p>0) kat*=-1;
-   
+
    //kat=1;
    //std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;

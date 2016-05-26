@@ -115,6 +115,8 @@ void Map::generateRandomMap(){
 }
 
 void Map::rand(){
+   //To bedzie ok tylko trzeba zrobic losowanie <-50;50>
+   //zeby bylo we wszystkich kierunkach 
    this->windForce.x = std::rand() % 50;
    this->windForce.y = std::rand() % 50;
    this->windForce.z = std::rand() % 50;
