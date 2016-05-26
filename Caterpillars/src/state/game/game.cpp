@@ -174,6 +174,7 @@ bool Game::checkMapCollisionX(Object *o,float k){
 }
  bool Game::checkMapCollisionY(Object *o,float k){
    if( k <= 0 )return true;
+   if(((int)o->posX>=0) && ((int)o->posX <vertX) && ((int)o->posZ>=0) && ((int)o->posZ<vertY))
    //Pawelek
    if(k-25 <= Map::getInstance().mapVert[(int)o->posX][(int)o->posZ]) // Tu ta 30 jest troche slaba
    {
