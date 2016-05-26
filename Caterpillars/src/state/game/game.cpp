@@ -12,6 +12,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
    this->caterrVec[0]->setPos(rand()%vertX,maxMapHeight + 200,rand()%vertY); // Tutaj usunac 200 Pawelek
+   this->currentCutterpillar = this->caterrVec[0];
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
@@ -56,7 +57,7 @@ void Game::drawRose(){
    double kat = -acos(cosK);
    float p = look.x*wind.y-look.y*wind.x;
    if(p>0) kat*=-1;
-   
+
    //kat=1;
    //std::cout << cosK <<"   -- " <<kat << " " << lookD << " " << windD << std::endl;
    if(kat!=kat) kat=0;
@@ -77,7 +78,9 @@ void Game::run(){
    for(int i=0;i < (int)this->caterrVec.size(); i++)
       this->caterrVec[i]->recalculateGravity();
 }
+void Game::catterMove(){
 
+}
 void Game::testViewMov(){
    glm::vec3 viewVec=this->lookAt-this->lookFrom;
    glm::vec3 prosVec=viewVec;
@@ -152,6 +155,9 @@ void Game::testViewMov(){
       this->lookAt[1]-=inputActions::getInstance().movedY;
    }
 }
+
+
+
 
  bool Game::checkMapCollisionX(Object o){
    return checkMapCollisionX((float)o.posX);

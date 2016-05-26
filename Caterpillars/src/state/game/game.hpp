@@ -25,7 +25,9 @@ public:
    object2D *targetView;
    object2D *rose;
    std::vector< Caterpillar* > caterrVec;
+   Caterpillar* currentCutterpillar;
    void testViewMov();
+   void catterMove();
 
    glm::mat4 projection;   //perspektywa
    glm::mat4 modelView;    //cała maciez kamery
