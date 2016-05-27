@@ -97,15 +97,22 @@ void Object::recalculateGravity(){
 			//gdy mamy kolizje obiektu z podloga mapy
 			cout << "Mamy kolizje" << endl;
 			this->pos.y += 1;
-			this->speed.y = 10;
+			this->speed.y = 0;
+			on_the_ground = true;
 		}
 		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)) {
 
-			//tutaj nalezy uwzglednic jeszcze sile wiatru
-			this->speed.x =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
-			this->speed.z =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
-			nextX = this->pos.x + this->speed.x;
-			nextZ = this->pos.z + this->speed.z;
+			if(!on_the_ground)
+			{
+				//tutaj nalezy uwzglednic jeszcze sile wiatru
+				this->speed.x =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
+				this->speed.z =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
+
+			}
+
+				nextX = this->pos.x + this->speed.x;
+				nextZ = this->pos.z + this->speed.z;
+
 
 			this->speed.y -= Map::getInstance().gravity * bet_time* in_meter -
 				Map::getInstance().windForce.y * bet_time;
@@ -120,6 +127,9 @@ void Object::recalculateGravity(){
 	}
 	start = clock();
 	sec_time = true;
+
+	this->speed.x = 0;
+	this->speed.z = 0;
 
 }
 
