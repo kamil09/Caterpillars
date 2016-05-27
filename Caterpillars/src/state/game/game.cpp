@@ -72,8 +72,8 @@ void Game::drawRose(){
 }
 void Game::run(){
    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
-   //this->testViewMov();
    this->catterMove();
+   this->testViewMov();
    this->draw();
 
    for(int i=0;i < (int)this->caterrVec.size(); i++){
@@ -82,37 +82,53 @@ void Game::run(){
    }
 }
 void Game::catterMove(){
-   glm::vec3 viewVec=this->lookAt-this->lookFrom;
-   glm::vec3 prosVec=viewVec;
+   glm::vec3 catViewVec = this->currentCutterpillar->startLook;
+   glm::mat3 rotY = glm::mat3(
+		glm::vec3(cos(this->currentCutterpillar->rot.y),0.0f, sin(this->currentCutterpillar->rot.y)),
+		glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(-sin(this->currentCutterpillar->rot.y),0.0f,cos(this->currentCutterpillar->rot.y))
+	);
+   catViewVec = rotY * catViewVec;
+   glm::vec3 prosVec=catViewVec;
    prosVec[1]=0;
    float tmp=prosVec[0];
    prosVec[0]=prosVec[2];
    prosVec[2]=tmp;
    prosVec[2]!=0? prosVec[2]=-prosVec[2] : prosVec[0]=-prosVec[0];
-   //printf("%f / %f\n",prosVec[0],prosVec[2] );
-
+   // //printf("%f / %f\n",prosVec[0],prosVec[2] );
+   //
+   glm::vec3 newPos = this->currentCutterpillar->pos;
    if(inputActions::getInstance().w_pressed){
-      glm::vec3 add = glm::normalize(viewVec);
-      this->lookFrom+=add*2.0f;
-      this->lookAt+=add*2.0f;
+      glm::vec3 add = glm::normalize(catViewVec);
+      newPos+=add*2.0f;
    }
    if(inputActions::getInstance().s_pressed){
-      glm::vec3 add = glm::normalize(viewVec);
-      this->lookFrom-=add*2.0f;
-      this->lookAt-=add*2.0f;
+      glm::vec3 add = glm::normalize(catViewVec);
+      newPos-=add*2.0f;
    }
    if(inputActions::getInstance().a_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      this->lookFrom+=add;
-      this->lookAt+=add;
+      newPos+=add;
    }
    if(inputActions::getInstance().d_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      this->lookFrom-=add;
-      this->lookAt-=add;
+      newPos-=add;
+   }
+   checkCollisionAndMove(this->currentCutterpillar,newPos);
+   if(inputActions::getInstance().movedX!=0){
+      this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;
+      if(this->currentCutterpillar->rot.y<-2*M_PI) this->currentCutterpillar->rot.y+=2*M_PI;
+      if(this->currentCutterpillar->rot.y>2*M_PI) this->currentCutterpillar->rot.y-=2*M_PI;
+   }
+   if(inputActions::getInstance().movedY!=0){
+      this->currentCutterpillar->rot.z+=(float)(inputActions::getInstance().movedY)/500;
+      if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
+      if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
    }
 }
-
+bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos){
+   return checkCollisionAndMove(o,pos.x,pos.y,pos.z);
+}
 bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ){
    if( !checkMapCollisionX(o,x) )
     o->pos.x = x;

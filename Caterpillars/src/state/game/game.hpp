@@ -42,6 +42,7 @@ public:
    * Zwraca kolizję na Osi Y
    */
    static bool checkCollisionAndMove(Object *o,float x, float y, float z );
+   static bool checkCollisionAndMove(Object *o,glm::vec3 pos);
 
 };
 

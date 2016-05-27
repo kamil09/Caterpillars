@@ -35,7 +35,25 @@ void Object::recalculateMatrix(){
 	this->posM[3][0]=this->pos.x;
 	this->posM[3][1]=this->pos.y;
 	this->posM[3][2]=this->pos.z;
-
+	glm::mat4 rotX = glm::mat4(
+		glm::vec4(1.0f,0.0f,0.0f,0.0f),
+		glm::vec4(0.0f,cos(this->rot.x),-sin(this->rot.x),0.0f),
+		glm::vec4(0.0f,sin(this->rot.x), cos(this->rot.x),0.0f),
+		glm::vec4(0.0f,0.0f,0.0f,1.0f)
+	);
+	glm::mat4 rotY = glm::mat4(
+		glm::vec4(cos(this->rot.y),0.0f, sin(this->rot.y),0.0f),
+		glm::vec4(0.0f,1.0f,0.0f,0.0f),
+		glm::vec4(-sin(this->rot.y),0.0f,cos(this->rot.y),0.0f),
+		glm::vec4(0.0f,0.0f,0.0f,1.0f)
+	);
+	glm::mat4 rotZ = glm::mat4(
+		glm::vec4(cos(this->rot.z),-sin(this->rot.z),0.0f,0.0f),
+		glm::vec4(sin(this->rot.z), cos(this->rot.z),0.0f,0.0f),
+		glm::vec4(0.0f,0.0f,1.0f,0.0f),
+		glm::vec4(0.0f,0.0f,0.0f,1.0f)
+	);
+	this->rotM=rotY*rotZ*rotX;
 
 }
 void Object::kick(float x,float y, float z){

@@ -9,6 +9,8 @@
 #include "state/game/game.hpp"
 // #include "state/menu/menu.hpp"
 
+#define M_PI 3.14159265358979323846
+
 // class Game;
 class State;
 // enum class gameCaseType {MAIN=0,START=1,START_WIELU=2,OPTIONS=3,EXIT=4,INFO=5,GAME_ST=6,PAUSE=7,GAME_END=8};

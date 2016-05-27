@@ -13,6 +13,7 @@ Caterpillar::Caterpillar(char *filename){
    this->maxWalkSpeed=1;
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(true);
+   this->startLook = glm::vec3(1.0f,0.0f,0.0f);
 }
 Caterpillar::~Caterpillar(){
 

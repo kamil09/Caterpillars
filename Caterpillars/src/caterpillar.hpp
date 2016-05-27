@@ -25,6 +25,7 @@ public:
    void bindBuffers(bool newBuffer);
    void draw(glm::mat4 projection, glm::mat4 modelView);
    void setPos(float x,float y,float z);
+   glm::vec3 startLook;
 };
 
 #endif
