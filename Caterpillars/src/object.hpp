@@ -39,6 +39,8 @@ private:
    double kickTime;  //Czas od rozpoczęcia rzutu
 
    bool sec_time = false;//zmienna ktora okresla ze drugi raz juz weszla do funkcji grawitacji
+   bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
+   //chodzi o to zeby uwzglednialo wiatr tylko gdy jest w powietrzu
    int in_meter;
    float bet_time;
    float diff;
