@@ -15,35 +15,35 @@ Button::Button(int i,GLfloat newX, GLfloat newY, GLfloat newZ, GLfloat newWidth,
 	this->b = blue/255.0f;
 
 	std::cout << "Kolory: r = " << this->r << " g = " << this->g << " b = " << this->b << std::endl;
-	this->posX = newX;
-   this->posY = newY;
-	this->posZ = newZ;
+	this->pos.x = newX;
+   this->pos.y = newY;
+	this->pos.z = newZ;
 
     this->width = newWidth;
     this->height = newHeight;
 
 	this->vertices.resize(20);
-	this->vertices[0] = this->posX + this->width/2.0f;
-	this->vertices[1] = this->posY + this->height/2.0f;
-	this->vertices[2] = this->posZ;
+	this->vertices[0] = this->pos.x + this->width/2.0f;
+	this->vertices[1] = this->pos.y + this->height/2.0f;
+	this->vertices[2] = this->pos.z;
 	this->vertices[3] = 1.0f;
 	this->vertices[4] = 1.0f;
 
-	this->vertices[5] = this->posX + this->width/2.0f;
-	this->vertices[6] = this->posY - this->height/2.0f;
-	this->vertices[7] = this->posZ;
+	this->vertices[5] = this->pos.x + this->width/2.0f;
+	this->vertices[6] = this->pos.y - this->height/2.0f;
+	this->vertices[7] = this->pos.z;
 	this->vertices[8] = 1.0f;
 	this->vertices[9] = 0.0f;
 
-	this->vertices[10] = this->posX - this->width/2.0f;
-	this->vertices[11] = this->posY - this->height/2.0f;
-	this->vertices[12] = this->posZ;
+	this->vertices[10] = this->pos.x - this->width/2.0f;
+	this->vertices[11] = this->pos.y - this->height/2.0f;
+	this->vertices[12] = this->pos.z;
 	this->vertices[13] = 0.0f;
 	this->vertices[14] = 0.0f;
 
-	this->vertices[15] = this->posX - this->width/2.0f;
-	this->vertices[16] = this->posY + this->height/2.0f;
-	this->vertices[17] = this->posZ;
+	this->vertices[15] = this->pos.x - this->width/2.0f;
+	this->vertices[16] = this->pos.y + this->height/2.0f;
+	this->vertices[17] = this->pos.z;
 	this->vertices[18] = 0.0f;
 	this->vertices[19] = 1.0f;
 

@@ -12,9 +12,9 @@ Object::Object(){
 	this->indicesCount = 0;
 
 	this->windMul=0;
-	this->speedX=0;
-	this->speedY=0;
-	this->speedZ=0;
+	this->speed.x=0;
+	this->speed.y=0;
+	this->speed.z=0;
 	this->kickTime=0;
 	this->canKick=true;
 }
@@ -29,19 +29,19 @@ void Object::recalculateMatrix(){
 	this->rotM = glm::mat4(1);
 	this->sclM = glm::mat4(1);
 	this->posM = glm::mat4(1);
-	this->sclM[0][0]=this->sclX;
-	this->sclM[1][1]=this->sclY;
-	this->sclM[2][2]=this->sclZ;
-	this->posM[3][0]=this->posX;
-	this->posM[3][1]=this->posY;
-	this->posM[3][2]=this->posZ;
+	this->sclM[0][0]=this->scl.x;
+	this->sclM[1][1]=this->scl.y;
+	this->sclM[2][2]=this->scl.z;
+	this->posM[3][0]=this->pos.x;
+	this->posM[3][1]=this->pos.y;
+	this->posM[3][2]=this->pos.z;
 
 
 }
 void Object::kick(float x,float y, float z){
-	this->speedX=x;
-	this->speedY=y;
-	this->speedZ=z;
+	this->speed.x=x;
+	this->speed.y=y;
+	this->speed.z=z;
 	//this->kickTime=time_now??;
 
 }
@@ -61,9 +61,9 @@ void Object::recalculateGravity(){
 
 	cout<<endl<<endl<<"WYWOLANIE"<<endl;
 
-	cout << "PosX: " << this->posX << "  SpeedX: "<< this->speedX << endl;
-	cout << "PosY: " << this->posY << "  SpeedY: "<< this->speedY << endl;
-	cout << "PosZ: " << this->posZ << "  SpeedZ: "<< this->speedZ << endl;
+	cout << "PosX: " << this->pos.x << "  SpeedX: "<< this->speed.x << endl;
+	cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
+	cout << "PosZ: " << this->pos.z << "  SpeedZ: "<< this->speed.z << endl;
 
 
 
@@ -74,28 +74,28 @@ void Object::recalculateGravity(){
 	in_meter = 10;//ile jednostek mamy w pseudo metrze
 	if(sec_time)
 	{
-		if(!Game::checkCollisionAndMove(this, this->posX, this->posY, this->posZ)){
+		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)){
 			//gdy mamy kolizje obiektu z podloga mapy
 			cout << "Mamy kolizje" << endl;
-			this->posY += 1;
-			this->speedY = 10;
+			this->pos.y += 1;
+			this->speed.y = 10;
 		}
-		else if(Game::checkCollisionAndMove(this, this->posX, this->posY, this->posZ)) {
+		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)) {
 
 			//tutaj nalezy uwzglednic jeszcze sile wiatru
-			this->speedX =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
-			this->speedZ =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
-			nextX = this->posX + this->speedX;
-			nextZ = this->posZ + this->speedZ;
+			this->speed.x =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
+			this->speed.z =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
+			nextX = this->pos.x + this->speed.x;
+			nextZ = this->pos.z + this->speed.z;
 
-			this->speedY -= Map::getInstance().gravity * bet_time* in_meter -
+			this->speed.y -= Map::getInstance().gravity * bet_time* in_meter -
 				Map::getInstance().windForce.y * bet_time;
 			//cout << Map::getInstance().gravity << bet_time << in_meter << " Wynik: " << this->speedY << endl;
 			//nie ma kolizji czyli skacze co znaczy ze ma go sciagac w doł
 
-			this->posY += this->speedY;
+			this->pos.y += this->speed.y;
 
-			Game::checkCollisionAndMove(this, nextX, this->posY, nextZ);
+			Game::checkCollisionAndMove(this, nextX, this->pos.y, nextZ);
 
 		}
 	}

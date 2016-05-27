@@ -34,9 +34,6 @@ public:
 
 class Object{
 private:
-   float speedX;
-   float speedY;
-   float speedZ;
 
    bool canKick;     //Czy można zadziałać na dany obiekt. Jezeli false to obiekt znajduje się w powietrzu i nie da rady w niego ingerować
    double kickTime;  //Czas od rozpoczęcia rzutu
@@ -53,6 +50,11 @@ public:
    glm::mat4 posM;   //Maciez przesuniecia
    glm::mat4 rotM;   //Maciez obrotu
    glm::mat4 sclM;   //Maciez skalowania
+
+   glm::vec3 pos;
+   glm::vec3 rot;
+   glm::vec3 scl;
+   glm::vec3 speed;
 
     int verticesCount;
     int indicesCount;
@@ -93,16 +95,6 @@ public:
    void endBinding();
    GLuint currentVAO();
 
-
-   GLfloat posX;
-   GLfloat posY;
-   GLfloat posZ;
-   GLfloat rotX;
-   GLfloat rotY;
-   GLfloat rotZ;
-   GLfloat sclX;
-   GLfloat sclY;
-   GLfloat sclZ;
    void recalculateMatrix();
 };
 

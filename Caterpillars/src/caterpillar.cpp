@@ -2,9 +2,9 @@
 
 Caterpillar::Caterpillar(char *filename){
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-   this->sclX=20;
-   this->sclY=20;
-   this->sclZ=20;
+   this->scl.x=20;
+   this->scl.y=20;
+   this->scl.z=20;
    this->recalculateMatrix();
 
    this->windMul=0.1;
@@ -18,9 +18,9 @@ Caterpillar::~Caterpillar(){
 
 }
 void Caterpillar::setPos(float x,float y,float z){
-   this->posX=x;
-   this->posY=y;
-   this->posZ=z;
+   this->pos.x=x;
+   this->pos.y=y;
+   this->pos.z=z;
    this->recalculateMatrix();
 }
 void Caterpillar::bindBuffers(bool newBuffer){

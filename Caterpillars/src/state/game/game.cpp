@@ -72,17 +72,83 @@ void Game::drawRose(){
 }
 void Game::run(){
    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
-   this->testViewMov();
+   //this->testViewMov();
+   this->catterMove();
    this->draw();
 
    for(int i=0;i < (int)this->caterrVec.size(); i++){
-      this->caterrVec[i]->recalculateGravity();
+      //this->caterrVec[i]->recalculateGravity();
       this->caterrVec[i]->recalculateMatrix();
    }
 }
 void Game::catterMove(){
+   glm::vec3 viewVec=this->lookAt-this->lookFrom;
+   glm::vec3 prosVec=viewVec;
+   prosVec[1]=0;
+   float tmp=prosVec[0];
+   prosVec[0]=prosVec[2];
+   prosVec[2]=tmp;
+   prosVec[2]!=0? prosVec[2]=-prosVec[2] : prosVec[0]=-prosVec[0];
+   //printf("%f / %f\n",prosVec[0],prosVec[2] );
 
+   if(inputActions::getInstance().w_pressed){
+      glm::vec3 add = glm::normalize(viewVec);
+      this->lookFrom+=add*2.0f;
+      this->lookAt+=add*2.0f;
+   }
+   if(inputActions::getInstance().s_pressed){
+      glm::vec3 add = glm::normalize(viewVec);
+      this->lookFrom-=add*2.0f;
+      this->lookAt-=add*2.0f;
+   }
+   if(inputActions::getInstance().a_pressed){
+      glm::vec3 add = glm::normalize(prosVec)*2.0f;
+      this->lookFrom+=add;
+      this->lookAt+=add;
+   }
+   if(inputActions::getInstance().d_pressed){
+      glm::vec3 add = glm::normalize(prosVec)*2.0f;
+      this->lookFrom-=add;
+      this->lookAt-=add;
+   }
 }
+
+bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ){
+   if( !checkMapCollisionX(o,x) )
+    o->pos.x = x;
+   bool ret = checkMapCollisionY(o,y);
+   if( !ret )
+    o->pos.y = y;
+   if( !checkMapCollisionZ(o,z) )
+    o->pos.z = z;
+   return !ret;
+}
+bool Game::checkMapCollisionX(Object *o,float k){
+   if(k<=5 || k>vertX-5) return true;
+   //Kolizja z mapą X
+   //ZROBIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!
+   return false;
+}
+ bool Game::checkMapCollisionY(Object *o,float k){
+   if( k <= 0 )
+    return true;
+   if(((int)o->pos.x>=0) && ((int)o->pos.x <vertX) && ((int)o->pos.z>=0) && ((int)o->pos.z<vertY))//jesli jest na mapie
+     if(k-24 <= Map::getInstance().mapVert[(int)o->pos.x][(int)o->pos.z]) // Tu ta 30 jest troche slaba
+     {
+        cout << endl <<  "Mniejsze niz mapa!" << endl;
+        return true;
+     }
+   //cout<<"TROLOLOLO"<<endl;
+   return false;
+}
+ bool Game::checkMapCollisionZ(Object *o,float k){
+   if(k<=5 || k>vertY-5) return true;
+   //kolizja z mapą Z
+   //ZROBIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   return false;
+}
+
+
 void Game::testViewMov(){
    glm::vec3 viewVec=this->lookAt-this->lookFrom;
    glm::vec3 prosVec=viewVec;
@@ -156,40 +222,4 @@ void Game::testViewMov(){
       //Tak być nie powinno! (ale jakoś działa :( )
       this->lookAt[1]-=inputActions::getInstance().movedY;
    }
-}
-
-
-bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ){
-   if( !checkMapCollisionX(o,x) )
-    o->posX = x;
-   bool ret = checkMapCollisionY(o,y);
-   if( !ret )
-    o->posY = y;
-   if( !checkMapCollisionZ(o,z) )
-    o->posZ = z;
-   return !ret;
-}
-bool Game::checkMapCollisionX(Object *o,float k){
-   if(k<=5 || k>vertX-5) return true;
-   //Kolizja z mapą X
-   //ZROBIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!
-   return false;
-}
- bool Game::checkMapCollisionY(Object *o,float k){
-   if( k <= 0 )
-    return true;
-   if(((int)o->posX>=0) && ((int)o->posX <vertX) && ((int)o->posZ>=0) && ((int)o->posZ<vertY))//jesli jest na mapie
-     if(k-24 <= Map::getInstance().mapVert[(int)o->posX][(int)o->posZ]) // Tu ta 30 jest troche slaba
-     {
-        cout << endl <<  "Mniejsze niz mapa!" << endl;
-        return true;
-     }
-   //cout<<"TROLOLOLO"<<endl;
-   return false;
-}
- bool Game::checkMapCollisionZ(Object *o,float k){
-   if(k<=5 || k>vertY-5) return true;
-   //kolizja z mapą Z
-   //ZROBIĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   return false;
 }
