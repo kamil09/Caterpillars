@@ -17,6 +17,7 @@ Object::Object(){
 	this->speed.z=0;
 	this->kickTime=0;
 	this->canKick=true;
+	this->size = glm::vec3(1.0f);
 }
 
 Object::~Object(){

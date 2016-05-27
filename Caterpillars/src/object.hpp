@@ -55,6 +55,7 @@ public:
    glm::vec3 rot;
    glm::vec3 scl;
    glm::vec3 speed;
+   glm::vec3 size;
 
     int verticesCount;
     int indicesCount;

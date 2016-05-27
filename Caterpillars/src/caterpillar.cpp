@@ -14,6 +14,10 @@ Caterpillar::Caterpillar(char *filename){
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(true);
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
+
+   this->size.y=20;
+   this->size.x=5;
+   this->size.z=5;
 }
 Caterpillar::~Caterpillar(){
 

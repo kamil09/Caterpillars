@@ -16,13 +16,7 @@
 class Game : public State{
 private:
    void drawRose();
-   static bool checkMapCollisionX(Object *o,float k);
-   static bool checkMapCollisionY(Object *o,float k);
-   static bool checkMapCollisionZ(Object *o,float k);
-public:
-   Game(GLFWwindow *window,GLFWcursor *cur);
-   void run() override;
-   void draw() override;
+   void calcViewMatrix();
    Map *map;
    Wall *wall;
    object2D *targetView;
@@ -31,6 +25,10 @@ public:
    Caterpillar* currentCutterpillar;
    void testViewMov();
    void catterMove();
+public:
+   Game(GLFWwindow *window,GLFWcursor *cur);
+   void run() override;
+   void draw() override;
 
    glm::mat4 projection;   //perspektywa
    glm::mat4 modelView;    //cała maciez kamery
