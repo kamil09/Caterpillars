@@ -160,10 +160,13 @@ void Game::testViewMov(){
 
 
 bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ){
-   if( !checkMapCollisionX(o,x) ) o->posX = x;
+   if( !checkMapCollisionX(o,x) )
+    o->posX = x;
    bool ret = checkMapCollisionY(o,y);
-   if( !ret ) o->posY = y;
-   if( !checkMapCollisionZ(o,z) ) o->posZ = z;
+   if( !ret )
+    o->posY = y;
+   if( !checkMapCollisionZ(o,z) )
+    o->posZ = z;
    return !ret;
 }
 bool Game::checkMapCollisionX(Object *o,float k){
@@ -173,14 +176,15 @@ bool Game::checkMapCollisionX(Object *o,float k){
    return false;
 }
  bool Game::checkMapCollisionY(Object *o,float k){
-   if( k <= 0 )return true;
-   if(((int)o->posX>=0) && ((int)o->posX <vertX) && ((int)o->posZ>=0) && ((int)o->posZ<vertY))
-   //Pawelek
-   if(k-25 <= Map::getInstance().mapVert[(int)o->posX][(int)o->posZ]) // Tu ta 30 jest troche slaba
-   {
-      cout << "Mniejsze niz mapa!" << endl;
-      return true;
-   }
+   if( k <= 0 )
+    return true;
+   if(((int)o->posX>=0) && ((int)o->posX <vertX) && ((int)o->posZ>=0) && ((int)o->posZ<vertY))//jesli jest na mapie
+     if(k-24 <= Map::getInstance().mapVert[(int)o->posX][(int)o->posZ]) // Tu ta 30 jest troche slaba
+     {
+        cout << endl <<  "Mniejsze niz mapa!" << endl;
+        return true;
+     }
+   //cout<<"TROLOLOLO"<<endl;
    return false;
 }
  bool Game::checkMapCollisionZ(Object *o,float k){

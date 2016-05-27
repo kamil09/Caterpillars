@@ -41,9 +41,11 @@ private:
    bool canKick;     //Czy można zadziałać na dany obiekt. Jezeli false to obiekt znajduje się w powietrzu i nie da rady w niego ingerować
    double kickTime;  //Czas od rozpoczęcia rzutu
 
+   bool sec_time = false;//zmienna ktora okresla ze drugi raz juz weszla do funkcji grawitacji
    int in_meter;
    float bet_time;
    float diff;
+   float nextX, nextY, nextZ;
    clock_t start, end;
 
 public:

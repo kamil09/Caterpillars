@@ -58,38 +58,49 @@ void Object::recalculateGravity(){
    //Tu trzeba bedzie na biezaca liczyc predkosc speedY
 	//speedY > 0 oznaczac bedzie ruch w gore a < 0 spadanie
 	//Nie mam pojecia czy to jest dobra koncepcja
-	cout << "PosX: " << this->posX << "SpeedX: "<< this->speedX << endl;
-	cout << "PosY: " << this->posY << "SpeedY: "<< this->speedY << endl;
-	cout << "PosZ: " << this->posZ << "SpeedZ: "<< this->speedZ << endl;
-	/*
+
+	cout<<endl<<endl<<"WYWOLANIE"<<endl;
+
+	cout << "PosX: " << this->posX << "  SpeedX: "<< this->speedX << endl;
+	cout << "PosY: " << this->posY << "  SpeedY: "<< this->speedY << endl;
+	cout << "PosZ: " << this->posZ << "  SpeedZ: "<< this->speedZ << endl;
+
+
 
 	end = clock();
 	diff = ((float)end - (float)start);
 	bet_time = diff/CLOCKS_PER_SEC;
-	//cout<<"bet_time: "<< bet_time<<endl;
+	cout<<"bet_time: "<< bet_time<<endl;
 	in_meter = 10;//ile jednostek mamy w pseudo metrze
+	if(sec_time)
+	{
+		if(!Game::checkCollisionAndMove(this, this->posX, this->posY, this->posZ)){
+			//gdy mamy kolizje obiektu z podloga mapy
+			cout << "Mamy kolizje" << endl;
+			this->posY += 1;
+			this->speedY = 10;
+		}
+		else if(Game::checkCollisionAndMove(this, this->posX, this->posY, this->posZ)) {
 
-	if(Game::checkMapCollisionY(*this)){
-		//gdy mamy kolizje obiektu z podloga mapy
-		this->posY += 1;
-		this->speedY = 10;
+			//tutaj nalezy uwzglednic jeszcze sile wiatru
+			this->speedX =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
+			this->speedZ =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
+			nextX = this->posX + this->speedX;
+			nextZ = this->posZ + this->speedZ;
+
+			this->speedY -= Map::getInstance().gravity * bet_time* in_meter -
+				Map::getInstance().windForce.y * bet_time;
+			//cout << Map::getInstance().gravity << bet_time << in_meter << " Wynik: " << this->speedY << endl;
+			//nie ma kolizji czyli skacze co znaczy ze ma go sciagac w doł
+
+			this->posY += this->speedY;
+
+			Game::checkCollisionAndMove(this, nextX, this->posY, nextZ);
+
+		}
 	}
-	else if(!Game::checkMapCollisionY(*this)) {
-
-		//tutaj nalezy uwzglednic jeszcze sile wiatru
-		this->speedX =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
-		//this->speedY =
-		this->speedZ =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
-		this->posX += this->speedX;
-		//this->posY += this->speedY;
-		this->posZ += this->speedZ;
-
-		this->speedY -= Map::getInstance().gravity * bet_time* in_meter;
-		//nie ma kolizji czyli skacze co znaczy ze ma go sciagac w doł
-		this->posY += this->speedY;
-	}
-	*/
 	start = clock();
+	sec_time = true;
 
 }
 
