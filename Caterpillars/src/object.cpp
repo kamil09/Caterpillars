@@ -69,6 +69,7 @@ void Object::recalculatePhysics(){
 	//Wzorek na rzut ukośny mając prędkości początkowe i czas wyliczamy nowe współrzędne
 	//Sprawdzanie kolizji (czy można przesunąć obiekt na daną pozycję)
 
+
 }
 
 void Object::recalculateGravity(){
@@ -94,45 +95,70 @@ void Object::recalculateGravity(){
 	if(sec_time)
 	{
 		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)){
-			//gdy mamy kolizje obiektu z podloga mapy
-			cout << "Mamy kolizje" << endl;
+			//gdy mamy kolizje obiektu z mapa
+			//cout << ""Mapa - kolizja" << endl;
 			this->pos.y += 1;
-			this->speed.y = 0;
-			on_the_ground = true;
+			this->on_the_ground = true;
+			if(!this->speed.x || !this->speed.x || !this->speed.x) // zerowanie predkosci po opadnieciu na mape
+			{
+				this->speed.x = 0;
+				this->speed.y = 0;
+				this->speed.z = 0;
+			}
 		}
 		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)) {
 
-			if(!on_the_ground)
+			if(!this->on_the_ground)
 			{
+				windX = 10 * bet_time * Map::getInstance().windForce.x;
+				windY = bet_time * Map::getInstance().windForce.y;
+				windZ = 10 * bet_time * Map::getInstance().windForce.z;
 				//tutaj nalezy uwzglednic jeszcze sile wiatru
-				this->speed.x =  10 * bet_time * Map::getInstance().windForce.x;//*windMul
-				this->speed.z =  10 * bet_time * Map::getInstance().windForce.z;//*windMul
+				this->speed.x +=  windX;//*windMul
+				this->speed.z +=  windZ;//*windMul
 
 			}
 
-				nextX = this->pos.x + this->speed.x;
-				nextZ = this->pos.z + this->speed.z;
-
 
 			this->speed.y -= Map::getInstance().gravity * bet_time* in_meter -
-				Map::getInstance().windForce.y * bet_time;
-			//cout << Map::getInstance().gravity << bet_time << in_meter << " Wynik: " << this->speedY << endl;
-			//nie ma kolizji czyli skacze co znaczy ze ma go sciagac w doł
+				windY;
 
-			this->pos.y += this->speed.y;
+			nextX = this->pos.x + this->speed.x;
+			nextY = this->pos.y + this->speed.y;
+			nextZ = this->pos.z + this->speed.z;
 
-			Game::checkCollisionAndMove(this, nextX, this->pos.y, nextZ);
+			if(!Game::checkCollisionAndMove(this, nextX, nextY, nextZ))
+			{
+				this->speed.x = 0;
+				this->speed.y = 0;
+				this->speed.z = 0;
+				this->on_the_ground = true;	
+			}
+
+
+			if(!this->on_the_ground)
+			{
+				this->speed.x -= windX;
+				this->speed.y -= windY;
+				this->speed.z -= windZ;
+			}
 
 		}
 	}
 	start = clock();
 	sec_time = true;
 
-	this->speed.x = 0;
-	this->speed.z = 0;
+
 
 }
 
+
+void Object::diagonalThrow(glm::vec3 throw_speed){
+	this->on_the_ground = false;
+	this->speed.x = throw_speed.x;
+	this->speed.y = throw_speed.y;
+	this->speed.z = throw_speed.z;
+}
 
 
 void Object::initBinding(bool newBuffer){

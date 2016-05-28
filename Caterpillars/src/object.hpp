@@ -39,12 +39,13 @@ private:
    double kickTime;  //Czas od rozpoczęcia rzutu
 
    bool sec_time = false;//zmienna ktora okresla ze drugi raz juz weszla do funkcji grawitacji
-   bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
+
    //chodzi o to zeby uwzglednialo wiatr tylko gdy jest w powietrzu
    int in_meter;
    float bet_time;
    float diff;
    float nextX, nextY, nextZ;
+   float windX, windY, windZ;
    clock_t start, end;
 
 public:
@@ -69,11 +70,14 @@ public:
     Object();
     ~Object();
 
+    bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
+
    void draw();
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);
    void recalculatePhysics();
    void recalculateGravity(); //Pawelek
+   void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
 
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
