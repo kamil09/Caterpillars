@@ -10,14 +10,14 @@ Caterpillar::Caterpillar(char *filename){
    this->windMul=0.1;
    this->life=100;
    this->maxWalkAngle=0.45;
-   this->maxWalkSpeed=1;
+   this->maxWalkSpeed=2;
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(true);
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
 
    this->size.y=20;
-   this->size.x=5;
-   this->size.z=5;
+   this->size.x=6;
+   this->size.z=6;
 }
 Caterpillar::~Caterpillar(){
 

@@ -92,8 +92,19 @@ void Game::calcViewMatrix(){
    this->lookFrom.y+= this->currentCutterpillar->size.y;
    this->lookAt.y+= this->currentCutterpillar->size.y;
 
+   // this->lookFrom.x -= this->currentCutterpillar->size.x;
+   // this->lookAt.x-= this->currentCutterpillar->size.x;
+   //
+   // this->lookFrom.z -= this->currentCutterpillar->size.z;
+   // this->lookAt.z-= this->currentCutterpillar->size.z;
+   //this->lookFrom.z-= this->currentCutterpillar->size.z;
+
 }
 void Game::catterMove(){
+   this->end = clock();
+	float diff = ((float)this->end - (float)this->start);
+   diff/=CLOCKS_PER_SEC;
+   std::cout << diff << std::endl;
    glm::vec3 catViewVec = this->currentCutterpillar->startLook;
    glm::mat3 rotY = glm::mat3(
 		glm::vec3(cos(this->currentCutterpillar->rot.y),0.0f, sin(this->currentCutterpillar->rot.y)),
@@ -112,19 +123,19 @@ void Game::catterMove(){
    glm::vec3 newPos = this->currentCutterpillar->pos;
    if(inputActions::getInstance().w_pressed){
       glm::vec3 add = glm::normalize(catViewVec);
-      newPos+=add*2.0f;
+      newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*20.0f;
    }
    if(inputActions::getInstance().s_pressed){
       glm::vec3 add = glm::normalize(catViewVec);
-      newPos-=add*2.0f;
+      newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*20.0f;
    }
    if(inputActions::getInstance().a_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      newPos+=add;
+      newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
    }
    if(inputActions::getInstance().d_pressed){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      newPos-=add;
+      newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
    }
    checkCollisionAndMove(this->currentCutterpillar,newPos);
    if(inputActions::getInstance().movedX!=0){
@@ -137,6 +148,7 @@ void Game::catterMove(){
       if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
       if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
    }
+   this->start = clock();
 }
 bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos){
    return checkCollisionAndMove(o,pos.x,pos.y,pos.z);
