@@ -135,11 +135,14 @@ void Game::catterMove(){
       this->currentCutterpillar->diagonalThrow(shot);
    }
    if(inputActions::getInstance().space_pressed){
+     if(this->currentCutterpillar->on_the_ground)
+     {
       glm::vec3 shot;
       shot.x = 0;
-      shot.y = 3;
+      shot.y = 2;
       shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
+    }
    }
 
    checkCollisionAndMove(this->currentCutterpillar,newPos);
