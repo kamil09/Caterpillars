@@ -126,6 +126,22 @@ void Game::catterMove(){
       glm::vec3 add = glm::normalize(prosVec)*2.0f;
       newPos-=add;
    }
+   //Dodane przez Pawla do testow
+   if(inputActions::getInstance().i_pressed){
+      glm::vec3 shot;
+      shot.x = 3;
+      shot.y = 3;
+      shot.z = 0;
+      this->currentCutterpillar->diagonalThrow(shot);
+   }
+   if(inputActions::getInstance().space_pressed){
+      glm::vec3 shot;
+      shot.x = 0;
+      shot.y = 3;
+      shot.z = 0;
+      this->currentCutterpillar->diagonalThrow(shot);
+   }
+
    checkCollisionAndMove(this->currentCutterpillar,newPos);
    if(inputActions::getInstance().movedX!=0){
       this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;

@@ -45,6 +45,7 @@ private:
    float bet_time;
    float diff;
    float nextX, nextY, nextZ;
+   float windX, windY, windZ;
    clock_t start, end;
 
 public:
@@ -74,6 +75,7 @@ public:
    void kick(float x,float y, float z);
    void recalculatePhysics();
    void recalculateGravity(); //Pawelek
+   void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
 
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
