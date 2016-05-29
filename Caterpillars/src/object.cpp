@@ -97,7 +97,7 @@ void Object::recalculateGravity(){
 		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)){
 			//gdy mamy kolizje obiektu z mapa
 			//cout << ""Mapa - kolizja" << endl;
-			this->pos.y += 1;
+			this->pos.y = Map::getInstance().mapVert[(int)this->pos.x][(int)this->pos.z] + this->size.y + 1;
 			this->on_the_ground = true;
 			if(!this->speed.x || !this->speed.x || !this->speed.x) // zerowanie predkosci po opadnieciu na mape
 			{
@@ -110,9 +110,10 @@ void Object::recalculateGravity(){
 
 			if(!this->on_the_ground)
 			{
-				windX = 10 * bet_time * Map::getInstance().windForce.x;
-				windY = bet_time * Map::getInstance().windForce.y;
-				windZ = 10 * bet_time * Map::getInstance().windForce.z;
+				windX = 10 * bet_time * Map::getInstance().windForce.x * this->windMul;
+				windY = bet_time * Map::getInstance().windForce.y * this->windMul;
+				windZ = 10 * bet_time * Map::getInstance().windForce.z * this->windMul;
+				cout << windMul;
 				//tutaj nalezy uwzglednic jeszcze sile wiatru
 				this->speed.x +=  windX;//*windMul
 				this->speed.z +=  windZ;//*windMul
@@ -132,7 +133,7 @@ void Object::recalculateGravity(){
 				this->speed.x = 0;
 				this->speed.y = 0;
 				this->speed.z = 0;
-				this->on_the_ground = true;	
+				this->on_the_ground = true;
 			}
 
 

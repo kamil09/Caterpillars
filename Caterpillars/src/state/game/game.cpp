@@ -100,6 +100,9 @@ void Game::catterMove(){
 		glm::vec3(0.0f,1.0f,0.0f),
 		glm::vec3(-sin(this->currentCutterpillar->rot.y),0.0f,cos(this->currentCutterpillar->rot.y))
 	);
+
+   glm::vec3 shotViewVec = glm::mat3(this->currentCutterpillar->rotM) * this->currentCutterpillar->startLook;
+
    catViewVec = rotY * catViewVec;
    glm::vec3 prosVec=catViewVec;
    prosVec[1]=0;
@@ -110,37 +113,61 @@ void Game::catterMove(){
    // //printf("%f / %f\n",prosVec[0],prosVec[2] );
    //
    glm::vec3 newPos = this->currentCutterpillar->pos;
-   if(inputActions::getInstance().w_pressed){
-      glm::vec3 add = glm::normalize(catViewVec);
-      newPos+=add*2.0f;
-   }
-   if(inputActions::getInstance().s_pressed){
-      glm::vec3 add = glm::normalize(catViewVec);
-      newPos-=add*2.0f;
-   }
-   if(inputActions::getInstance().a_pressed){
-      glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      newPos+=add;
-   }
-   if(inputActions::getInstance().d_pressed){
-      glm::vec3 add = glm::normalize(prosVec)*2.0f;
-      newPos-=add;
-   }
-   //Dodane przez Pawla do testow
-   if(inputActions::getInstance().i_pressed){
-      glm::vec3 shot;
-      shot.x = 3;
-      shot.y = 3;
-      shot.z = 0;
-      this->currentCutterpillar->diagonalThrow(shot);
-   }
-   if(inputActions::getInstance().space_pressed){
+   if(!inputActions::getInstance().space_pressed && this->currentCutterpillar->on_the_ground){
+
+     if(inputActions::getInstance().w_pressed){
+        glm::vec3 add = glm::normalize(catViewVec);
+        newPos+=add*2.0f;
+     }
+     if(inputActions::getInstance().s_pressed){
+        glm::vec3 add = glm::normalize(catViewVec);
+        newPos-=add*2.0f;
+     }
+     if(inputActions::getInstance().a_pressed){
+        glm::vec3 add = glm::normalize(prosVec)*2.0f;
+        newPos+=add;
+     }
+     if(inputActions::getInstance().d_pressed){
+        glm::vec3 add = glm::normalize(prosVec)*2.0f;
+        newPos-=add;
+     }
+     //Dodane przez Pawla do testow - to bedzie pozniej zmienione na myszke
+     if(inputActions::getInstance().i_pressed){
+        glm::vec3 shot;
+
+        shot.x = shotViewVec.x * 2;
+        shot.y = shotViewVec.y * 10;
+        shot.z = shotViewVec.z * 2;
+        this->currentCutterpillar->diagonalThrow(shot);
+     }
+ }
+   else if(inputActions::getInstance().space_pressed){
      if(this->currentCutterpillar->on_the_ground)
      {
       glm::vec3 shot;
-      shot.x = 0;
+      //skok w przod
+      if(inputActions::getInstance().w_pressed){
+         shot.x = catViewVec.x * 2;
+         shot.z = catViewVec.z * 2;
+      }
+      //skok w tyl
+      if(inputActions::getInstance().s_pressed){
+        shot.x = catViewVec.x * -2;
+        shot.z = catViewVec.z * -2;
+      }
+      if(inputActions::getInstance().a_pressed){
+         shot.x = prosVec.x * 2;
+         shot.z = prosVec.z * 2;
+      }
+      //skok w tyl
+      if(inputActions::getInstance().d_pressed){
+        shot.x = prosVec.x * -2;
+        shot.z = prosVec.z * -2;
+      }
+
+      //shot.x = 0;
       shot.y = 2;
-      shot.z = 0;
+      //shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
     }
    }
