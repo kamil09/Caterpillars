@@ -6,6 +6,7 @@ Caterpillar::Caterpillar(char *filename){
    this->scl.y=20;
    this->scl.z=20;
    this->recalculateMatrix();
+   this->viewBack=0;
 
    this->windMul=0.1;
    this->life=100;
@@ -53,7 +54,7 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
-   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotM*this->sclM));
+   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotMY*this->sclM));
 
    glBindVertexArray(this->currentVAO());
 	//glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);

@@ -52,6 +52,7 @@ public:
    glm::mat4 modM;   //Maciez modelu
    glm::mat4 posM;   //Maciez przesuniecia
    glm::mat4 rotM;   //Maciez obrotu
+   glm::mat4 rotMY;  //Maciez obrotu tylko Y
    glm::mat4 sclM;   //Maciez skalowania
 
    glm::vec3 pos;

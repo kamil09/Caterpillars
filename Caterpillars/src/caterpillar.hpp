@@ -26,6 +26,7 @@ public:
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
    float maxWalkSpeed;  //maksymalna prędkość chodzenia m/s
+   float viewBack;
 };
 
 #endif
