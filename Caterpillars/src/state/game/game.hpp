@@ -25,6 +25,7 @@ private:
    Caterpillar* currentCutterpillar;
    void testViewMov();
    void catterMove();
+   clock_t start, end;
 public:
    Game(GLFWwindow *window,GLFWcursor *cur);
    void run() override;

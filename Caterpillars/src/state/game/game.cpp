@@ -30,7 +30,9 @@ void Game::draw(){
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    for(int i=0;i < (int)this->caterrVec.size(); i++)
-      this->caterrVec[i]->draw(this->projection,this->modelView);
+      if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
+         this->caterrVec[i]->draw(this->projection,this->modelView);
+
    this->targetView->draw();
 
    this->drawRose();
@@ -85,15 +87,32 @@ void Game::run(){
 void Game::calcViewMatrix(){
    this->lookAt = this->currentCutterpillar->startLook;
    this->lookAt = glm::mat3(this->currentCutterpillar->rotM) * this->lookAt;
-   //this->lookAt *=10;
+
    this->lookFrom = this->currentCutterpillar->pos;
    this->lookAt+=this->currentCutterpillar->pos;
 
    this->lookFrom.y+= this->currentCutterpillar->size.y;
    this->lookAt.y+= this->currentCutterpillar->size.y;
 
+   glm::vec3 look = this->lookAt - this->lookFrom;
+   this->lookFrom += glm::normalize(look)*this->currentCutterpillar->viewBack;
+
+   std::cout << this->currentCutterpillar->viewBack << std::endl;
+
+
+   // this->lookFrom.x -= this->currentCutterpillar->size.x;
+   // this->lookAt.x-= this->currentCutterpillar->size.x;
+   //
+   // this->lookFrom.z -= this->currentCutterpillar->size.z;
+   // this->lookAt.z-= this->currentCutterpillar->size.z;
+   //this->lookFrom.z-= this->currentCutterpillar->size.z;
+
 }
 void Game::catterMove(){
+   this->end = clock();
+	float diff = ((float)this->end - (float)this->start);
+   diff/=CLOCKS_PER_SEC;
+   std::cout << diff << std::endl;
    glm::vec3 catViewVec = this->currentCutterpillar->startLook;
    glm::mat3 rotY = glm::mat3(
 		glm::vec3(cos(this->currentCutterpillar->rot.y),0.0f, sin(this->currentCutterpillar->rot.y)),
@@ -111,25 +130,25 @@ void Game::catterMove(){
    prosVec[2]=tmp;
    prosVec[2]!=0? prosVec[2]=-prosVec[2] : prosVec[0]=-prosVec[0];
    // //printf("%f / %f\n",prosVec[0],prosVec[2] );
-   //
+
    glm::vec3 newPos = this->currentCutterpillar->pos;
    if(!inputActions::getInstance().space_pressed && this->currentCutterpillar->on_the_ground){
 
      if(inputActions::getInstance().w_pressed){
         glm::vec3 add = glm::normalize(catViewVec);
-        newPos+=add*2.0f;
+        newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*20.0f;
      }
      if(inputActions::getInstance().s_pressed){
         glm::vec3 add = glm::normalize(catViewVec);
-        newPos-=add*2.0f;
+        newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*20.0f;
      }
      if(inputActions::getInstance().a_pressed){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
-        newPos+=add;
+        newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
      }
      if(inputActions::getInstance().d_pressed){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
-        newPos-=add;
+        newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
      }
      //Dodane przez Pawla do testow - to bedzie pozniej zmienione na myszke
      if(inputActions::getInstance().i_pressed){
@@ -170,7 +189,8 @@ void Game::catterMove(){
       //shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
     }
-   }
+  }
+
 
    checkCollisionAndMove(this->currentCutterpillar,newPos);
    if(inputActions::getInstance().movedX!=0){
@@ -183,6 +203,13 @@ void Game::catterMove(){
       if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
       if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
    }
+   if(inputActions::getInstance().scroll!=0){
+      this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/5;
+      if(this->currentCutterpillar->viewBack > 0.0f) this->currentCutterpillar->viewBack = 0.0f;
+      if(this->currentCutterpillar->viewBack < -60.0f) this->currentCutterpillar->viewBack = -60.0f;
+   }
+
+   this->start = clock();
 }
 bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos){
    return checkCollisionAndMove(o,pos.x,pos.y,pos.z);

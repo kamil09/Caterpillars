@@ -42,7 +42,7 @@ void Object::recalculateMatrix(){
 		glm::vec4(0.0f,sin(this->rot.x), cos(this->rot.x),0.0f),
 		glm::vec4(0.0f,0.0f,0.0f,1.0f)
 	);
-	glm::mat4 rotY = glm::mat4(
+	this-> rotMY = glm::mat4(
 		glm::vec4(cos(this->rot.y),0.0f, sin(this->rot.y),0.0f),
 		glm::vec4(0.0f,1.0f,0.0f,0.0f),
 		glm::vec4(-sin(this->rot.y),0.0f,cos(this->rot.y),0.0f),
@@ -54,7 +54,7 @@ void Object::recalculateMatrix(){
 		glm::vec4(0.0f,0.0f,1.0f,0.0f),
 		glm::vec4(0.0f,0.0f,0.0f,1.0f)
 	);
-	this->rotM=rotY*rotZ*rotX;
+	this->rotM=this->rotMY*rotZ*rotX;
 
 }
 void Object::kick(float x,float y, float z){
