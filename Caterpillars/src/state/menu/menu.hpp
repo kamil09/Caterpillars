@@ -9,6 +9,8 @@
 #include "../state.hpp"
 #include <string.h>
 #include <functional>
+#include "../../font.hpp"
+#include "../../errorGL.hpp"
 //#include "inputActions.hpp"
 
 // typedef void (*functionArray)();
@@ -30,6 +32,9 @@ public:
     GLfloat buttonWidth;
     GLfloat buttonHeight;
     GLfloat buttonDistance;
+
+    Font *font;
+
 
     void createBackgroud(const char*);
     void draw() override;

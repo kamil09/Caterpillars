@@ -138,9 +138,9 @@ void Button::draw2(){
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
     glUniform1i(glGetUniformLocation(this->shader->shaderProgram[1], "ourTexture1"), 0);
 	GLint uniformLocation = glGetUniformLocation(this->shader->shaderProgram[1], "positionZ"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
-	if(this->r > 0 || this->g > 0.0f || this->b > 0.0f){
+	if(this->r > 0.0f || this->g > 0.0f || this->b > 0.0f){
 		// std::cout << "button" << std::endl;
-		glUniform1f(uniformLocation, -1.0f);
+		glUniform1f(uniformLocation, -0.6f);
 	}
 	else{
 		// std::cout << "background" << std::endl;

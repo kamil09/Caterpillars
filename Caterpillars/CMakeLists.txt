@@ -25,6 +25,7 @@ find_package(GLEW REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(GLUT REQUIRED)
 find_package (Threads)
+find_package(Freetype REQUIRED)
 #find_package(ImageMagick COMPONENTS Magick++)
 pkg_search_module(GLFW REQUIRED glfw3)
 
@@ -39,7 +40,7 @@ pkg_search_module(GLFW REQUIRED glfw3)
 #FIND_LIBRARY(SOIL_LIBRARY NAMES ${SOIL_NAMES} )
 #MARK_AS_ADVANCED( SOIL_LIBRARY SOIL_INCLUDE_DIR )
 
-include_directories(${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
+include_directories(${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIR})
 
 aux_source_directory(. MAIN)
 add_executable(${PROJECT_NAME}
@@ -55,4 +56,4 @@ add_executable(${PROJECT_NAME}
 
 )
 
-target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} ${GLUT_LIBRARIES}  ${GLEW_LIBRARIES}  glfw ${GLFW_LIBRARIES} GL ${OPENGL_LIBRARIES} )
+target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} ${GLUT_LIBRARIES}  ${GLEW_LIBRARIES}  glfw ${GLFW_LIBRARIES} GL ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES})

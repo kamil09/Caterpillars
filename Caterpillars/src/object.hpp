@@ -73,7 +73,7 @@ public:
 
     bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
 
-   void draw();
+    virtual void draw();
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);
    void recalculatePhysics();
@@ -82,7 +82,8 @@ public:
 
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
-   void loadTexture2D(const GLchar *texturePath);
+   virtual void loadTexture2D(const GLchar *texturePath);
+   virtual void paramText2D();
    int textureWidth;
    int textureHeight;
    GLuint texture2D;
