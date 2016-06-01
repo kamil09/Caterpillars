@@ -26,6 +26,7 @@ Object::~Object(){
 void Object::draw(){
 
 };
+
 void Object::recalculateMatrix(){
 	this->rotM = glm::mat4(1);
 	this->sclM = glm::mat4(1);
@@ -216,17 +217,21 @@ void Object::endBinding(){
 }
 
 
-void Object::bindTexture2D(const GLchar *texturePath){
-	glGenTextures(1, &this->texture2D);
-	glBindTexture(GL_TEXTURE_2D, this->texture2D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
-// Set our texture parameters
+void Object::paramText2D(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Set texture wrapping to GL_REPEAT
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 // Set texture filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+}
 
+void Object::bindTexture2D(const GLchar *texturePath){
+	glGenTextures(1, &this->texture2D);
+	glBindTexture(GL_TEXTURE_2D, this->texture2D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
+// Set our texture parameters
+
+	this->paramText2D();
 	this->loadTexture2D(texturePath);
 	// std::cout << "hej" << std::endl;
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.

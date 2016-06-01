@@ -31,6 +31,7 @@ MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 	this->buttonHeight = 0.3f;
 	this->buttonDistance = 0.25f;
 	this->createButtons(4, 0.0f, 0.6f);
+
 }
 
 
@@ -56,4 +57,6 @@ void options(GLFWwindow* window,GLFWcursor* cursor){
 
 void exitWindow(GLFWwindow* window,GLFWcursor* cursor){
 	std::cout << "Exit window!" << std::endl;
+	glfwSetWindowShouldClose(window, GL_TRUE);
+
 }

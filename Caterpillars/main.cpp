@@ -14,6 +14,9 @@
 #include "src/state/menu/mainMenu/mainMenu.hpp"
 #include <unistd.h>
 #include "src/errorGL.hpp"
+#include <freetype2/ft2build.h>
+#include FT_FREETYPE_H
+// #include "src/font.hpp"
 
 using namespace std;
 using namespace glm;
@@ -66,7 +69,7 @@ int main(void){
 	// glViewport(0,0,800,600);
 
 
-	glEnable(GL_ALPHA);
+	// glEnable(GL_ALPHA);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -122,6 +125,8 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	const GLubyte *version = glGetString(GL_VERSION);
 	const GLubyte *shading = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "Informacje o sprzęcie:" << std::endl << vendor << std::endl << renderer << std::endl << version << std::endl << shading << std::endl;
+
+	// Font::initFt();
 }
 
 static void error_callback(int error, const char* description){

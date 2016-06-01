@@ -5,12 +5,14 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
+// #include "../../../font.hpp"
 
 class MainMenu : public Menu{
 public:
     MainMenu(GLFWwindow *window,GLFWcursor *cur);
     void loadTextureFiles() override;
     // ~MainMenu();
+    // Font *font;
 };
 
 #endif
