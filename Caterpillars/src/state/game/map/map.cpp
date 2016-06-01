@@ -177,8 +177,8 @@ void Map::genTriangleTab(){
    int index=0;
    this->vertices.resize(vertX*vertY*6);
    this->indices.resize(2*vertX*(vertY-1)+vertY-1);
-   int modX=200;
-   int modY=200;
+   int modX=50;
+   int modY=50;
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){

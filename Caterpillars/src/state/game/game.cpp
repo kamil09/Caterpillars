@@ -73,7 +73,7 @@ void Game::drawRose(){
    this->rose->draw();
 }
 void Game::run(){
-   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
+   this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    this->catterMove();
    //this->testViewMov();
    this->calcViewMatrix();
@@ -155,9 +155,9 @@ void Game::catterMove(){
         glm::vec3 shot;
 
         shot.x = shotViewVec.x * 2;
-        shot.y = shotViewVec.y * 10;
+        shot.y = shotViewVec.y * 2;
         shot.z = shotViewVec.z * 2;
-        this->currentCutterpillar->diagonalThrow(shot);
+        //this->currentCutterpillar->diagonalThrow(shot);
      }
  }
    else if(inputActions::getInstance().space_pressed){
@@ -185,7 +185,7 @@ void Game::catterMove(){
       }
 
       //shot.x = 0;
-      shot.y = 2;
+      shot.y = 10;
       //shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
     }
