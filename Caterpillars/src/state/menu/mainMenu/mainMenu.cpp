@@ -36,10 +36,10 @@ MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 
 
 void MainMenu::loadTextureFiles(){
-	this->listaTekstur.push_back("../src/img/menuLab1.png");
-	this->listaTekstur.push_back("../src/img/menuLab2.png");
-	this->listaTekstur.push_back("../src/img/menuLab3.png");
-	this->listaTekstur.push_back("../src/img/menuLab4.png");
+	this->listaTekstur.push_back("../src/img/single.png");
+	this->listaTekstur.push_back("../src/img/multi.png");
+	this->listaTekstur.push_back("../src/img/options.png");
+	this->listaTekstur.push_back("../src/img/exit.png");
 }
 
 void singlePlayer(GLFWwindow* window,GLFWcursor* cursor){

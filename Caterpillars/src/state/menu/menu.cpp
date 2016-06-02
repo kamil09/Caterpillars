@@ -9,7 +9,7 @@ Menu::Menu(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     // this->createButtons(4);
 
 
-    this->font = new Font("../src/fonts/FreeSans.ttf",window);
+    this->font = new Font("../src/fonts/Coalition.ttf",window,48);
 
 }
 
@@ -20,7 +20,7 @@ void Menu::run(){
     glfwPollEvents();
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->draw2();
-    this->font->print("123345566778890qweasdzxc", 0.0f, 0.0f, 1.0f);
+    // this->font->print("123345566778890qweasdzxc", 0.0f, 0.0f, 1.0f);
     errorCheck("RYSOWANIE MENU");
     // errorCheck("Cos jest nie tak");
 }
