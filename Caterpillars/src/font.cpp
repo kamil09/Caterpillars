@@ -8,12 +8,13 @@ Character::Character(GLuint text,glm::ivec2 roz, glm::ivec2 bear, GLuint adv){
 	this->advance = adv;
 }
 
-Font::Font(const char* ttf,GLFWwindow* window){
+Font::Font(const char* ttf,GLFWwindow* window,int size){
 	std::cout << "Tworzenie fontu" << std::endl;
-	this->initChar(ttf, window);
+	this->kolor = glm::vec3(1.0f,1.0f,1.0f);
+	this->initChar(ttf, window,size);
 }
 
-void Font::initChar(const char* ttf,GLFWwindow* window){
+void Font::initChar(const char* ttf,GLFWwindow* window,int size){
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -30,12 +31,12 @@ void Font::initChar(const char* ttf,GLFWwindow* window){
 	}
 	// if(FT_New_Face(Font::ft,"/usr/share/fonts/truetype/freefont/FreeMono.ttf", 0, &this->face)) {
 	// if(FT_New_Face(this->ft,"../src/fonts/Arial.ttf", 0, &this->face)) {
-	if(FT_New_Face(this->ft,"../src/fonts/Coalition.ttf", 0, &this->face)) {
+	if(FT_New_Face(this->ft,ttf, 0, &this->face)) {
 		std::cerr << "ERROR::FREETYPE: Failed to load font" << std::endl;
 	}
 
 	this->file = ttf;
-	this->setRozmiar(48);
+	this->setRozmiar(size);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	// int i =0;
 	for (GLubyte c = 0; c < 128; c++) {
@@ -77,8 +78,8 @@ void Font::initChar(const char* ttf,GLFWwindow* window){
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
+	// glDisable(GL_CULL_FACE);
+	// glDisable(GL_BLEND);
 	this->initBinding(true);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
@@ -99,7 +100,7 @@ void Font::paramText2D(){
 }
 
 void Font::print(std::string text, float x, float y, GLfloat scale){
-	this->print(text,x,y,scale, glm::vec3(1.0f,1.0f,1.0f));
+	this->print(text,x,y,scale, this->kolor);
 }
 
 void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 color){

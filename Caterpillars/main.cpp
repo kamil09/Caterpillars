@@ -14,6 +14,7 @@
 #include "src/state/menu/mainMenu/mainMenu.hpp"
 #include <unistd.h>
 #include "src/errorGL.hpp"
+#include "src/info.hpp"
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 // #include "src/font.hpp"
@@ -81,7 +82,7 @@ int main(void){
 
 	// Cull triangles which normal is not towards the camera
 	//glEnable(GL_CULL_FACE);
-
+	Info *info = new Info(window);
 	errorCheck("inicjalizacja");
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
@@ -90,11 +91,13 @@ int main(void){
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
 		}
-
 		// if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
 	   inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
 
+		//INFORMACJE
+		info->draw();
+		
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();

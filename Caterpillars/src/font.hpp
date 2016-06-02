@@ -4,7 +4,7 @@
 #include "object.hpp"
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
-#include <string>
+// #include <string>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -25,15 +25,17 @@ public:
 
 class Font : public Object{
 public:
-    Font(const char* ttf,GLFWwindow* window);
+    Font(){};
+    Font(const char* ttf,GLFWwindow* window,int size);
     int rozmiar;
     const char* file;
+    glm::vec3 kolor;
     FT_Library ft;
     FT_Face face;
     std::map<GLchar, Character*> mapCharacters;
     // std::map<GLchar, Character> mapCharacters;
     // FT_GlyphSlot znak;
-    void initChar(const char* ttf,GLFWwindow* window);
+    void initChar(const char* ttf,GLFWwindow* window,int size);
     // static void initFt();
     void setRozmiar(int roz);
     void paramText2D() override;
@@ -42,6 +44,7 @@ public:
     float skalay;
     void print(std::string text, float x, float y,GLfloat scale,glm::vec3 color);
     void print(std::string text, float x, float y,GLfloat scale);
+
 };
 
 
