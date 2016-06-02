@@ -107,7 +107,6 @@ void Map::generateRandomMap(){
    int hillNumbers=0;
    hillNumbers = std::rand() % (maxHillNum-minHillNum) + minHillNum;
 
-   //threads fight : START
    for(int i=0;i<hillNumbers;i++)
       makeHill(this->mapVert);
 

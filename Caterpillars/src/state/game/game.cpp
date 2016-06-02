@@ -73,7 +73,7 @@ void Game::drawRose(){
    this->rose->draw();
 }
 void Game::run(){
-   this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
+   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    this->catterMove();
    //this->testViewMov();
    this->calcViewMatrix();
@@ -91,8 +91,8 @@ void Game::calcViewMatrix(){
    this->lookFrom = this->currentCutterpillar->pos;
    this->lookAt+=this->currentCutterpillar->pos;
 
-   this->lookFrom.y+= this->currentCutterpillar->size.y;
-   this->lookAt.y+= this->currentCutterpillar->size.y;
+   this->lookFrom.y+= 6*this->currentCutterpillar->size.y;
+   this->lookAt.y+= 6*this->currentCutterpillar->size.y;
 
    glm::vec3 look = this->lookAt - this->lookFrom;
    this->lookFrom += glm::normalize(look)*this->currentCutterpillar->viewBack;

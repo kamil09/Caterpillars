@@ -80,11 +80,11 @@ void Object::recalculateGravity(){
 	//speedY > 0 oznaczac bedzie ruch w gore a < 0 spadanie
 	//Nie mam pojecia czy to jest dobra koncepcja
 
-	cout<<endl<<endl<<"WYWOLANIE"<<endl;
+	//cout<<endl<<endl<<"WYWOLANIE"<<endl;
 
-	cout << "PosX: " << this->pos.x << "  SpeedX: "<< this->speed.x << endl;
-	cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
-	cout << "PosZ: " << this->pos.z << "  SpeedZ: "<< this->speed.z << endl;
+	//cout << "PosX: " << this->pos.x << "  SpeedX: "<< this->speed.x << endl;
+	//cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
+	//cout << "PosZ: " << this->pos.z << "  SpeedZ: "<< this->speed.z << endl;
 
 
 
@@ -274,7 +274,7 @@ void Object::bindTexture3D(int number,GLchar *texturePath[]){
 	//glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	//glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	listaTekstur.resize(number);

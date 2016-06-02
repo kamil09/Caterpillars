@@ -14,6 +14,7 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
    std::vector<double> tex;
    std::vector<double> ver;
    std::vector<double> nor;
+   std::vector<int> uvIndices;
    int verNum=0;
    int texNum=0;
    int norNum=0;
@@ -47,18 +48,19 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
       }
       else if ( strcmp( lineHeader, "f" ) == 0 ){
          unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-         //int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-         int matches = fscanf(file, " %d//%d %d//%d %d//%d\n", &vertexIndex[0], &normalIndex[0], &vertexIndex[1], &normalIndex[1], &vertexIndex[2], &normalIndex[2] );
-         if (matches != 6){
+
+         int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+         //int matches = fscanf(file, " %d//%d %d//%d %d//%d\n", &vertexIndex[0], &normalIndex[0], &vertexIndex[1], &normalIndex[1], &vertexIndex[2], &normalIndex[2] );
+         if (matches != 9){
               printf("File can't be read by our simple parser : ( Try exporting with other options\n");
               return false;
          }
          indices->push_back(vertexIndex[0]);
          indices->push_back(vertexIndex[1]);
          indices->push_back(vertexIndex[2]);
-         // uvIndices    .push_back(uvIndex[0]);
-         // uvIndices    .push_back(uvIndex[1]);
-         // uvIndices    .push_back(uvIndex[2]);
+         uvIndices.push_back(uvIndex[0]);
+         uvIndices.push_back(uvIndex[1]);
+         uvIndices.push_back(uvIndex[2]);
          // normalIndices.push_back(normalIndex[0]);
          // normalIndices.push_back(normalIndex[1]);
          // normalIndices.push_back(normalIndex[2]);
@@ -66,11 +68,12 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
    }
    for( unsigned int i=0; i<indices->size(); i++ ){
       unsigned int vertexIndex = (*indices)[i];
+      unsigned int texIndex = uvIndices[i];
       vertices->push_back(ver[vertexIndex*3-3]);
       vertices->push_back(ver[vertexIndex*3-2]);
       vertices->push_back(ver[vertexIndex*3-1]);
-      vertices->push_back(0);
-      vertices->push_back(0);
+      vertices->push_back(tex[texIndex*2-2]);
+      vertices->push_back(tex[texIndex*2-1]);
    }
    // for(int i=0;i<verNum;i++){
    //    vertices->push_back(ver[i*3]);

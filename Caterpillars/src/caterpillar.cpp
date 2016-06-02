@@ -2,9 +2,9 @@
 
 Caterpillar::Caterpillar(char *filename){
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-   this->scl.x=20;
-   this->scl.y=20;
-   this->scl.z=20;
+   this->scl.x=4;
+   this->scl.y=4;
+   this->scl.z=4;
    this->recalculateMatrix();
    this->viewBack=0;
 
@@ -14,11 +14,12 @@ Caterpillar::Caterpillar(char *filename){
    this->maxWalkSpeed=2;
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(true);
+   this->bindTexture2D("../src/img/catTX.png");
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
 
-   this->size.y=20;
-   this->size.x=6;
-   this->size.z=6;
+   this->size.y=2;
+   this->size.x=2;
+   this->size.z=1;
 }
 Caterpillar::~Caterpillar(){
 
@@ -44,9 +45,9 @@ void Caterpillar::bindBuffers(bool newBuffer){
 }
 void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
-   // glActiveTexture(GL_TEXTURE0);
-	// glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   // glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->texture2D);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
