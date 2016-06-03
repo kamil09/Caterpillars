@@ -32,6 +32,7 @@ class inputActions{
       bool space_pressed;
       bool i_pressed;
       bool escape_pressed;
+      bool SHIFT_pressed;
       //Zerowane przy każdym przeliczniu fizyki
       int scroll;
 

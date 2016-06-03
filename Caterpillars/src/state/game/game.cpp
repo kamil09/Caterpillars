@@ -33,7 +33,7 @@ void Game::draw(){
       if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
          this->caterrVec[i]->draw(this->projection,this->modelView);
 
-   this->targetView->draw();
+   if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
 
    this->drawRose();
    glDisable(GL_BLEND);
@@ -74,9 +74,11 @@ void Game::drawRose(){
 }
 void Game::run(){
    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
-   this->catterMove();
-   //this->testViewMov();
-   this->calcViewMatrix();
+   if(inputActions::getInstance().SHIFT_pressed) this->testViewMov();
+   else {
+      this->catterMove();
+      this->calcViewMatrix();
+   }
    this->draw();
 
    for(int i=0;i < (int)this->caterrVec.size(); i++){
@@ -97,7 +99,7 @@ void Game::calcViewMatrix(){
    glm::vec3 look = this->lookAt - this->lookFrom;
    this->lookFrom += glm::normalize(look)*this->currentCutterpillar->viewBack;
 
-   std::cout << this->currentCutterpillar->viewBack << std::endl;
+   //std::cout << this->currentCutterpillar->viewBack << std::endl;
 
 
    // this->lookFrom.x -= this->currentCutterpillar->size.x;
@@ -112,7 +114,7 @@ void Game::catterMove(){
    this->end = clock();
 	float diff = ((float)this->end - (float)this->start);
    diff/=CLOCKS_PER_SEC;
-   std::cout << diff << std::endl;
+   //std::cout << diff << std::endl;
    glm::vec3 catViewVec = this->currentCutterpillar->startLook;
    glm::mat3 rotY = glm::mat3(
 		glm::vec3(cos(this->currentCutterpillar->rot.y),0.0f, sin(this->currentCutterpillar->rot.y)),
@@ -204,10 +206,23 @@ void Game::catterMove(){
       if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
    }
    if(inputActions::getInstance().scroll!=0){
-      this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/5;
+      this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/1.5;
       if(this->currentCutterpillar->viewBack > 0.0f) this->currentCutterpillar->viewBack = 0.0f;
       if(this->currentCutterpillar->viewBack < -60.0f) this->currentCutterpillar->viewBack = -60.0f;
    }
+   //std::cout << inputActions::getInstance().rightClick << std::endl;
+   if(inputActions::getInstance().rightClick){
+      if(this->currentCutterpillar->tmpViewBack > 0) this->currentCutterpillar->tmpViewBack = this->currentCutterpillar->viewBack;
+      if(this->currentCutterpillar->viewBack < -20) this->currentCutterpillar->viewBack=0.0f;
+   }
+   else{
+       if(this->currentCutterpillar->tmpViewBack <= 0 ){
+         this->currentCutterpillar->viewBack = this->currentCutterpillar->tmpViewBack;
+         this->currentCutterpillar->tmpViewBack=666.0f;
+      }
+      //printf("odl: %f\n",this->currentCutterpillar->tmpViewBack);
+   }
+
 
    this->start = clock();
 }
@@ -274,9 +289,9 @@ void Game::testViewMov(){
    }
    if(inputActions::getInstance().movedX!=0){
       glm::mat3 rotM = glm::mat3(
-         glm::vec3(cos(inputActions::getInstance().movedX/500),0.0f,sin(inputActions::getInstance().movedX/500)),
+         glm::vec3(cos(inputActions::getInstance().movedX/300),0.0f,sin(inputActions::getInstance().movedX/300)),
          glm::vec3(0.0f,1.0f,0.0f),
-         glm::vec3(-sin(inputActions::getInstance().movedX/500),0.0f,cos(inputActions::getInstance().movedX/500))
+         glm::vec3(-sin(inputActions::getInstance().movedX/300),0.0f,cos(inputActions::getInstance().movedX/300))
       );
       viewVec=rotM*viewVec;
       this->lookAt=viewVec+this->lookFrom;
@@ -284,6 +299,6 @@ void Game::testViewMov(){
    if(inputActions::getInstance().movedY!=0){
       //Tak być nie powinno! (ale jakoś działa :( )
       //Poza tym to tylko do testów więc może zostać :)
-      this->lookAt[1]-=inputActions::getInstance().movedY;
+      this->lookAt[1]-=inputActions::getInstance().movedY/2;
    }
 }

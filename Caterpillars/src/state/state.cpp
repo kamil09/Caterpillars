@@ -14,7 +14,13 @@ State::State(GLFWwindow *currenWindow, GLFWcursor *cur){
 }
 
 void State::key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
-	//WSAD
+   if(key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS) {
+		inputActions::getInstance().SHIFT_pressed=true;
+	}
+	if(key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE) {
+		inputActions::getInstance().SHIFT_pressed=false;
+	}
+   //WSAD
 	if(key == GLFW_KEY_W && action == GLFW_PRESS) {
 		inputActions::getInstance().w_pressed=true;
 		this->pressW();

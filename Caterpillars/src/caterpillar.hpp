@@ -27,6 +27,7 @@ public:
    glm::vec3 startLook;
    float maxWalkSpeed;  //maksymalna prędkość chodzenia m/s
    float viewBack;
+   float tmpViewBack;
 };
 
 #endif

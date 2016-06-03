@@ -6,7 +6,8 @@ Caterpillar::Caterpillar(char *filename){
    this->scl.y=4;
    this->scl.z=4;
    this->recalculateMatrix();
-   this->viewBack=0;
+   this->viewBack=0.0f;
+   this->tmpViewBack=666.0f;
 
    this->windMul=0.1;
    this->life=100;

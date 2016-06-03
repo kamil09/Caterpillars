@@ -10,6 +10,7 @@ inputActions::inputActions(){
 	this->i_pressed=false;
 	this->escape_pressed=false;
 	this->scroll=0;
+	this->SHIFT_pressed=false;
 
 	this->leftClick=false;
 	this->rightClick=false;
@@ -31,7 +32,6 @@ void inputActions::clear(){
 	this->scroll=0;
 	this->movedX=0;
 	this->movedY=0;
-
 }
 
 inputActions::~inputActions(){

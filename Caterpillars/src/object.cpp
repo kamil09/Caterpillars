@@ -91,7 +91,7 @@ void Object::recalculateGravity(){
 	end = clock();
 	diff = ((float)end - (float)start);
 	bet_time = diff/CLOCKS_PER_SEC;
-	cout<<"bet_time: "<< bet_time<<endl;
+	//cout<<"bet_time: "<< bet_time<<endl;
 	in_meter = 10;//ile jednostek mamy w pseudo metrze
 	if(sec_time)
 	{
@@ -114,7 +114,7 @@ void Object::recalculateGravity(){
 				windX = 10 * bet_time * Map::getInstance().windForce.x * this->windMul;
 				windY = bet_time * Map::getInstance().windForce.y * this->windMul;
 				windZ = 10 * bet_time * Map::getInstance().windForce.z * this->windMul;
-				cout << windMul;
+				//cout << windMul;
 				//tutaj nalezy uwzglednic jeszcze sile wiatru
 				this->speed.x +=  windX;//*windMul
 				this->speed.z +=  windZ;//*windMul
@@ -289,7 +289,7 @@ void Object::loadTexture3D(int number){
 	int i;
 	this->teksturCount = number;
 	for(i=0; i < number; i++) {
-		std::cout << this->listaTekstur[i].texturePath << std::endl;
+		//std::cout << this->listaTekstur[i].texturePath << std::endl;
 		// std::vector<unsigned char> image;
 		unsigned int width,height;
 		unsigned error = lodepng::decode(this->listaTekstur[i].image,width,height,this->listaTekstur[i].texturePath);
