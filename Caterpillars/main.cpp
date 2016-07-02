@@ -92,12 +92,13 @@ int main(void){
 			glfwPollEvents();
 		}
 		// if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
+
 	   inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
 
 		//INFORMACJE
 		info->draw();
-		
+
 		glfwSwapBuffers(window);
 		//Czyścimy niektóre inputy przed kolejną klatką.
 		inputActions::getInstance().clear();

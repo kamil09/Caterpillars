@@ -9,7 +9,7 @@ Menu::Menu(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     // this->createButtons(4);
 
 
-    this->font = new Font("../src/fonts/Coalition.ttf",window,48);
+    // this->font = new Font("../src/fonts/Coalition.ttf",window,48);
 
 }
 

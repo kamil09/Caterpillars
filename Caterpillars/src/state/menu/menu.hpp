@@ -9,7 +9,7 @@
 #include "../state.hpp"
 #include <string.h>
 #include <functional>
-#include "../../font.hpp"
+// #include "../../font.hpp"
 #include "../../errorGL.hpp"
 //#include "inputActions.hpp"
 
@@ -33,7 +33,7 @@ public:
     GLfloat buttonHeight;
     GLfloat buttonDistance;
 
-    Font *font;
+    // Font *font;
 
 
     void createBackgroud(const char*);

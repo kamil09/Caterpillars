@@ -41,6 +41,9 @@ public:
     //ESC
     virtual void pressESC(){}
     virtual void releaseESC(){}
+    //Help
+    virtual void pressH(){}
+    virtual void releaseH(){}
 
     //Obsluga myszy:
     //LMB i RMB

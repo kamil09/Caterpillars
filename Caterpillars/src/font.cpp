@@ -11,6 +11,7 @@ Character::Character(GLuint text,glm::ivec2 roz, glm::ivec2 bear, GLuint adv){
 Font::Font(const char* ttf,GLFWwindow* window,int size){
 	std::cout << "Tworzenie fontu" << std::endl;
 	this->kolor = glm::vec3(1.0f,1.0f,1.0f);
+	// this->kolor = glm::vec3(0.0f,0.0f,0.0f);
 	this->initChar(ttf, window,size);
 }
 
@@ -78,8 +79,8 @@ void Font::initChar(const char* ttf,GLFWwindow* window,int size){
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-	// glDisable(GL_CULL_FACE);
-	// glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 	this->initBinding(true);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
@@ -147,8 +148,8 @@ void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
 
 }
 

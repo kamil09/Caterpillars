@@ -4,7 +4,8 @@
 
 object2D::object2D(float x, float y, float width, float height, GLchar *fileName){
    this->shader = new Shader("../src/shaders/2dTex.vs","../src/shaders/2dTex.frag");
-   this->vertices.resize(4);
+   // this->vertices.resize(4);
+   this->vertices.resize(16);
    this->indices.resize(4);
    this->vertices = {
       x, y, 0.0f, 0.0f, 0.0f,

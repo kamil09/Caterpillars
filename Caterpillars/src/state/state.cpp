@@ -81,6 +81,16 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 		inputActions::getInstance().i_pressed=false;
 		this->releaseI();
 	}
+    //Help
+	if(key == GLFW_KEY_H && action == GLFW_PRESS) {
+		// inputActions::getInstance().i_pressed=true;
+		this->pressH();
+	}
+	if(key == GLFW_KEY_H && action == GLFW_RELEASE) {
+		// inputActions::getInstance().i_pressed=false;
+		this->releaseH();
+        
+    }
 }
 
 void State::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
