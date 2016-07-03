@@ -4,15 +4,10 @@
 //
 // }
 
-Text::Text(std::string newText,float newX,float newY,float newSkala){
-    this->text = newText;
-    this->x = newX;
-    this->y = newY;
-    this->skala = newSkala;
-}
 
-Info::Info(GLFWwindow* window){
-    this->font = new Font("../src/fonts/Coalition.ttf",window,16);
+
+Info::Info(){
+    this->font = new Font("../src/fonts/Coalition.ttf", 16);
     this->initFps();
     // this->addText("",10.0f,this->font->rozmiar+10.0f,1.0f,'v');
     // this->addText("",10.0f,2*this->font->rozmiar+10.0f,1.0f,'r');
@@ -23,7 +18,8 @@ Info::Info(GLFWwindow* window){
 void Info::initFps(){
     this->lastTime = glfwGetTime();
     this->nbFrames = 0;
-    this->addText("",10.0f,10.0f,1.0f,'f');
+//    this->addText("",10.0f,10.0f,1.0f,'f');
+    this->addText("",0.0f,0.0f,1.0f,'f');
     // this->fpsIndex = this->texty.size()-1;
     // std::cout << this->fpsIndex << std::endl;
 }
@@ -41,7 +37,6 @@ void Info::fps(){
 }
 
 void Info::draw(){
-    this->freeIndex = 0;
     if(this->showFps){
         this->fps();
     }
@@ -60,16 +55,13 @@ void Info::draw(){
 }
 
 unsigned int Info::addText(std::string newText,float newX,float newY,float newSkala,char index){
-    Text *temp = new Text(newText,newX,newY,newSkala);
+    Text *temp = new Text(newText,newX,newY,newSkala,glm::vec3(1.0f,1.0f,1.0f));
     // this->texty.push_back(temp);
     // this->texty['f'] = temp;
     this->texty.insert(std::pair<char,Text*>(index,temp));
     return this->texty.size()-1;
 }
 
-void Text::draw(Font *font){
-    font->print(this->text,this->x,this->y, this->skala,glm::vec3(1.0f,1.0f,1.0f));
-}
 
 void Info::usage(){
     sysinfo(&this->meminfo);

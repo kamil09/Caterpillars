@@ -19,7 +19,8 @@ Wall::Wall(int x, int width, int z, int depth, int min, int max){
    this->indices = {
       0,1,2,3,4,5,6,7,0,1
    };
-   this->bindBuffers(true);
+//   this->bindBuffers(true);
+   this->bindBuffers(5,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/wall.png");
 }
 
@@ -27,19 +28,19 @@ Wall::~Wall(){
 
 }
 
-void Wall::bindBuffers(bool newBuffer){
-   this->initBinding(newBuffer);
-
-   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
-   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
-
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-   glEnableVertexAttribArray(1);
-
-   this->endBinding();
-}
+//void Wall::bindBuffers(bool newBuffer){
+//   this->initBinding(newBuffer);
+//
+//   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_STATIC_DRAW);
+//   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_STATIC_DRAW);
+//
+//   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+//	glEnableVertexAttribArray(0);
+//   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+//   glEnableVertexAttribArray(1);
+//
+//   this->endBinding();
+//}
 void Wall::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
    glActiveTexture(GL_TEXTURE0);

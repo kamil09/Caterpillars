@@ -28,9 +28,9 @@ void Menu::run(){
 void Menu::draw(){
     int i;
     for(i=0;i<this->buttonCount;i++){
-        listaButtonow[i]->draw();
+        listaButtonow[i]->draw(0);
     }
-    this->background->draw();
+    this->background->draw(0);
 }
 
 void Menu::draw2(){
@@ -38,9 +38,9 @@ void Menu::draw2(){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // glBlendFunc (GL_ONE, GL_ONE);
-    this->background->draw2();
+    this->background->draw(1);
     for(i=0;i<this->buttonCount;i++){
-        listaButtonow[i]->draw2();
+        listaButtonow[i]->draw(1);
 
     }
     glDisable(GL_BLEND);

@@ -23,10 +23,6 @@ Object::Object(){
 Object::~Object(){
 }
 
-void Object::draw(){
-
-};
-
 void Object::recalculateMatrix(){
 	this->rotM = glm::mat4(1);
 	this->sclM = glm::mat4(1);
@@ -163,17 +159,39 @@ void Object::diagonalThrow(glm::vec3 throw_speed){
 }
 
 
-void Object::initBinding(bool newBuffer){
-	if(newBuffer == true) {
-		this->newBinding();
+//void Object::initBinding(bool newBuffer){
+//	if(newBuffer == true) {
+//		this->newBinding();
+//	}
+//	else{
+//		// std::cout << "HEJ!" << std::endl;
+//		this->buffers[currentBinding]->usuwanie();
+//	}
+//	// if(this->currentBinding!=0){
+//	//      std::cout << "kurcze" << std::endl;
+//	// }
+//	glGenVertexArrays(1, &this->buffers[this->currentBinding]->VAO);
+//	glGenBuffers(1, &this->buffers[this->currentBinding]->VBO);
+//	glGenBuffers(1, &this->buffers[this->currentBinding]->EBO);
+//	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+//	glBindVertexArray(this->buffers[this->currentBinding]->VAO);
+//	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[this->currentBinding]->VBO);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->buffers[this->currentBinding]->EBO);
+//	// std::cout << "hej" << std::endl;
+//}
+
+void Object::initBinding(){
+	if(this->buffers.empty()) {
+		this->buffersCount++;
+		this->buffers.push_back(new Buffers());
+		if(this->buffers.empty()) {
+			std::cerr << "ERROR::EMPTY BUFFER::ERROR" << std::endl;
+		}
+		this->currentBinding = this->buffersCount-1;
 	}
 	else{
-		// std::cout << "HEJ!" << std::endl;
 		this->buffers[currentBinding]->usuwanie();
 	}
-	// if(this->currentBinding!=0){
-	//      std::cout << "kurcze" << std::endl;
-	// }
 	glGenVertexArrays(1, &this->buffers[this->currentBinding]->VAO);
 	glGenBuffers(1, &this->buffers[this->currentBinding]->VBO);
 	glGenBuffers(1, &this->buffers[this->currentBinding]->EBO);
@@ -181,7 +199,6 @@ void Object::initBinding(bool newBuffer){
 	glBindVertexArray(this->buffers[this->currentBinding]->VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[this->currentBinding]->VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->buffers[this->currentBinding]->EBO);
-	// std::cout << "hej" << std::endl;
 }
 
 void Object::newBinding(){
@@ -328,4 +345,52 @@ void Object::loadTexture3D(int number){
 	// for(int i=0;i<number;i++)
 	// delete imageTab[i];
 	// delete imageTab;
+}
+
+void Object::bindBuffers(int stride, GLenum usage) {
+	this->initBinding();
+	this->bufferData(usage);
+
+	this->inBinding();
+
+	this->vAttributePointer(3, stride);
+	this->endBinding();
+}
+
+void Object::bufferData(GLenum usage) {
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), usage);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), usage);
+}
+
+void Object::vAttributePointer(int firstVertex, int stride) {
+	glVertexAttribPointer(0, firstVertex, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+	int nextVertex = stride - firstVertex;
+	if(nextVertex > 0){
+		glVertexAttribPointer(1, nextVertex, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(firstVertex * sizeof(GLfloat)));
+		glEnableVertexAttribArray(1);
+	}
+}
+
+//
+//void Object::draw(int points) {
+//	this->shader->useShaderProgram(0);
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, this->texture2D);
+//
+//	glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+//	GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+//	glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));
+//
+//	glBindVertexArray(this->currentVAO());
+//	glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
+//	glBindVertexArray(0);
+//}
+
+void Object::draw(){
+
+}
+
+GLint Object::getUniform(const char *nazwa) {
+	return glGetUniformLocation(this->shader->shaderProgram[this->currentShader],nazwa);
 }

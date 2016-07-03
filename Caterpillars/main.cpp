@@ -82,7 +82,7 @@ int main(void){
 
 	// Cull triangles which normal is not towards the camera
 	//glEnable(GL_CULL_FACE);
-	Info *info = new Info(window);
+	Info *info = new Info();
 	errorCheck("inicjalizacja");
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);

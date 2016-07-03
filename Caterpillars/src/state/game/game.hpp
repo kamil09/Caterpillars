@@ -11,7 +11,8 @@
 #include "../../caterpillar.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "object2D.hpp"
+//#include "../object2D.hpp"
+#include "../sprite.hpp"
 
 class Game : public State{
 private:
@@ -19,8 +20,10 @@ private:
    void calcViewMatrix();
    Map *map;
    Wall *wall;
-   object2D *targetView;
-   object2D *rose;
+//   object2D *targetView;
+   Sprite *targetView;
+//   object2D *rose;
+   Sprite *rose;
    std::vector< Caterpillar* > caterrVec;
    Caterpillar* currentCutterpillar;
    void testViewMov();

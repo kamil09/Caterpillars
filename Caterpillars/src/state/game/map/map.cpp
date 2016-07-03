@@ -14,8 +14,8 @@ Map::Map(){
    this->rand();
    this->generateRandomMap();
    this->genTriangleTab();
-   this->bindBuffers(true);
-   int numOfTex = 8;
+   this->bindBuffers(6,GL_DYNAMIC_DRAW);
+    int numOfTex = 8;
    GLchar *texturePath[numOfTex];
    texturePath[0] = (char*)"../src/img/map/map1.png";texturePath[1] = (char*)"../src/img/map/map2.png";
    texturePath[2] = (char*)"../src/img/map/map3.png";texturePath[3] = (char*)"../src/img/map/map4.png";
@@ -168,8 +168,8 @@ void Map::kaboom(float x, float y, float z, float radius){
    }
 
    this->recalculateTriangleMap();
-   this->bindBuffers(false);
-   puts("kaboom done");
+   this->bindBuffers(6,GL_DYNAMIC_DRAW);
+    puts("kaboom done");
 }
 
 void Map::genTriangleTab(){
@@ -207,25 +207,25 @@ void Map::genTriangleTab(){
    }
    // this->bindBuffers(false);
 }
-
-void Map::bindBuffers(bool newBuffer){
-   // std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
-   this->initBinding(newBuffer);
-
-   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_DYNAMIC_DRAW);
-   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_DYNAMIC_DRAW);
-
-   glEnable(GL_PRIMITIVE_RESTART);
-   glPrimitiveRestartIndex(vertX*vertY);
-
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-   glEnableVertexAttribArray(1);
-
-   this->endBinding();
-}
+//
+//void Map::bindBuffers(bool newBuffer){
+//   // std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
+//   this->initBinding(newBuffer);
+//
+//   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_DYNAMIC_DRAW);
+//   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_DYNAMIC_DRAW);
+//
+//   glEnable(GL_PRIMITIVE_RESTART);
+//   glPrimitiveRestartIndex(vertX*vertY);
+//
+//   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+//	glEnableVertexAttribArray(0);
+//
+//   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+//   glEnableVertexAttribArray(1);
+//
+//   this->endBinding();
+//}
 
 
 void Map::draw(glm::mat4 projection, glm::mat4 modelView){
@@ -264,4 +264,9 @@ void Map::recalculateTriangleMap(){
 Map& Map::getInstance(){
 	static Map instance;
 	return instance;
+}
+
+void Map::inBinding() {
+   glEnable(GL_PRIMITIVE_RESTART);
+   glPrimitiveRestartIndex(vertX*vertY);
 }

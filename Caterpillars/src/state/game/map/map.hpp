@@ -46,13 +46,14 @@ public:
    float **mapVertFirst;
    Map();
    ~Map();
-   void bindBuffers(bool newBuffer);
+//   void bindBuffers(bool newBuffer);
    Map(const Map &);
    static Map& getInstance();
    void draw(glm::mat4 projection, glm::mat4 modelView);
    void rand();     //Losuje wiatr itp
    void kaboom(float x, float y, float z, float radius);    //Robi kaboom na mapie
    void genTriangleTab();
+   void inBinding() override;
 };
 
 #endif

@@ -26,7 +26,7 @@ public:
 class Font : public Object{
 public:
     Font(){};
-    Font(const char* ttf,GLFWwindow* window,int size);
+    Font(const char *ttf, int size);
     int rozmiar;
     const char* file;
     glm::vec3 kolor;
@@ -35,7 +35,7 @@ public:
     std::map<GLchar, Character*> mapCharacters;
     // std::map<GLchar, Character> mapCharacters;
     // FT_GlyphSlot znak;
-    void initChar(const char* ttf,GLFWwindow* window,int size);
+    void initChar(const char *ttf, int size);
     // static void initFt();
     void setRozmiar(int roz);
     void paramText2D() override;
@@ -44,7 +44,8 @@ public:
     float skalay;
     void print(std::string text, float x, float y,GLfloat scale,glm::vec3 color);
     void print(std::string text, float x, float y,GLfloat scale);
-
+    float length(std::string text,GLfloat scale);
+    float height(GLfloat scale);
 };
 
 

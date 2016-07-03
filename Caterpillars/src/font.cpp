@@ -8,22 +8,30 @@ Character::Character(GLuint text,glm::ivec2 roz, glm::ivec2 bear, GLuint adv){
 	this->advance = adv;
 }
 
-Font::Font(const char* ttf,GLFWwindow* window,int size){
+Font::Font(const char *ttf, int size) {
 	std::cout << "Tworzenie fontu" << std::endl;
+    this->rozmiar = size;
+	this->posM = glm::mat4(1);
+	this->rotM = glm::mat4(1);
+	this->sclM = glm::mat4(1);
 	this->kolor = glm::vec3(1.0f,1.0f,1.0f);
 	// this->kolor = glm::vec3(0.0f,0.0f,0.0f);
-	this->initChar(ttf, window,size);
+    this->initChar(ttf, size);
 }
 
-void Font::initChar(const char* ttf,GLFWwindow* window,int size){
+void Font::initChar(const char *ttf, int size) {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	this->shader = new Shader("../src/shaders/font.vs","../src/shaders/font.frag");
-
-	int width,height;
-	glfwGetWindowSize(window, &width,&height);
-	glm::mat4 projection = glm::ortho(0.0f,(float) width, 0.0f,(float) height);
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+//    std::cout << "width: " << viewport[2] << " height: " << viewport[3] << std::endl;
+    glm::mat4 projection = glm::ortho((float) -viewport[2]/2,(float) viewport[2]/2, (float) viewport[3]/2,  (float) -viewport[3]/2,-1.0f,1.0f);
+//	glm::mat4 projection = glm::ortho(0.0f,(float) width, 0.0f,(float) height);
+//	glm::mat4 projection = glm::ortho(0.0f,(float) width, (float) height, 0.0f,-1.0f,1.0f);
+//	glm::mat4 projection = glm::ortho((float) -width/2,(float) width/2, (float) height/2,  (float) -height/2,-1.0f,1.0f);
+//	glm::mat4 projection = glm::ortho(0.0f,800.0f, 600.0f, 0.0f,-1.0f,1.0f);
 	this->shader->useShaderProgram(0);
 	glUniformMatrix4fv(glGetUniformLocation(this->shader->shaderProgram[0], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -81,7 +89,7 @@ void Font::initChar(const char* ttf,GLFWwindow* window,int size){
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-	this->initBinding(true);
+	this->initBinding();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
@@ -112,6 +120,9 @@ void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 
 	this->shader->useShaderProgram(0);
 	glUniform3f(glGetUniformLocation(this->shader->shaderProgram[0], "textColor"), color.x, color.y, color.z);
 
+
+	glUniformMatrix4fv(this->getUniform("M"),1,GL_FALSE,glm::value_ptr(this->posM*this->sclM*this->rotM));
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(this->currentVAO());
 
@@ -120,22 +131,34 @@ void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 
         Character *ch = this->mapCharacters[*c];
 
         GLfloat xpos = x + ch->bearing.x * scale;
-        GLfloat ypos = y - (ch->size.y - ch->bearing.y) * scale;
+//        GLfloat ypos = y - (ch->size.y - ch->bearing.y) * scale;
+        GLfloat ypos = y + (this->mapCharacters['H']->bearing.y - ch->bearing.y) * scale;
 
         GLfloat w = ch->size.x * scale;
         GLfloat h = ch->size.y * scale;
         // Update VBO for each character
-        GLfloat vertices[6][4] = {
-            { xpos,     ypos + h,   0.0, 0.0 },
-            { xpos,     ypos,       0.0, 1.0 },
-            { xpos + w, ypos,       1.0, 1.0 },
+//        GLfloat vertices[6][4] = {
+//            { xpos,     ypos + h,   0.0, 0.0 },
+//            { xpos,     ypos,       0.0, 1.0 },
+//            { xpos + w, ypos,       1.0, 1.0 },
+//
+//            { xpos,     ypos + h,   0.0, 0.0 },
+//            { xpos + w, ypos,       1.0, 1.0 },
+//            { xpos + w, ypos + h,   1.0, 0.0 }
+//
+//        };
+		GLfloat vertices[6][4] = {
+				{ xpos,     ypos + h,   0.0, 1.0 },
+				{ xpos + w, ypos,       1.0, 0.0 },
+				{ xpos,     ypos,       0.0, 0.0 },
 
-            { xpos,     ypos + h,   0.0, 0.0 },
-            { xpos + w, ypos,       1.0, 1.0 },
-            { xpos + w, ypos + h,   1.0, 0.0 }
-        };
+				{ xpos,     ypos + h,   0.0, 1.0 },
+				{ xpos + w, ypos + h,   1.0, 1.0 },
+				{ xpos + w, ypos,       1.0, 0.0 }
+		};
         // Render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch->textureID);
+
         // Update content of VBO memory
         glBindBuffer(GL_ARRAY_BUFFER, this->buffers[0]->VBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
@@ -153,6 +176,19 @@ void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 
 
 }
 
+float Font::length(std::string text, GLfloat scale) {
+    float width = 0.0f;
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++) {
+        Character *ch = this->mapCharacters[*c];
+        width += (ch->advance >> 6) * scale;
+    }
+    return width;
+}
+
+float Font::height(GLfloat scale) {
+    return this->mapCharacters['H']->size.y * scale;
+}
 
 // void Font::print(const char* text,float x,float y,float skalax,float skalay){
 // void Font::print(const char* text,float x,float y){

@@ -26,10 +26,10 @@ public:
    GLfloat r;
    GLfloat g;
    GLfloat b;
-void bindBuffers();
-void bindBuffers2();
-void draw();
-void draw2();
+//void bindBuffers();
+//void bindBuffers2();
+void draw(int check);
+
 // void select();
 // void (*callBackFunction)(void);
 std::function<void(GLFWwindow*,GLFWcursor*)> callBackFunction;

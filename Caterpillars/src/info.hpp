@@ -14,33 +14,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-
-class Text {
-public:
-    Text(std::string newText,float newX,float newY,float newSkala);
-    std::string text;
-    float x;
-    float y;
-    float skala;
-    void draw(Font *font);
-};
+#include "text.hpp"
 
 class Info {
 public:
-    Info(GLFWwindow* window);
+    Info();
     ~Info();
     Font *font;
     struct sysinfo meminfo;
     // std::vector<std::string> name;
     // std::vector<Text*> texty;
     std::map<char,Text*> texty;
-    int freeIndex = 0;
     bool showFps = true;
-    bool showRam = true;
-    bool showCpu = true;
-    bool showVRam = true;
-    bool showUsage = true;
     void fps();
     void initFps();
     unsigned int addText(std::string newText,float newX,float newY,float newSkala,char index);

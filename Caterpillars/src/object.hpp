@@ -73,38 +73,46 @@ public:
 
     bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
 
-    virtual void draw();
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
-   void kick(float x,float y, float z);
-   void recalculatePhysics();
-   void recalculateGravity(); //Pawelek
-   void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
-
+    void kick(float x,float y, float z);
+    void recalculatePhysics();
+    void recalculateGravity(); //Pawelek
+    void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
-   virtual void loadTexture2D(const GLchar *texturePath);
-   virtual void paramText2D();
-   int textureWidth;
-   int textureHeight;
-   GLuint texture2D;
-   GLuint texture3D;
 
+    virtual void loadTexture2D(const GLchar *texturePath);
+    virtual void paramText2D();
+    int textureWidth;
+    int textureHeight;
+    GLuint texture2D;
+    GLuint texture3D;
    void bindTexture3D(int number,GLchar *texturePath[]);
-   void loadTexture3D(int number);
 
-
+    void loadTexture3D(int number);
    // GLuint texture3D;
    // std::vector<const char*> listaTekstur;
    // unsigned char* image;
    std::vector<OurTexture> listaTekstur;
-   int teksturCount;
-   void newBinding();
-   void initBinding(bool newBuffer);
-   int currentBinding;
-   void endBinding();
-   GLuint currentVAO();
 
-   void recalculateMatrix();
+    int teksturCount;
+    void newBinding();
+//   void initBinding(bool newBuffer);
+   void initBinding();
+    int currentBinding;
+    int currentShader = 0;
+    void endBinding();
+    GLuint currentVAO();
+    GLint getUniform(const char *nazwa);
+    void bindBuffers(int stride,GLenum usage);
+    void recalculateMatrix();
+    void bufferData(GLenum usage);
+    void vAttributePointer(int firstVertex, int stride);
+    virtual void inBinding(){};
+//   virtual void activeTexture();
+//    virtual void uniforms();
+//    virtual void draw(int points);
+   virtual void draw();
 };
 
 #endif
