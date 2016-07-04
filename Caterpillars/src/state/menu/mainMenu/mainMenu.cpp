@@ -18,6 +18,15 @@ MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
     this->loadCoordinates();
 	this->createBackgroud("../src/img/menuBack.png");
 	this->createButtons();
+	float pionowyMargines,poziomyMargines;
+	pionowyMargines = 80;
+	poziomyMargines = 130;
+	float imgWidth,imgHeight,temp;
+	imgWidth=3774.0f;
+	imgHeight=447.0f;
+	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
+	Sprite *title = new Sprite((-this->windowXsize/2)+pionowyMargines,this->windowYsize/2-poziomyMargines-temp,this->windowXsize-2*pionowyMargines,temp,"../src/img/title.png");
+	this->listaSpritow.push_back(title);
 }
 
 
@@ -39,8 +48,8 @@ void MainMenu::loadCoordinates() {
 }
  
 void MainMenu::loadTranslates() {
-    float lewyMargines = (-this->windowXsize/2)+25;
-    float yFirstButton = -100;
+    float lewyMargines = (-this->windowXsize/2)+35;
+    float yFirstButton = -90;
     float distance = 15;
     for (unsigned int i = 0; i<this->listaWspolrzednych.size();i++){
         float temp=0;

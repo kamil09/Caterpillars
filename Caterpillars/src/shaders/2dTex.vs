@@ -8,6 +8,7 @@ uniform mat4 P;
 out vec2 TexCoord;
 
 void main(){
-	gl_Position = P*M*vec4(position.x, position.y, position.z, 1.0);
+	//gl_Position = P*M*vec4(position.x, position.y, 1.0, 1.0);
+	gl_Position = P*M*vec4(position.x, position.y, 1.0, 1.0);
 	TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
 }

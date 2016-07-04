@@ -100,7 +100,7 @@ void Menu::createButtons() {
         Button *nowyButton = new Button(this->buttonCount,pozycja.x,pozycja.y,pozycja.z,pozycja.w,temp,this->callBackArray[this->buttonCount-1]);
         glm::vec3 translate = this->listaPrzesuniec[i];
         nowyButton->setTraM(translate.x,translate.y,translate.z);
-        nowyButton->alpha=0.5f;
+        nowyButton->alpha=0.6f;
         this->listaButtonow.push_back(nowyButton);
     }
     std::cout << "button width: " << this->listaButtonow[0]->size.x << std::endl;
@@ -114,7 +114,7 @@ void Menu::checkCursor(){
     int test = this->checkButtons();
     if(this->currentButton!=test){
         if(this->currentButton!=-1){
-            this->listaButtonow[this->currentButton]->alpha=0.5f;
+            this->listaButtonow[this->currentButton]->alpha=0.6f;
         }
         this->currentButton = test;
         if(this->currentButton!=-1){

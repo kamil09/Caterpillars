@@ -6,9 +6,10 @@ Button::Button(int index, float x, float y, float width, float height, GLchar *f
     this->shader = new Shader("../src/shaders/button/buttonShaderTexture.vs","../src/shaders/button/buttonShaderTexture.frag");
     this->callBackFunction = callBack;
     this->check = 0;
-    int red = ((index & 0x000000FF) >>  0);
-    int green = ((index & 0x0000FF00) >>  8);
-    int blue = ((index & 0x00FF0000) >> 16);
+	int nowyIndex = index*100;
+    int red = ((nowyIndex & 0x000000FF) >>  0);
+    int green = ((nowyIndex & 0x0000FF00) >>  8);
+    int blue = ((nowyIndex & 0x00FF0000) >> 16);
     this->r = red/255.0f;
     this->g = green/255.0f;
     this->b = blue/255.0f;
@@ -60,15 +61,18 @@ void Button::inUniform() {
 	GLint uniformLocation = glGetUniformLocation(this->shader->shaderProgram[0], "positionZ"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
 	if(this->check!=0){
-		glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, this->alpha);
+//		glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, this->alpha);
+		glUniform4f(vertexColorLocation,this->alpha, this->alpha, this->alpha, this->alpha);
 		if(this->r > 0.0f || this->g > 0.0f || this->b > 0.0f){
 			// std::cout << "button" << std::endl;
 			this->pos.z=0.6f;
+//			this->pos.z=-0.1f;
 			// 	glUniform1f(uniformLocation, +0.6f);
 		}
 		else{
 //			glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, 1.0f);
 			this->pos.z=0.5f;
+//			this->pos.z=-0.2f;
 			// std::cout << "background" << std::endl;
 //			glUniform1f(uniformLocation, +0.5f);
 		}
