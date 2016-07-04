@@ -11,6 +11,8 @@ class MainMenu : public Menu{
 public:
     MainMenu(GLFWwindow *window,GLFWcursor *cur);
     void loadTextureFiles() override;
+    void loadCoordinates() override;
+    void loadTranslates() override;
     // ~MainMenu();
     // Font *font;
 };

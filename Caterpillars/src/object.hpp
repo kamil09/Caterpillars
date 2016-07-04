@@ -70,7 +70,7 @@ public:
     Shader *shader;
     Object();
     ~Object();
-
+   GLfloat alpha;
     bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
 
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie

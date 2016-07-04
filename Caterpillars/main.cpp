@@ -56,7 +56,6 @@ int main(void){
 
 	std::cout << Setting::getInstance().getHeight() << std::endl;
 	std::cout << Setting::getInstance().getWidth() << std::endl;
-
 	if(!window) {
 		std::cerr << "terminated" << std::endl;
 		glfwTerminate();
@@ -64,9 +63,13 @@ int main(void){
 	}
 	GLFWcursor* cursor=0;
 	initOpenGLProgram(window,cursor);
+	int width,height;
+	glfwGetWindowSize(window,&width,&height);
+	std::cout << "Current Window width: " << width << std::endl;
+	std::cout << "Current Window height: " << height << std::endl;
 
-
-	glViewport(0,0,mode->width,mode->height);
+	glViewport(0,0,width,height);
+//	glViewport(0,0,mode->width,mode->height);
 	// glViewport(0,0,800,600);
 
 
@@ -85,7 +88,8 @@ int main(void){
 	Info *info = new Info();
 	errorCheck("inicjalizacja");
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
+//		glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
+		glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
 		// glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if(inputActions::getInstance().currentState->customPollEvents == false){

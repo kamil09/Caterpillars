@@ -27,7 +27,7 @@ void Font::initChar(const char *ttf, int size) {
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
 //    std::cout << "width: " << viewport[2] << " height: " << viewport[3] << std::endl;
-    glm::mat4 projection = glm::ortho((float) -viewport[2]/2,(float) viewport[2]/2, (float) viewport[3]/2,  (float) -viewport[3]/2,-1.0f,1.0f);
+    glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) viewport[3]/2.0f,  (float) -viewport[3]/2.0f,-1.0f,1.0f);
 //	glm::mat4 projection = glm::ortho(0.0f,(float) width, 0.0f,(float) height);
 //	glm::mat4 projection = glm::ortho(0.0f,(float) width, (float) height, 0.0f,-1.0f,1.0f);
 //	glm::mat4 projection = glm::ortho((float) -width/2,(float) width/2, (float) height/2,  (float) -height/2,-1.0f,1.0f);

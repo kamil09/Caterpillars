@@ -7,14 +7,14 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->map= & Map::getInstance();
    this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
 //   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
-   this->targetView = new Sprite(-30,-30,60,60,(char*)"../src/img/target-viewfinder.png");
+   this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
 //   this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
     float roseWidth, roseHeight;
     roseWidth = roseHeight = 200;
-    this->rose = new Sprite(-roseWidth/2,-roseHeight/2,roseWidth, roseHeight,(char*)"../src/img/rose.png");
+    this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
 //   this->rose->setTraM(0.8,-0.8,0.0f);
     this->rose->initFont("../src/fonts/Arial.ttf", 32);
-    this->rose->addTextM("+", 0,0, 1, (glm::vec3(0.0f,0.0f,1.0f)));
+    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
     int width,height;
     glfwGetWindowSize(window, &width,&height);
     std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;

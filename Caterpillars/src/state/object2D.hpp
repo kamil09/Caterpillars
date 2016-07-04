@@ -23,13 +23,14 @@ public:
    ~object2D();
 
 //   void bindBuffers();
-   void draw();
+   virtual void draw();
    void setTraM(float x,float y,float z);
    std::vector<Text*> teksty;
     Font *font = NULL;
     void initFont(const char *ttf, int size);
     unsigned int addText(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
     unsigned int addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
+   virtual void inUniform(){}
 };
 
 #endif

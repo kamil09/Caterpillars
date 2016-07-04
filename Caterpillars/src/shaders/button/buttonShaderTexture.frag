@@ -13,7 +13,7 @@ uniform int check;
 void main(){
     int temp = check;
     if(temp != 0){
-	    color = texture(ourTexture1, TexCoord);
+	    color = texture(ourTexture1, TexCoord)*buttonColor;
     }
     else{
         color = buttonColor;

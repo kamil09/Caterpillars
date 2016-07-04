@@ -2,7 +2,7 @@
 #include "../inputActions.hpp"
 
 
-object2D::object2D(float x, float y, float width, float height, GLchar *fileName){
+object2D::object2D(float x, float y, float width, float height, GLchar *fileName) {
 //   this->shader = new Shader("../src/shaders/2dTex.vs","../src/shaders/2dTex.frag");
 //   this->vertices.resize(4);
 //   this->indices.resize(4);
@@ -57,6 +57,7 @@ object2D::~object2D(){
 //}
 
 void object2D::draw(){
+    errorCheck("draw");
    this->shader->useShaderProgram(0);
    glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
@@ -65,14 +66,16 @@ void object2D::draw(){
     //Macierz Projekcji
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
-    glm::mat4 projection = glm::ortho((float) -viewport[2]/2,(float) viewport[2]/2, (float) -viewport[3]/2,  (float) viewport[3]/2,-1.0f,1.0f);
+    glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) -viewport[3]/2.0f,  (float) viewport[3]/2.0f,-1.0f,1.0f);
     glUniformMatrix4fv(this->getUniform("P"),1,GL_FALSE,glm::value_ptr(projection));
    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));
 
-   glBindVertexArray(this->currentVAO());
+    this->inUniform();
+
+    glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
-   glBindVertexArray(0);
+    glBindVertexArray(0);
 
 
     //Rysowanie napisów, jeżeli są jakieś dodane do tablicy
@@ -99,5 +102,5 @@ unsigned int object2D::addText(std::string newText, float newX, float newY, floa
 }
 
 unsigned int object2D::addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
-    return this->addText(newText,-this->font->length("+",newSkala)/2+newX,-this->font->height(newSkala)/2+newY,newSkala,kolor);
+    return this->addText(newText,-this->font->length(newText,newSkala)/2+newX,-this->font->height(newSkala)/2+newY,newSkala,kolor);
 }

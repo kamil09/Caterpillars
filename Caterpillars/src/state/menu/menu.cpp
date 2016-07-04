@@ -6,6 +6,7 @@ Menu::Menu(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     std::cout << "Tworzenie menu!" << std::endl;
     this->customPollEvents = true;
     this->buttonCount = 0;
+    this->check = 0;
     // this->createButtons(4);
 
 
@@ -15,36 +16,42 @@ Menu::Menu(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
 void Menu::run(){
     // std::cout << "Rysowanie" << std::endl;
+    this->check=0;
     this->draw();
     this->checkCursor();
     glfwPollEvents();
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    this->draw2();
-    // this->font->print("123345566778890qweasdzxc", 0.0f, 0.0f, 1.0f);
+    this->check=1;
+    this->draw();
     errorCheck("RYSOWANIE MENU");
-    // errorCheck("Cos jest nie tak");
 }
 
 void Menu::draw(){
     int i;
-    for(i=0;i<this->buttonCount;i++){
-        listaButtonow[i]->draw(0);
+    if(this->check!=0){
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        this->background->check=this->check;
+        this->background->draw();
     }
-    this->background->draw(0);
+
+    for(i=0;i<this->buttonCount;i++){
+        listaButtonow[i]->check=this->check;
+        listaButtonow[i]->draw();
+//        std::cout << "draw" << std::endl;
+    }
+//    std::cout << "#poczatek draw" << std::endl;
+    if(this->check!=0){
+        for(unsigned int i=0; i<this->listaSpritow.size();i++){
+            this->listaSpritow[i]->draw();
+        }
+        glDisable(GL_BLEND);
+    }
+    else{
+        this->background->check=this->check;
+        this->background->draw();
+    }
 }
 
-void Menu::draw2(){
-    int i;
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // glBlendFunc (GL_ONE, GL_ONE);
-    this->background->draw(1);
-    for(i=0;i<this->buttonCount;i++){
-        listaButtonow[i]->draw(1);
-
-    }
-    glDisable(GL_BLEND);
-}
 
 void Menu::pressESC(){
     glfwSetWindowShouldClose(this->window, GL_TRUE);
@@ -52,7 +59,10 @@ void Menu::pressESC(){
 
 void Menu::releaseLMB(){
     // this->readPixel(this->window);
-    this->checkButtons();
+//    this->checkButtons();
+    if(this->currentButton!=-1){
+        this->listaButtonow[this->currentButton]->callBackFunction(this->window,this->cursor);
+    }
 }
 
 float* Menu::readPixel(GLFWwindow *window){
@@ -72,28 +82,28 @@ float* Menu::readPixel(GLFWwindow *window){
     return data;
 }
 
-void Menu::createBackgroud(const char* texturePath){
-    this->background = new Button(0,0.0f,0.0f,0.0f,2.0f,2.0f,texturePath,NULL);
+void Menu::createBackgroud(GLchar *fileName){
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    this->background = new Button(0,(float)-viewport[2]/2.0f,(float)-viewport[3]/2.0f,(float)viewport[2],(float)viewport[3],fileName,NULL);
 }
 
-void Menu::createButtons(int count,GLfloat x,GLfloat y){
-    // std::cout << "WTF: " << this->buttonHeight << " " << this->buttonDistance << std::endl;
-    for(int i=0; i<count; i++){
+
+void Menu::createButtons() {
+    std::cout << "tworzenie buttonow: " << std::endl;
+    for(unsigned int i=0;i < this->listaWspolrzednych.size();i++){
         this->buttonCount++;
-        GLfloat baseY;
-        // if(i==0){
-        //     baseY = y;
-        // }
-        // else{
-            baseY = y - i*(this->buttonHeight/2 + this->buttonDistance);
-        // }
-		// Button *nowyButton = new Button(255 + (i*200),0.0f,0.60f-(i*0.4f),0.5f,0.3f);
-        // this->callBackArray[i];
-        // Button *nowyButton = new Button(this->buttonCount,x,baseY,0.0f,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1],this->callBackArray[i]);
-        Button *nowyButton = new Button(this->buttonCount,x,baseY,0.0f,this->buttonWidth,this->buttonHeight,this->listaTekstur[this->buttonCount-1],this->callBackArray[i]);
-        std::cout << "X: " << x << " Y: " << baseY << std::endl;
+        glm::vec4 pozycja = this->listaWspolrzednych[this->buttonCount-1];
+        std::cout << "pozycja: " << pozycja.w << std::endl;
+        char *temp = new char[this->listaTekstur[this->buttonCount-1].size() + 1];
+        strcpy(temp,this->listaTekstur[this->buttonCount-1].c_str());
+        Button *nowyButton = new Button(this->buttonCount,pozycja.x,pozycja.y,pozycja.z,pozycja.w,temp,this->callBackArray[this->buttonCount-1]);
+        glm::vec3 translate = this->listaPrzesuniec[i];
+        nowyButton->setTraM(translate.x,translate.y,translate.z);
+        nowyButton->alpha=0.5f;
         this->listaButtonow.push_back(nowyButton);
     }
+    std::cout << "button width: " << this->listaButtonow[0]->size.x << std::endl;
 }
 
 
@@ -101,16 +111,23 @@ void Menu::createButtons(int count,GLfloat x,GLfloat y){
 void Menu::checkCursor(){
     float *data = this->readPixel(this->window);
     inputActions::getInstance().pixelData = data;
-    // std::cout << "Obecne data[0]: " << data[0] << std::endl;
-    if(data[0]==0.0f && data[1] == 0.0f && data[2] == 0.0f){
-        inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
-    }
-    else{
-        inputActions::getInstance().changeCursor(GLFW_HAND_CURSOR);
+    int test = this->checkButtons();
+    if(this->currentButton!=test){
+        if(this->currentButton!=-1){
+            this->listaButtonow[this->currentButton]->alpha=0.5f;
+        }
+        this->currentButton = test;
+        if(this->currentButton!=-1){
+            this->listaButtonow[this->currentButton]->alpha=1.0f;
+            inputActions::getInstance().changeCursor(GLFW_HAND_CURSOR);
+        }
+        else{
+            inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
+        }
     }
 }
 
-void Menu::checkButtons(){
+int Menu::checkButtons(){
     float *data = inputActions::getInstance().pixelData;
     int i;
     // std::cout << "kliknoles!" << std::endl;
@@ -120,26 +137,14 @@ void Menu::checkButtons(){
     int wybBlue = data[2]*1000000;
 
     for(i=0;i<buttonCount;i++){
-        // std::cout << "kolory: r = " << this->listaButtonow[i]->r << " g = " << this->listaButtonow[i]->g << " b = " << this->listaButtonow[i]->b << std::endl;
-        // std::cout << "Wybrano!!!!!!!: r = " << round(data[0]) << " g = " << data[1] << " b = " << data[2] << std::endl;
-        // std::cout << "Wybrano!!!!!!!: r = " << round(data[0]) << " g = " << round(data[1]) << " b = " << round(data[2]) << std::endl;
-
         int tempRed = this->listaButtonow[i]->r*1000000;
         int tempGreen = this->listaButtonow[i]->g*1000000;
         int tempBlue = this->listaButtonow[i]->b*1000000;
-        // std::cout << "kolor!!!!!!!!!: r = " << tempRed << " g = " << tempGreen << " b = " << tempBlue << std::endl;
-        // if(this->listaButtonow[i]->r == data[0] && this->listaButtonow[i]->g == data[1] && this->listaButtonow[i]->b == data[2]){
         if(tempRed == wybRed && tempGreen == wybGreen && tempBlue == wybBlue){
-        // if(this->listaButtonow[i]->r == data[0]){
-            // if(this->listaButtonow[i]->g == data[1]){
-                // if(this->listaButtonow[i]->b == data[2]){
-                    std::cout << "Wybraleś przycisk numer: " << i << std::endl;
-                    this->listaButtonow[i]->callBackFunction(this->window,this->cursor);
-                    // this->listaButtonow[i]->select();
-                    // inputActions::getInstance().nextState = static_cast<gameCaseType>(i+1);
-                    // inputActions::getInstance().changeState = true;
-                // }
-            // }
+//            std::cout << "Wybraleś przycisk numer: " << i << std::endl;
+            return i;
+//            this->listaButtonow[i]->callBackFunction(this->window,this->cursor);
         }
     }
+    return -1;
 }

@@ -25,7 +25,8 @@ class inputActions{
     //   gameCaseType nextState;
     //   bool changeState;
       //Będziemy zapamiętywać wciśnięcie przycisku i sprawdzać przy każdym przeliczaniu fizyki (co klatkę)
-      bool w_pressed;
+    bool keys[1024];
+    bool w_pressed;
       bool a_pressed;
       bool s_pressed;
       bool d_pressed;

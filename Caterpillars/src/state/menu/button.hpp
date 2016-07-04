@@ -12,27 +12,28 @@
 #include <glm/glm.hpp>
 #include "../../errorGL.hpp"
 #include "../../shaders/shader.hpp"
-#include "../../object.hpp"
+#include "../object2D.hpp"
 #include <functional>
 
-class Button : public Object{
+class Button : public object2D{
 
 public:
     // Button(int i,GLfloat newX, GLfloat newY, GLfloat newWidth,GLfloat newHeight,std::string texturePath);
-    Button(int i,GLfloat newX, GLfloat newY,GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath, std::function<void(GLFWwindow*,GLFWcursor*)> callBack);
-   ~Button();
-   GLfloat width;
-   GLfloat height;
+//    Button(int i,GLfloat newX, GLfloat newY,GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath, std::function<void(GLFWwindow*,GLFWcursor*)> callBack);
+//    Button(int i,GLfloat newX, GLfloat newY,GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath, std::function<void(GLFWwindow*,GLFWcursor*)> callBack);
+    Button(int index, float x, float y, float width, float height, GLchar *fileName,
+           std::function<void(GLFWwindow *, GLFWcursor *)> callBack);
+    ~Button();
    GLfloat r;
    GLfloat g;
    GLfloat b;
-//void bindBuffers();
-//void bindBuffers2();
-void draw(int check);
+    int check;
+//void draw(int check);
 
 // void select();
 // void (*callBackFunction)(void);
 std::function<void(GLFWwindow*,GLFWcursor*)> callBackFunction;
+    void inUniform() override;
 };
 
 // const GLchar *Button::vertexPath = "./shader.vs";

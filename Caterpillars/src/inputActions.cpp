@@ -61,6 +61,12 @@ double inputActions::getCursorLastY(){
 }
 
 void inputActions::key_callback(GLFWwindow* window,int key, int scancode, int action, int mods ){
+	if(action == GLFW_PRESS){
+		inputActions::getInstance().keys[key] = true;
+	}
+	else if(action == GLFW_RELEASE){
+		inputActions::getInstance().keys[key] = false;
+	}
 	inputActions().getInstance().currentState->key_callback(window, key, scancode, action, mods);
 }
 void inputActions::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){

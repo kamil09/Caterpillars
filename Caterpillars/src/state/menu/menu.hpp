@@ -5,13 +5,15 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "button.hpp"
+#include "../sprite.hpp"
 #include "../../errorGL.hpp"
 #include "../state.hpp"
 #include <string.h>
 #include <functional>
-// #include "../../font.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "../../errorGL.hpp"
-//#include "inputActions.hpp"
 
 // typedef void (*functionArray)();
 typedef std::function<void(GLFWwindow*,GLFWcursor*)> functionArray;
@@ -19,35 +21,29 @@ typedef std::function<void(GLFWwindow*,GLFWcursor*)> functionArray;
 class Menu : public State{
 public:
     Menu(GLFWwindow *window,GLFWcursor *cur);
-    std::vector<const char*> listaTekstur;
-    // const char* listaTekstur[4];
-    // std::vector<functionArray> callBackArray;
+//    std::vector<GLchar*> listaTekstur;
+    std::vector<std::string> listaTekstur;
+    std::vector<glm::vec4> listaWspolrzednych;
+    std::vector<glm::vec3> listaPrzesuniec;
+    int check;
+    int currentButton;
     std::vector<functionArray> callBackArray;
-    // std::vector<std::function > callBackArray;
-    // std::vector<void (*)()> callBackArray;
-    // functionArray *callBackArray;
     std::vector<Button*> listaButtonow;
+    std::vector<Sprite*> listaSpritow;
     Button *background;
     int buttonCount;
-    GLfloat buttonWidth;
-    GLfloat buttonHeight;
-    GLfloat buttonDistance;
-
-    // Font *font;
-
-
-    void createBackgroud(const char*);
+    void createBackgroud(GLchar *fileName);
     void draw() override;
-    void draw2();
     void run() override;
     void pressESC() override;
     void releaseLMB() override;
     float* readPixel(GLFWwindow *window);
-    // void addNewButton();
-    void createButtons(int count,GLfloat x,GLfloat y);
+    virtual void createButtons();
     void checkCursor();
-    void checkButtons();
+    int checkButtons();
     virtual void loadTextureFiles(){}
+    virtual void loadCoordinates(){}
+    virtual void loadTranslates(){}
 };
 
 #endif

@@ -14,24 +14,10 @@ MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 	this->callBackArray.push_back(multiPlayer);
 	this->callBackArray.push_back(options);
 	this->callBackArray.push_back(exitWindow);
-	// this->callBackArray = ;
-	// this->callBackArray[]{
-	//     MainMenu::singlePlayer,
-	//     MainMenu::multiPlayer,
-
-
-
-
-	//     MainMenu::options,
-	//     MainMenu::exitWindow
-	// };
 	this->loadTextureFiles();
+    this->loadCoordinates();
 	this->createBackgroud("../src/img/menuBack.png");
-	this->buttonWidth = 0.5f;
-	this->buttonHeight = 0.3f;
-	this->buttonDistance = 0.25f;
-	this->createButtons(4, 0.0f, 0.6f);
-
+	this->createButtons();
 }
 
 
@@ -40,6 +26,34 @@ void MainMenu::loadTextureFiles(){
 	this->listaTekstur.push_back("../src/img/multi.png");
 	this->listaTekstur.push_back("../src/img/options.png");
 	this->listaTekstur.push_back("../src/img/exit.png");
+}
+
+void MainMenu::loadCoordinates() {
+//    GLint viewport[4];
+//    glGetIntegerv(GL_VIEWPORT, viewport);
+	this->listaWspolrzednych.push_back(glm::vec4(0,0,363.2148806219,76.9572459745));
+	this->listaWspolrzednych.push_back(glm::vec4(0,0,350,77.7345918934));
+	this->listaWspolrzednych.push_back(glm::vec4(0,0,257.3014991671,61.6046640755));
+	this->listaWspolrzednych.push_back(glm::vec4(0,0,151.7767906718,59.078289839));
+    this->loadTranslates();
+}
+ 
+void MainMenu::loadTranslates() {
+    float lewyMargines = (-this->windowXsize/2)+25;
+    float yFirstButton = -100;
+    float distance = 15;
+    for (unsigned int i = 0; i<this->listaWspolrzednych.size();i++){
+        float temp=0;
+//        if(i!=0){
+            temp = temp + i*distance;
+            for(int j=1;j<=i ;j++){
+                temp = temp + listaWspolrzednych[j].w;
+            }
+//        }
+        float y = yFirstButton - temp;
+        this->listaPrzesuniec.push_back(glm::vec3(lewyMargines,y,0));
+
+    }
 }
 
 void singlePlayer(GLFWwindow* window,GLFWcursor* cursor){

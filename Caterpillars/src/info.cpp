@@ -19,7 +19,10 @@ void Info::initFps(){
     this->lastTime = glfwGetTime();
     this->nbFrames = 0;
 //    this->addText("",10.0f,10.0f,1.0f,'f');
-    this->addText("",0.0f,0.0f,1.0f,'f');
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+//    this->addText("",0.0f,0.0f,1.0f,'f');
+    this->addText("",-viewport[2]/2+30,-viewport[3]/2+30,1.0f,'f');
     // this->fpsIndex = this->texty.size()-1;
     // std::cout << this->fpsIndex << std::endl;
 }
