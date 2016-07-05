@@ -43,14 +43,29 @@ int main(void){
 
 	GLFWwindow* window;
 	if ( Setting::getInstance().getFullWindow() ){
-		if (Setting::getInstance().getFullResolution() ) window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
-		else window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+		std::cout << "full screen" << std::endl;
+		if (Setting::getInstance().getFullResolution() ){
+			std::cout << "full resolution" << std::endl;
+			window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+		}
+		else{
+			std::cout << "no full resolution" << std::endl;
+			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+		}
 	}
 	else{
-		if (Setting::getInstance().getFullResolution() ) window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",NULL, NULL);
-		else window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
+		std::cout << "no full screen" << std::endl;
+		if (Setting::getInstance().getFullResolution() ){
+			std::cout << "full resolution" << std::endl;
+			window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",NULL, NULL);
+		}
+		else{
+			std::cout << "no full resolution" << std::endl;
+			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
+		}
 	}
 
+//	window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
 	// glfwSetWindowSize(window, mode->width, mode->height);
 	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);
 

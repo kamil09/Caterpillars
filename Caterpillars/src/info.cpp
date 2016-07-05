@@ -40,6 +40,7 @@ void Info::fps(){
 }
 
 void Info::draw(){
+    glEnable(GL_BLEND);
     if(this->showFps){
         this->fps();
     }
@@ -55,6 +56,7 @@ void Info::draw(){
         // std::cout << it.first << std::endl;
         // std::cout << it->first << std::endl;
     }
+    glDisable(GL_BLEND);
 }
 
 unsigned int Info::addText(std::string newText,float newX,float newY,float newSkala,char index){

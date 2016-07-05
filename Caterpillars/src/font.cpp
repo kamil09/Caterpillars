@@ -114,8 +114,8 @@ void Font::print(std::string text, float x, float y, GLfloat scale){
 
 void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 color){
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//	glEnable(GL_BLEND);
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	this->shader->useShaderProgram(0);
 	glUniform3f(glGetUniformLocation(this->shader->shaderProgram[0], "textColor"), color.x, color.y, color.z);
@@ -171,7 +171,7 @@ void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-	glDisable(GL_BLEND);
+//	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 
 }

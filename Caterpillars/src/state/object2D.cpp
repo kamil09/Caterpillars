@@ -58,25 +58,25 @@ object2D::~object2D(){
 
 void object2D::draw(){
     errorCheck("draw");
-   this->shader->useShaderProgram(0);
-   glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+
+    this->shader->useShaderProgram(0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->texture2D);
+    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 
     //Macierz Projekcji
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
     glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) -viewport[3]/2.0f,  (float) viewport[3]/2.0f,-1.0f,1.0f);
     glUniformMatrix4fv(this->getUniform("P"),1,GL_FALSE,glm::value_ptr(projection));
-   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
-   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));
+    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));
 
     this->inUniform();
 
     glBindVertexArray(this->currentVAO());
-	glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-
 
     //Rysowanie napisów, jeżeli są jakieś dodane do tablicy
     if(!this->teksty.empty() && this->font != NULL){
@@ -89,6 +89,7 @@ void object2D::draw(){
 
         }
     }
+
 }
 
 void object2D::initFont(const char *ttf, int size) {
@@ -102,5 +103,12 @@ unsigned int object2D::addText(std::string newText, float newX, float newY, floa
 }
 
 unsigned int object2D::addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
-    return this->addText(newText,-this->font->length(newText,newSkala)/2+newX,-this->font->height(newSkala)/2+newY,newSkala,kolor);
+    return this->addText(newText,this->pos.x + this->size.x/2+(-this->font->length(newText,newSkala)/2+newX),this->pos.y+this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
+//    return this->addText(newText,(-this->font->length(newText,newSkala)/2+newX),(-this->font->height(newSkala)/2+newY),newSkala,kolor);
 }
+
+
+unsigned int object2D::addTextL(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
+    return this->addText(newText,this->pos.x + this->size.x/2+(-this->font->length(newText,newSkala)/2+newX),this->pos.y+this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
+}
+

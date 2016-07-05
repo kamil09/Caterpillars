@@ -29,6 +29,7 @@ public:
     Font *font = NULL;
     void initFont(const char *ttf, int size);
     unsigned int addText(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
+    unsigned int addTextL(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
     unsigned int addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
    virtual void inUniform(){}
 };

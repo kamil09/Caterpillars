@@ -60,28 +60,44 @@ void Button::inUniform() {
     errorCheck("Uniform");
 	GLint uniformLocation = glGetUniformLocation(this->shader->shaderProgram[0], "positionZ"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
-	if(this->check!=0){
+//	if(this->check!=0){
 //		glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, this->alpha);
-		glUniform4f(vertexColorLocation,this->alpha, this->alpha, this->alpha, this->alpha);
-		if(this->r > 0.0f || this->g > 0.0f || this->b > 0.0f){
-			// std::cout << "button" << std::endl;
-			this->pos.z=0.6f;
+	if(this->r > 0.0f || this->g > 0.0f || this->b > 0.0f){
+		if(this->check!=0){
+            glUniform4f(vertexColorLocation,this->alpha, this->alpha, this->alpha, this->alpha);
+            this->pos.z=0.0f;
+        }
+        else{
+            glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
+            this->pos.z=-0.9f;
+        }
+
+		// std::cout << "button" << std::endl;
 //			this->pos.z=-0.1f;
 			// 	glUniform1f(uniformLocation, +0.6f);
-		}
-		else{
+	}
+	else{
+        if(this->check!=0){
+            glUniform4f(vertexColorLocation,this->alpha, this->alpha, this->alpha, this->alpha);
+            this->pos.z=-0.1f;
+        }
+        else{
+            glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
+            this->pos.z=-1.0f;
+        }
+
 //			glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, 1.0f);
-			this->pos.z=0.5f;
+//			this->pos.z=0.5f;
 //			this->pos.z=-0.2f;
 			// std::cout << "background" << std::endl;
 //			glUniform1f(uniformLocation, +0.5f);
-		}
 	}
-	else{
-		glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
-		this->pos.z = 0.0f;
-//		glUniform1f(uniformLocation, this->pos.z);
-	}
+//	}
+//	else{
+//		glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
+//		this->pos.z = 0.0f;
+////		glUniform1f(uniformLocation, this->pos.z);
+//	}
 	glUniform1f(uniformLocation, this->pos.z);
 //	if(this->check!=0){
 //		glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
