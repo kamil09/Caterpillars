@@ -20,8 +20,16 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;
    this->rose->setTraM((width-roseWidth)/2,-(height-roseHeight)/2,0.0f);
 
+   //Dodawanie Caterpillarow
+   for(int i=0;i<6;i++) {
+
    this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
-   this->caterrVec[0]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
+   this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
+   this->caterrVec[i]->teamID = (i%2)+1;
+   std::cout << endl << this->caterrVec[i]->teamID;
+
+   }
+   //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
    this->currentCutterpillar = this->caterrVec[0];
 
    this->lookFrom=glm::vec3(0, 400, 0);
@@ -164,13 +172,13 @@ void Game::catterMove(){
         newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
      }
      //Dodane przez Pawla do testow - to bedzie pozniej zmienione na myszke
-     if(inputActions::getInstance().i_pressed){
+     if(inputActions::getInstance().leftClick){
         glm::vec3 shot;
 
         shot.x = shotViewVec.x * 2;
         shot.y = shotViewVec.y * 2;
         shot.z = shotViewVec.z * 2;
-        //this->currentCutterpillar->diagonalThrow(shot);
+        this->currentCutterpillar->diagonalThrow(shot);
      }
  }
    else if(inputActions::getInstance().space_pressed){
@@ -198,7 +206,7 @@ void Game::catterMove(){
       }
 
       //shot.x = 0;
-      shot.y = 10;
+      shot.y = 3;
       //shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
     }

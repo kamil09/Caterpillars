@@ -1,5 +1,5 @@
-#ifndef caterpillarCl
-#define caterpillarCl
+#ifndef gunCl
+#define gunCl
 
 #include "object.hpp"
 #include <stdlib.h>
@@ -14,21 +14,19 @@
 #include "loadData/loadOBJ.hpp"
 
 
-class Caterpillar : public Object{
+class Gun : public Object{
 private:
-   float life;          //Życie naszego bohatera :)
-   float maxWalkAngle;  //Maksymalny kąt pod jakim może wchodzić worms na wzniesienie
+
 public:
-   Caterpillar(char *filename);
-   ~Caterpillar();
-//   void bindBuffers(bool newBuffer);
+   Gun(char *filename, float min, float max);
+   ~Gun();
    void draw(glm::mat4 projection, glm::mat4 modelView);
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
-   float maxWalkSpeed;  //maksymalna prędkość chodzenia m/s
    float viewBack;
    float tmpViewBack;
-   int teamID;
+   float minDamage;
+   float maxDamage;
 };
 
 #endif
