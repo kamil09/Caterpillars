@@ -13,8 +13,10 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     roseWidth = roseHeight = 200;
     this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
 //   this->rose->setTraM(0.8,-0.8,0.0f);
-    this->rose->initFont("../src/fonts/Arial.ttf", 32);
-    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
+//    this->rose->initFont("../src/fonts/Arial.ttf", 32);
+    this->targetView->initFont("../src/fonts/Arial.ttf", 32);
+    this->targetView->addTextL("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
+//    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
     int width,height;
     glfwGetWindowSize(window, &width,&height);
     std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;

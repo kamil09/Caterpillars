@@ -103,12 +103,12 @@ unsigned int object2D::addText(std::string newText, float newX, float newY, floa
 }
 
 unsigned int object2D::addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
-    return this->addText(newText,this->pos.x + this->size.x/2+(-this->font->length(newText,newSkala)/2+newX),this->pos.y+this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
+    return this->addText(newText,this->pos.x + this->size.x/2+(-this->font->length(newText,newSkala)/2+newX),-this->pos.y-this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
 //    return this->addText(newText,(-this->font->length(newText,newSkala)/2+newX),(-this->font->height(newSkala)/2+newY),newSkala,kolor);
 }
 
 
 unsigned int object2D::addTextL(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
-    return this->addText(newText,this->pos.x + this->size.x/2+(-this->font->length(newText,newSkala)/2+newX),this->pos.y+this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
+    return this->addText(newText,this->pos.x + newX,-this->pos.y-this->size.y-newY,newSkala,kolor);
 }
 

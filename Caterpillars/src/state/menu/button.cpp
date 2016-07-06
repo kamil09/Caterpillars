@@ -86,12 +86,12 @@ void Button::inUniform() {
             this->pos.z=-1.0f;
         }
 
-//			glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, 1.0f);
 //			this->pos.z=0.5f;
 //			this->pos.z=-0.2f;
-			// std::cout << "background" << std::endl;
+        // std::cout << "background" << std::endl;
 //			glUniform1f(uniformLocation, +0.5f);
-	}
+    }
+//			glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, 1.0f);
 //	}
 //	else{
 //		glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
