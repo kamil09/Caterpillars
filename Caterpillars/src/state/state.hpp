@@ -39,7 +39,9 @@ public:
     virtual void pressI(){}
     virtual void releaseI(){}
     //ESC
-    virtual void pressESC(){}
+    virtual void pressESC(){
+
+    }
     virtual void releaseESC(){}
     //SHIFT
     virtual void pressShift(){}
@@ -52,6 +54,8 @@ public:
     virtual void releaseRMB(){}
     //Sprawdzanie Wcisnietych Klawiszy
     void inputControl();
+    //Do obslugiPrzyciskow
+    virtual void buttonControl(){}
 };
 
 

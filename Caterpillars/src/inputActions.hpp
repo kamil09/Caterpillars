@@ -7,6 +7,8 @@
 #include <GLFW/glfw3.h>
 #include "state/state.hpp"
 #include "state/game/game.hpp"
+#include "state/menu/mainMenu/mainMenu.hpp"
+#include "state/menu/mainMenu/optionMenu.hpp"
 // #include "state/menu/menu.hpp"
 
 #define M_PI 3.14159265358979323846
@@ -22,6 +24,8 @@ class inputActions{
       static inputActions& getInstance();
       void getMouseCurrentPosition(GLFWwindow *window);
       State *currentState;
+    std::map<char,State*> mapStates;
+
     //   gameCaseType nextState;
     //   bool changeState;
       //Będziemy zapamiętywać wciśnięcie przycisku i sprawdzać przy każdym przeliczaniu fizyki (co klatkę)
@@ -58,7 +62,8 @@ class inputActions{
       double getCursorLastX();
       double getCursorLastY();
 
-      void setCallbacks(GLFWwindow* window,GLFWcursor* cursor);
+//      void setCallbacks(GLFWwindow* window,GLFWcursor* cursor);
+    GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
       static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );
       static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
       static void mouse_button_callback(GLFWwindow* window, int key, int action, int mods);
@@ -67,8 +72,11 @@ class inputActions{
       void changeCursor(int shape);
       float *pixelData;
       int cursorShape;
-      void changeMenu(GLFWwindow* window,GLFWcursor* cursor);
-      void changeGame(GLFWwindow* window,GLFWcursor* cursor);
+      State *findState(char key, GLFWwindow *window, GLFWcursor *cursor);
+      State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
+      void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
+//      void changeGame(GLFWwindow* window,GLFWcursor* cursor);
+
 };
 
 

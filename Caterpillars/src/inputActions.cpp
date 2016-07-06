@@ -81,7 +81,7 @@ void inputActions::scroll_callback(GLFWwindow* window, double xoffset, double yo
 
 
 
-void inputActions::setCallbacks(GLFWwindow* window,GLFWcursor* cursor){
+GLFWcursor * inputActions::setCallbacks(GLFWwindow *window, GLFWcursor *cursor){
 	glfwSetKeyCallback(window, inputActions::key_callback);
 	cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
@@ -89,6 +89,7 @@ void inputActions::setCallbacks(GLFWwindow* window,GLFWcursor* cursor){
 	glfwSetMouseButtonCallback(window, inputActions::getInstance().mouse_button_callback);
 	glfwSetScrollCallback(window, inputActions::getInstance().scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	return cursor;
 }
 
 void inputActions::changeCursor(int shape){
@@ -99,11 +100,64 @@ void inputActions::changeCursor(int shape){
 	}
 }
 
-void inputActions::changeMenu(GLFWwindow* window,GLFWcursor* cursor){
+
+//void inputActions::changeGame(GLFWwindow* window,GLFWcursor* cursor){
+//	Game *game = new Game(window,cursor);
+//	inputActions::getInstance().currentState = game;
+////	std::cout << "HEJ!" << std::endl;
+//}
+
+
+State *inputActions::findState(char key, GLFWwindow *window, GLFWcursor *cursor) {
+	char upKey = toupper(key);
+//	std::map<char,State*> map = inputActions::getInstance().mapStates;
+	std::map<char,State*>::iterator it = inputActions::getInstance().mapStates.find(upKey);
+//	std::cout << "map size: " << inputActions::getInstance().mapStates.size() << std::endl;
+	if(it != inputActions::getInstance().mapStates.end() ){
+//		std::cout << "map: " << it->first << std::endl;
+		State *result =it->second;
+		return result;
+//		return it->second;
+	}
+	else{
+		std::cout << "Tworzenie" << std::endl;
+		return inputActions::getInstance().createState(upKey,window,cursor);
+	}
+
+//	return nullptr;
 }
 
-void inputActions::changeGame(GLFWwindow* window,GLFWcursor* cursor){
-	Game *game = new Game(window,cursor);
-	inputActions::getInstance().currentState = game;
-	std::cout << "HEJ!" << std::endl;
+
+State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *cursor) {
+	State *temp = nullptr;
+//	std::map<char,State*> map = inputActions::getInstance().mapStates;
+	switch(key){
+		case 'M':
+			temp = new MainMenu(window,cursor);
+			inputActions::getInstance().mapStates.insert(std::make_pair('M',temp));
+			break;
+		case 'G':
+			temp = new Game(window,cursor);
+			inputActions::getInstance().mapStates.insert(std::make_pair('G',temp));
+			break;
+		case 'O':
+			Menu *menu = (Menu*) inputActions::getInstance().findState('M',window,cursor);
+			if(menu!= nullptr){
+				temp = new OptionMenu(menu,window,cursor);
+				inputActions::getInstance().mapStates.insert(std::make_pair('O',temp));
+			}
+			break;
+	}
+	return temp;
 }
+
+
+void inputActions::changeState(char key, GLFWwindow *window, GLFWcursor *cursor) {
+	State* newState = inputActions::getInstance().findState(key,window,cursor);
+	if(newState!= nullptr){
+		inputActions::getInstance().currentState = newState;
+	}
+}
+
+
+

@@ -16,7 +16,7 @@
 #include "../../errorGL.hpp"
 
 // typedef void (*functionArray)();
-typedef std::function<void(GLFWwindow*,GLFWcursor*)> functionArray;
+typedef std::function<void(State *,GLFWwindow*,GLFWcursor*)> functionArray;
 
 class Menu : public State{
 public:
@@ -29,21 +29,24 @@ public:
     int currentButton;
     std::vector<functionArray> callBackArray;
     std::vector<Button*> listaButtonow;
-    std::vector<Sprite*> listaSpritow;
+    std::vector<Sprite*> listaSpritowFG;
+    std::vector<Sprite*> listaSpritowBG;
     Button *background;
     int buttonCount;
     void createBackgroud(GLchar *fileName);
-    void draw() override;
+    virtual void draw() override;
     void run() override;
-    void pressESC() override;
-    void releaseLMB() override;
+    virtual void pressESC() override;
+    virtual void releaseLMB() override;
     float* readPixel(GLFWwindow *window);
     virtual void createButtons();
     void checkCursor();
     int checkButtons();
+    virtual void loadCallBacks(){}
     virtual void loadTextureFiles(){}
     virtual void loadCoordinates(){}
     virtual void loadTranslates(){}
+    virtual void loadSprites(){}
 };
 
 #endif

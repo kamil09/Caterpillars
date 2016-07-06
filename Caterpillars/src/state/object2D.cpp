@@ -21,7 +21,12 @@ object2D::object2D(float x, float y, float width, float height, GLchar *fileName
       0,1,2,3
    };
    this->bindBuffers(5,GL_STATIC_DRAW);
-    this->bindTexture2D(fileName);
+    if(fileName!=NULL){
+        this->bindTexture2D(fileName);
+    }
+    else{
+        this->texture2D=NULL;
+    }
    this->posM = glm::mat4(1);
    this->rotM = glm::mat4(1);
    this->sclM = glm::mat4(1);
@@ -60,9 +65,12 @@ void object2D::draw(){
     errorCheck("draw");
 
     this->shader->useShaderProgram(0);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->texture2D);
-    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+    if(this->texture2D!=NULL){
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, this->texture2D);
+        glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+        errorCheck("texture_2D");
+    }
 
     //Macierz Projekcji
     GLint viewport[4];
@@ -71,7 +79,7 @@ void object2D::draw(){
     glUniformMatrix4fv(this->getUniform("P"),1,GL_FALSE,glm::value_ptr(projection));
     GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
     glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));
-
+    errorCheck("Matrixs");
     this->inUniform();
 
     glBindVertexArray(this->currentVAO());
@@ -82,6 +90,7 @@ void object2D::draw(){
     if(!this->teksty.empty() && this->font != NULL){
         glm::mat4 temp = this->posM;
         temp[3][1] = -temp[3][1];
+        temp[3][2] = 0.0f;
         this->font->posM = temp;
 
         for(unsigned int i=0;i < this->teksty.size();i++){
@@ -109,6 +118,6 @@ unsigned int object2D::addTextM(std::string newText, float newX, float newY, flo
 
 
 unsigned int object2D::addTextL(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
-    return this->addText(newText,this->pos.x + newX,-this->pos.y-this->size.y-newY,newSkala,kolor);
+    return this->addText(newText,this->pos.x + newX,-this->pos.y-this->size.y+newY,newSkala,kolor);
 }
 
