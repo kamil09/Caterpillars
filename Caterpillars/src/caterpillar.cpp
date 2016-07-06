@@ -49,9 +49,9 @@ void Caterpillar::setPos(float x,float y,float z){
 
 void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
-   glActiveTexture(GL_TEXTURE0);
+   glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 3);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
@@ -64,5 +64,5 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
    glBindVertexArray(this->currentVAO());
 	//glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
    glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
-   glBindVertexArray(0);
+   glBindVertexArray(3);
 }

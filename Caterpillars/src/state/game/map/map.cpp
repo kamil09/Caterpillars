@@ -230,9 +230,9 @@ void Map::genTriangleTab(){
 
 void Map::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
-   glActiveTexture(GL_TEXTURE0);
+   glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_3D, this->texture3D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 2);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
@@ -243,7 +243,7 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView){
    glBindVertexArray(this->currentVAO());
 
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
-   glBindVertexArray(0);
+   glBindVertexArray(2);
 
    //Rysujemy mgłę zamiast wody lub wodę :)
 }
