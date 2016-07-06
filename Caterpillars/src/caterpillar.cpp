@@ -19,6 +19,8 @@ Caterpillar::Caterpillar(char *filename){
    this->bindTexture2D("../src/img/catTX.png");
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
 
+   this->weapon = new Gun( (char*)"../src/obj/weapon.obj",10,100,this);
+
    this->size.y=2;
    this->size.x=2;
    this->size.z=1;
@@ -65,4 +67,6 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
 	//glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
    glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
    glBindVertexArray(3);
+
+   this->weapon->draw(projection,modelView,this);
 }

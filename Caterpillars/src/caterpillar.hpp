@@ -12,12 +12,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "loadData/loadOBJ.hpp"
+#include "gun.hpp"
 
 
 class Caterpillar : public Object{
 private:
    float life;          //Życie naszego bohatera :)
    float maxWalkAngle;  //Maksymalny kąt pod jakim może wchodzić worms na wzniesienie
+   Gun *weapon;
 public:
    Caterpillar(char *filename);
    ~Caterpillar();

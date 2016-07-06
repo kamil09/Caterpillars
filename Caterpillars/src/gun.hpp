@@ -13,20 +13,20 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "loadData/loadOBJ.hpp"
 
-
 class Gun : public Object{
 private:
 
 public:
-   Gun(char *filename, float min, float max);
+   Gun(char *filename, float min, float max,Object *owner);
    ~Gun();
-   void draw(glm::mat4 projection, glm::mat4 modelView);
+   void draw(glm::mat4 projection, glm::mat4 modelView, Object *owner);
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
    float viewBack;
    float tmpViewBack;
    float minDamage;
    float maxDamage;
+   glm::mat4 posMadd;   //Maciez przesuniecia
 };
 
 #endif

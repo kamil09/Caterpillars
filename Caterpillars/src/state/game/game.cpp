@@ -73,7 +73,6 @@ void Game::drawRose(){
 
    cosK= ((look.x*wind.x) + (look.y*wind.y)) / (lookD*windD);
 
-
    double kat = -acos(cosK);
    float p = look.x*wind.y-look.y*wind.x;
    if(p>0) kat*=-1;
