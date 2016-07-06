@@ -43,9 +43,9 @@ Wall::~Wall(){
 //}
 void Wall::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
-   glActiveTexture(GL_TEXTURE0);
+   glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"),1);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
@@ -55,5 +55,5 @@ void Wall::draw(glm::mat4 projection, glm::mat4 modelView){
 
    glBindVertexArray(this->currentVAO());
 	glDrawElements(GL_TRIANGLE_STRIP, 10, GL_UNSIGNED_INT, 0);
-   glBindVertexArray(0);
+   glBindVertexArray(1);
 }

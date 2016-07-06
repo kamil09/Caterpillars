@@ -65,6 +65,7 @@ void object2D::draw(){
     errorCheck("draw");
 
     this->shader->useShaderProgram(0);
+
     if(this->texture2D!=NULL){
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, this->texture2D);
@@ -84,7 +85,7 @@ void object2D::draw(){
 
     glBindVertexArray(this->currentVAO());
     glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+    glBindVertexArray(5);
 
     //Rysowanie napisów, jeżeli są jakieś dodane do tablicy
     if(!this->teksty.empty() && this->font != NULL){
@@ -120,4 +121,3 @@ unsigned int object2D::addTextM(std::string newText, float newX, float newY, flo
 unsigned int object2D::addTextL(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
     return this->addText(newText,this->pos.x + newX,-this->pos.y-this->size.y+newY,newSkala,kolor);
 }
-
