@@ -139,9 +139,10 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 		std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
 	}
 	errorCheck("Po glewInit");
-	MainMenu *mainMenu = new MainMenu(window,cursor);
-	inputActions::getInstance().currentState = mainMenu;
-	inputActions::getInstance().setCallbacks(window,cursor);
+//	MainMenu *mainMenu = new MainMenu(window,cursor);
+//	inputActions::getInstance().currentState = mainMenu;
+	cursor = inputActions::getInstance().setCallbacks(window,cursor);
+	inputActions::getInstance().changeState('m',window,cursor);
 
 	const GLubyte *vendor = glGetString(GL_VENDOR);
 	const GLubyte *renderer = glGetString(GL_RENDERER);

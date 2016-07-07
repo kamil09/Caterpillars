@@ -1,35 +1,52 @@
 #include "mainMenu.hpp"
 #include "../../../inputActions.hpp"
 
-void singlePlayer(GLFWwindow* window,GLFWcursor* cursor);
-void multiPlayer(GLFWwindow* window,GLFWcursor* cursor);
+void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
 
-void options(GLFWwindow* window,GLFWcursor* cursor);
+void options(State *state, GLFWwindow *window, GLFWcursor *cursor);
 
-void exitWindow(GLFWwindow* window,GLFWcursor* cursor);
+void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor);
 
 MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 	// this->callBackArray.push_back(this->singlePlayer);
-	this->callBackArray.push_back(singlePlayer);
-	this->callBackArray.push_back(multiPlayer);
-	this->callBackArray.push_back(options);
-	this->callBackArray.push_back(exitWindow);
+	this->loadCallBacks();
+//	this->callBackArray.push_back(singlePlayer);
+//	this->callBackArray.push_back(multiPlayer);
+//	this->callBackArray.push_back(options);
+//	this->callBackArray.push_back(exitWindow);
 	this->loadTextureFiles();
     this->loadCoordinates();
 	this->createBackgroud("../src/img/menuBack.png");
+//	this->createBackgroud(NULL);
 	this->createButtons();
+	this->loadSprites();
+}
+
+
+void MainMenu::loadSprites() {
+//	Menu::loadSprites();
 	float pionowyMargines,poziomyMargines;
 	pionowyMargines = 80;
 	poziomyMargines = 130;
 	float imgWidth,imgHeight,temp;
 	imgWidth=3774.0f;
 	imgHeight=447.0f;
+//	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
 	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
 	Sprite *title = new Sprite((-this->windowXsize/2)+pionowyMargines,this->windowYsize/2-poziomyMargines-temp,this->windowXsize-2*pionowyMargines,temp,"../src/img/title.png");
 //	Sprite *title = new Sprite((-1366/2)+pionowyMargines,768/2-poziomyMargines-temp,1366-2*pionowyMargines,temp,"../src/img/title.png");
-	this->listaSpritow.push_back(title);
+	this->listaSpritowFG.push_back(title);
 }
 
+
+void MainMenu::loadCallBacks() {
+	this->callBackArray.push_back(singlePlayer);
+	this->callBackArray.push_back(multiPlayer);
+	this->callBackArray.push_back(options);
+	this->callBackArray.push_back(exitWindow);
+
+}
 
 void MainMenu::loadTextureFiles(){
 	this->listaTekstur.push_back("../src/img/single.png");
@@ -56,7 +73,7 @@ void MainMenu::loadTranslates() {
         float temp=0;
 //        if(i!=0){
             temp = temp + i*distance;
-            for(int j=1;j<=i ;j++){
+            for(unsigned int j=1;j<=i ;j++){
                 temp = temp + listaWspolrzednych[j].w;
             }
 //        }
@@ -66,20 +83,24 @@ void MainMenu::loadTranslates() {
     }
 }
 
-void singlePlayer(GLFWwindow* window,GLFWcursor* cursor){
+void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Single Player!" << std::endl;
-	inputActions::getInstance().changeGame(window, cursor);
+	inputActions::getInstance().changeState('g',window,cursor);
+//	inputActions::getInstance().changeGame(window, cursor);
 }
-void multiPlayer(GLFWwindow* window,GLFWcursor* cursor){
+void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "MultiPlayer!" << std::endl;
 }
 
-void options(GLFWwindow* window,GLFWcursor* cursor){
+void options(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 	// this->callBackArray.push_back(static_cast(MainMenu::singlePlayer));
+//	OptionMenu *optionMenu = new OptionMenu(state,window,cursor);
+	inputActions::getInstance().changeState('o',window,cursor);
 	std::cout << "Options!" << std::endl;
+
 }
 
-void exitWindow(GLFWwindow* window,GLFWcursor* cursor){
+void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Exit window!" << std::endl;
 	glfwSetWindowShouldClose(window, GL_TRUE);
 

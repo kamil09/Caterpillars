@@ -13,17 +13,20 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     roseWidth = roseHeight = 200;
     this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
 //   this->rose->setTraM(0.8,-0.8,0.0f);
-    this->rose->initFont("../src/fonts/Arial.ttf", 32);
-    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
+//    this->rose->initFont("../src/fonts/Arial.ttf", 32);
+    this->targetView->initFont("../src/fonts/Arial.ttf", 32);
+    this->targetView->addTextL("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
+//    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
     int width,height;
     glfwGetWindowSize(window, &width,&height);
     std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;
    this->rose->setTraM((width-roseWidth)/2,-(height-roseHeight)/2,0.0f);
 
    //Dodawanie Caterpillarow
-   for(int i=0;i<6;i++) {
+   for(int i=0;i<1;i++) {
 
       this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
+
       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
       this->caterrVec[i]->teamID = (i%2)+1;
       std::cout << endl << this->caterrVec[i]->teamID;
@@ -34,7 +37,9 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
+
    this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 500.0f);
+
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;
 }
@@ -42,16 +47,21 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 void Game::draw(){
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 
-   this->map->draw(this->projection,this->modelView);
+//   this->map->draw(this->projection,this->modelView);
    this->wall->draw(this->projection,this->modelView);
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   for(int i=0;i < (int)this->caterrVec.size(); i++)
-      if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
-         this->caterrVec[i]->draw(this->projection,this->modelView);
+    for(int i=0;i < (int)this->caterrVec.size(); i++){
+        if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
+//            for (int j = 0; j < 10; j++) {
+//                this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
+//                this->caterrVec[i]->draw(this->projection,this->modelView);
+//            }
+        this->caterrVec[i]->draw(this->projection,this->modelView);
 
-   if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
+    }
+    if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
 
    this->drawRose();
    glDisable(GL_BLEND);

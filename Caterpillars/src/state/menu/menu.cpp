@@ -7,6 +7,7 @@ Menu::Menu(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->customPollEvents = true;
     this->buttonCount = 0;
     this->check = 0;
+    this->currentButton = -1;
     // this->createButtons(4);
 
 
@@ -30,10 +31,16 @@ void Menu::draw(){
     if(this->check!=0){
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    if(this->check!=0){
+        for(unsigned int i=0; i<this->listaSpritowBG.size();i++){
+            this->listaSpritowBG[i]->draw();
+        }
+    }
+        if(this->background!=NULL){
         this->background->check=this->check;
         this->background->draw();
     }
-
     for(i=0;i<this->buttonCount;i++){
         listaButtonow[i]->check=this->check;
         listaButtonow[i]->draw();
@@ -41,14 +48,16 @@ void Menu::draw(){
     }
 //    std::cout << "#poczatek draw" << std::endl;
     if(this->check!=0){
-        for(unsigned int i=0; i<this->listaSpritow.size();i++){
-            this->listaSpritow[i]->draw();
+        for(unsigned int i=0; i<this->listaSpritowFG.size();i++){
+            this->listaSpritowFG[i]->draw();
         }
         glDisable(GL_BLEND);
     }
     else{
-        this->background->check=this->check;
-        this->background->draw();
+//        if(this->background!= nullptr){
+//            this->background->check=this->check;
+//            this->background->draw();
+//        }
     }
 }
 
@@ -61,7 +70,9 @@ void Menu::releaseLMB(){
     // this->readPixel(this->window);
 //    this->checkButtons();
     if(this->currentButton!=-1){
-        this->listaButtonow[this->currentButton]->callBackFunction(this->window,this->cursor);
+        this->listaButtonow[this->currentButton]->callBackFunction(this,this->window,this->cursor);
+        inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
+        this->currentButton=-1;
     }
 }
 
@@ -109,20 +120,22 @@ void Menu::createButtons() {
 
 
 void Menu::checkCursor(){
-    float *data = this->readPixel(this->window);
-    inputActions::getInstance().pixelData = data;
-    int test = this->checkButtons();
-    if(this->currentButton!=test){
-        if(this->currentButton!=-1){
-            this->listaButtonow[this->currentButton]->alpha=0.6f;
-        }
-        this->currentButton = test;
-        if(this->currentButton!=-1){
-            this->listaButtonow[this->currentButton]->alpha=1.0f;
-            inputActions::getInstance().changeCursor(GLFW_HAND_CURSOR);
-        }
-        else{
-            inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
+    if(!this->listaButtonow.empty()){
+        float *data = this->readPixel(this->window);
+        inputActions::getInstance().pixelData = data;
+        int test = this->checkButtons();
+        if(this->currentButton!=test){
+            if(this->currentButton!=-1){
+                this->listaButtonow[this->currentButton]->alpha=0.6f;
+            }
+            this->currentButton = test;
+            if(this->currentButton!=-1){
+                this->listaButtonow[this->currentButton]->alpha=1.0f;
+                inputActions::getInstance().changeCursor(GLFW_HAND_CURSOR);
+            }
+            else{
+                inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
+            }
         }
     }
 }

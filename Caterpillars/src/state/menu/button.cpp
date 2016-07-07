@@ -1,7 +1,7 @@
 #include "button.hpp"
 
 Button::Button(int index, float x, float y, float width, float height, GLchar *fileName,
-               std::function<void(GLFWwindow *, GLFWcursor *)> callBack) : object2D(x, y, width, height,
+               std::function<void(State *,GLFWwindow *, GLFWcursor *)> callBack) : object2D(x, y, width, height,
                                                                                     fileName) {
     this->shader = new Shader("../src/shaders/button/buttonShaderTexture.vs","../src/shaders/button/buttonShaderTexture.frag");
     this->callBackFunction = callBack;
@@ -60,12 +60,22 @@ void Button::inUniform() {
     errorCheck("Uniform");
 	GLint uniformLocation = glGetUniformLocation(this->shader->shaderProgram[0], "positionZ"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
 	GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "buttonColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
+    if(this->texture2D==NULL){
+        this->check = 0;
+    }
 //	if(this->check!=0){
 //		glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, this->alpha);
-	if(this->r > 0.0f || this->g > 0.0f || this->b > 0.0f){
+    if(this->check==0){
+        GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+        glm::mat4 temp = this->posM;
+        temp[3][2] = 0.0f;
+        glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(temp*this->sclM*this->rotM));
+    }
+
+    if(this->r > 0.0f || this->g > 0.0f || this->b > 0.0f){
 		if(this->check!=0){
             glUniform4f(vertexColorLocation,this->alpha, this->alpha, this->alpha, this->alpha);
-            this->pos.z=0.0f;
+            this->pos.z=0.1f;
         }
         else{
             glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
@@ -86,12 +96,12 @@ void Button::inUniform() {
             this->pos.z=-1.0f;
         }
 
-//			glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, 1.0f);
 //			this->pos.z=0.5f;
 //			this->pos.z=-0.2f;
-			// std::cout << "background" << std::endl;
+        // std::cout << "background" << std::endl;
 //			glUniform1f(uniformLocation, +0.5f);
-	}
+    }
+//			glUniform4f(vertexColorLocation,1.0f, 1.0f, 1.0f, 1.0f);
 //	}
 //	else{
 //		glUniform4f(vertexColorLocation, this->r, this->g, this->b, 0.0f);
