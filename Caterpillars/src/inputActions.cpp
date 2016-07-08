@@ -130,6 +130,7 @@ State *inputActions::findState(char key, GLFWwindow *window, GLFWcursor *cursor)
 
 State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *cursor) {
 	State *temp = nullptr;
+	State *state;
 //	std::map<char,State*> map = inputActions::getInstance().mapStates;
 	switch(key){
 		case 'M':
@@ -141,11 +142,20 @@ State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *curso
 			inputActions::getInstance().mapStates.insert(std::make_pair('G',temp));
 			break;
 		case 'O':
-			Menu *menu = (Menu*) inputActions::getInstance().findState('M',window,cursor);
-			if(menu!= nullptr){
-				temp = new OptionMenu(menu,window,cursor);
+//			State *state = (Menu*) inputActions::getInstance().findState('M',window,cursor);
+			state = inputActions::getInstance().findState('M',window,cursor);
+			if(state!= nullptr){
+				temp = new OptionMenu(state,window,cursor);
 				inputActions::getInstance().mapStates.insert(std::make_pair('O',temp));
 			}
+			break;
+		case 'S':
+			state = inputActions::getInstance().findState('M',window,cursor);
+			if(state!= nullptr){
+				temp = new GameMenu(state,window,cursor);
+				inputActions::getInstance().mapStates.insert(std::make_pair('S',temp));
+			}
+
 			break;
 	}
 	return temp;

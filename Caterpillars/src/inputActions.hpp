@@ -9,6 +9,7 @@
 #include "state/game/game.hpp"
 #include "state/menu/mainMenu/mainMenu.hpp"
 #include "state/menu/mainMenu/optionMenu.hpp"
+#include "state/menu/mainMenu/gameMenu.hpp"
 // #include "state/menu/menu.hpp"
 
 #define M_PI 3.14159265358979323846

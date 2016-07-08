@@ -5,7 +5,7 @@
 #include "optionMenu.hpp"
 
 
-OptionMenu::OptionMenu(Menu *menu, GLFWwindow *window, GLFWcursor *cur) : SubMenu(menu,window,cur) {
+OptionMenu::OptionMenu(State *state, GLFWwindow *window, GLFWcursor *cur) : SubMenu(state, window, cur) {
     this->loadSprites();
     this->loadCallBacks();
     this->loadTextureFiles();
@@ -27,8 +27,8 @@ void OptionMenu::loadCoordinates() {
 
 void OptionMenu::loadTranslates() {
     float poziomyMargines, pionowyMargines;
-    poziomyMargines = 40;
-    pionowyMargines = 40;
+    poziomyMargines = 20;
+    pionowyMargines = 30;
     this->listaPrzesuniec.push_back(glm::vec3(-this->windowXsize/4-pionowyMargines,-this->windowYsize/4-poziomyMargines,0.8f));
 
 //    Menu::loadTranslates();
@@ -63,6 +63,7 @@ void OptionMenu::loadSprites() {
 
 void OptionMenu::settingsPrint(Sprite *sprite) {
     this->readSettings();
+//    sprite->initFont("../src/fonts/NotoSansCJK-Black.ttc",14);
     sprite->initFont("../src/fonts/Coalition.ttf",14);
     float poziomyMargines, pionowyMargines,distance;
     poziomyMargines = 100;
@@ -88,7 +89,7 @@ void OptionMenu::settingsPrint(Sprite *sprite) {
 void OptionMenu::readSettings() {
 //    Setting setting = Setting::getInstance();
     std::string temp;
-    temp = "Game settings can be change by configuring "settings" file";
+    temp = "Game settings can be changed by configuring settings file";
     this->ustawieniaTeksty.push_back(temp);
     this->ustawieniaTeksty.push_back("");
     temp = "Full window: " + this->checkBool(Setting::getInstance().getFullWindow());
@@ -121,7 +122,3 @@ std::string OptionMenu::checkBool(bool doTestu) {
         return "No";
     }
 }
-
-
-
-

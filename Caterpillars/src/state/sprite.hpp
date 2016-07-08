@@ -8,7 +8,8 @@
 
 class Sprite : public object2D{
 public:
-   Sprite(float x, float y, float width, float height, GLchar *fileName);
+   Sprite(float x, float y, float width, float height, string fileName);
+   Sprite(float x, float y, float width, float height, glm::vec4 color);
 };
 
 #endif //CATERPILLARS_SPRITE_HPP

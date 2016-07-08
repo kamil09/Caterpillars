@@ -13,8 +13,8 @@
 
 class SubMenu : public Menu{
 public:
-    SubMenu(Menu *menu,GLFWwindow *window,GLFWcursor *cur);
-    Menu *primaryMenu;
+    SubMenu(State *state, GLFWwindow *window, GLFWcursor *cur);
+    State *primaryState;
 
     virtual void draw() override;
     virtual void buttonControl() override;

@@ -18,7 +18,6 @@ Object::Object(){
 	this->kickTime=0;
 	this->canKick=true;
 	this->size = glm::vec3(1.0f);
-	this->alpha = 1.0f;
 }
 
 Object::~Object(){

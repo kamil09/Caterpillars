@@ -19,9 +19,12 @@ using namespace std;
 class object2D : public Object{
 
 public:
-   object2D(float x, float y, float width, float height, GLchar *fileName);
+   object2D(float x, float y, float width, float height, string fileName);
+   object2D(float x, float y, float width, float height, glm::vec4 color);
    ~object2D();
+    void initObject2D(float x, float y, float width, float height, string fileName);
 
+    glm::vec4 kolor;
 //   void bindBuffers();
    virtual void draw();
    void setTraM(float x,float y,float z);
@@ -31,6 +34,7 @@ public:
     unsigned int addText(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
     unsigned int addTextL(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
     unsigned int addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
+    unsigned int addTextLM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
    virtual void inUniform(){}
 };
 

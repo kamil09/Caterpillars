@@ -93,10 +93,12 @@ float* Menu::readPixel(GLFWwindow *window){
     return data;
 }
 
-void Menu::createBackgroud(GLchar *fileName){
+void Menu::createBackgroud(string fileName){
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
-    this->background = new Button(0,(float)-viewport[2]/2.0f,(float)-viewport[3]/2.0f,(float)viewport[2],(float)viewport[3],fileName,NULL);
+    //TODO: Zmienic aby dzialalo na wszystkich rozdzielczosciach.
+//    this->background = new Button(0,(float)-viewport[2]/2.0f,(float)-viewport[3]/2.0f,(float)viewport[2],(float)viewport[3],fileName,NULL);
+    this->background = new Button(0,(float) -1366.0f/2.0f,(float)-768.0f/2.0f,(float) 1366.0f,(float) 768.0f,fileName,NULL);
 }
 
 
@@ -111,7 +113,7 @@ void Menu::createButtons() {
         Button *nowyButton = new Button(this->buttonCount,pozycja.x,pozycja.y,pozycja.z,pozycja.w,temp,this->callBackArray[this->buttonCount-1]);
         glm::vec3 translate = this->listaPrzesuniec[i];
         nowyButton->setTraM(translate.x,translate.y,translate.z);
-        nowyButton->alpha=0.6f;
+        nowyButton->kolor.a=0.6f;
         this->listaButtonow.push_back(nowyButton);
     }
     std::cout << "button width: " << this->listaButtonow[0]->size.x << std::endl;
@@ -126,11 +128,16 @@ void Menu::checkCursor(){
         int test = this->checkButtons();
         if(this->currentButton!=test){
             if(this->currentButton!=-1){
-                this->listaButtonow[this->currentButton]->alpha=0.6f;
+                this->listaButtonow[this->currentButton]->kolor.a=0.6f;
             }
             this->currentButton = test;
             if(this->currentButton!=-1){
-                this->listaButtonow[this->currentButton]->alpha=1.0f;
+                for (int i = 0; i < this->buttonCount; i++) {
+                    if(this->listaButtonow[i]->kolor.a!=0.6f){
+                        this->listaButtonow[i]->kolor.a = 0.6f;
+                    }
+                }
+                this->listaButtonow[this->currentButton]->kolor.a=1.0f;
                 inputActions::getInstance().changeCursor(GLFW_HAND_CURSOR);
             }
             else{
@@ -150,9 +157,9 @@ int Menu::checkButtons(){
     int wybBlue = data[2]*1000000;
 
     for(i=0;i<buttonCount;i++){
-        int tempRed = this->listaButtonow[i]->r*1000000;
-        int tempGreen = this->listaButtonow[i]->g*1000000;
-        int tempBlue = this->listaButtonow[i]->b*1000000;
+        int tempRed = this->listaButtonow[i]->kolor.r*1000000;
+        int tempGreen = this->listaButtonow[i]->kolor.g*1000000;
+        int tempBlue = this->listaButtonow[i]->kolor.b*1000000;
         if(tempRed == wybRed && tempGreen == wybGreen && tempBlue == wybBlue){
 //            std::cout << "Wybraleś przycisk numer: " << i << std::endl;
             return i;

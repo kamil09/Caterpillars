@@ -30,9 +30,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src/state/state.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/menu.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/subMenu.hpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/optionMenu.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/mainMenu.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/optionMenu.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/gameMenu.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/mainMenu.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/optionMenu.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/gameMenu.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/subMenu.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/mainMenu.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/button.hpp" isTestSource="false" />

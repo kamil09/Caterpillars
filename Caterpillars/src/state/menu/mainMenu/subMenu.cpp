@@ -6,9 +6,9 @@
 #include "../../../inputActions.hpp"
 
 
-SubMenu::SubMenu(Menu *menu, GLFWwindow *window, GLFWcursor *cur) : Menu(window,cur) {
-    this->primaryMenu = menu;
-    this->createBackgroud(NULL);
+SubMenu::SubMenu(State *state, GLFWwindow *window, GLFWcursor *cur) : Menu(window, cur) {
+    this->primaryState = state;
+    this->createBackgroud("");
 }
 
 
@@ -25,19 +25,19 @@ void SubMenu::buttonControl() {
 
 void SubMenu::draw() {
     if(this->check!=0){
-        this->primaryMenu->draw();
+        this->primaryState->draw();
     }
     Menu::draw();
 //    if(this->check!=0){
 //        glEnable(GL_BLEND);
 //        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 //
-//        for (int i = 0; i < this->primaryMenu->buttonCount; i++) {
+//        for (int i = 0; i < this->primaryState->buttonCount; i++) {
 //
 //        }
 //
-//        for(unsigned int i=0; i<this->primaryMenu->listaSpritowFG.size();i++){
-//            this->primaryMenu->listaSpritowFG[i]->draw();
+//        for(unsigned int i=0; i<this->primaryState->listaSpritowFG.size();i++){
+//            this->primaryState->listaSpritowFG[i]->draw();
 //        }
 //
 //        glDisable(GL_BLEND);

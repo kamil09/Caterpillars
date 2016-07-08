@@ -19,7 +19,7 @@ class OptionMenu : public SubMenu{
 public:
     virtual void loadSprites() override;
 
-    OptionMenu(Menu *menu,GLFWwindow *window,GLFWcursor *cur);
+    OptionMenu(State *state, GLFWwindow *window, GLFWcursor *cur);
     void loadTextureFiles() override;
     void loadCoordinates() override;
     void loadTranslates() override;

@@ -85,7 +85,7 @@ void MainMenu::loadTranslates() {
 
 void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Single Player!" << std::endl;
-	inputActions::getInstance().changeState('g',window,cursor);
+	inputActions::getInstance().changeState('s',window,cursor);
 //	inputActions::getInstance().changeGame(window, cursor);
 }
 void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {

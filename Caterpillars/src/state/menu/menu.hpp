@@ -33,7 +33,7 @@ public:
     std::vector<Sprite*> listaSpritowBG;
     Button *background;
     int buttonCount;
-    void createBackgroud(GLchar *fileName);
+    void createBackgroud(string fileName);
     virtual void draw() override;
     void run() override;
     virtual void pressESC() override;

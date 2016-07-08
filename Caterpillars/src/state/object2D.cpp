@@ -2,34 +2,17 @@
 #include "../inputActions.hpp"
 
 
-object2D::object2D(float x, float y, float width, float height, GLchar *fileName) {
+object2D::object2D(float x, float y, float width, float height, string fileName) {
 //   this->shader = new Shader("../src/shaders/2dTex.vs","../src/shaders/2dTex.frag");
 //   this->vertices.resize(4);
 //   this->indices.resize(4);
-   this->pos.x = x;
-   this->pos.y = y;
-   this->pos.z = 0.0f;
-    this->size.x = width;
-    this->size.y = height;
-    this->vertices = {
-      x, y, 0.0f, 0.0f, 0.0f,
-      x+width, y,  0.0f, 1.0f, 0.0f,
-      x, y+height, 0.0f, 0.0f, 1.0f,
-      x+width, y+height, 0.0f, 1.0f, 1.0f,
-   };
-   this->indices = {
-      0,1,2,3
-   };
-   this->bindBuffers(5,GL_STATIC_DRAW);
-    if(fileName!=NULL){
-        this->bindTexture2D(fileName);
-    }
-    else{
-        this->texture2D=NULL;
-    }
-   this->posM = glm::mat4(1);
-   this->rotM = glm::mat4(1);
-   this->sclM = glm::mat4(1);
+//    this->kolor.r = 0.0f;
+//    this->kolor.g = 0.0f;
+//    this->kolor.b = 0.0f;
+//    this->kolor.a = 1.0f;
+
+    this->initObject2D(x,y,width,height,fileName);
+
 //   GLint viewport[4];
 //   glGetIntegerv(GL_VIEWPORT, viewport);
 //    std::cout << "width: " << viewport[2] << " height: " << viewport[3] << std::endl;
@@ -38,6 +21,46 @@ object2D::object2D(float x, float y, float width, float height, GLchar *fileName
 //   this->sclM[1][1]=1.0f/viewport[3];
 //   this->sclM[1][1]=1.0f;
 }
+
+
+object2D::object2D(float x, float y, float width, float height, glm::vec4 color) {
+    this->kolor = color;
+    this->initObject2D(x,y,width,height,"");
+}
+
+
+void object2D::initObject2D(float x, float y, float width, float height, string fileName) {
+    this->pos.x = x;
+    this->pos.y = y;
+    this->pos.z = 0.0f;
+    this->size.x = width;
+    this->size.y = height;
+    this->vertices = {
+            x, y, 0.0f, 0.0f, 0.0f,
+            x+width, y,  0.0f, 1.0f, 0.0f,
+            x, y+height, 0.0f, 0.0f, 1.0f,
+            x+width, y+height, 0.0f, 1.0f, 1.0f,
+    };
+    this->indices = {
+            0,1,2,3
+    };
+    this->bindBuffers(5,GL_STATIC_DRAW);
+    if(!fileName.empty()){
+        char *str = new char[fileName.length()+1];
+        strcpy(str,fileName.c_str());
+        this->bindTexture2D(str);
+        delete [] str;
+    }
+    else{
+        std::cout << "Brak textury" << std::endl;
+        this->texture2D=NULL;
+    }
+    this->posM = glm::mat4(1);
+    this->rotM = glm::mat4(1);
+    this->sclM = glm::mat4(1);
+}
+
+
 void object2D::setTraM(float x,float y,float z){
    this->posM[3][0]=x;
    this->posM[3][1]=y;
@@ -71,6 +94,10 @@ void object2D::draw(){
         glBindTexture(GL_TEXTURE_2D, this->texture2D);
         glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
         errorCheck("texture_2D");
+    }
+    else{
+        GLint vertexColorLocation = glGetUniformLocation(this->shader->shaderProgram[0], "uColor"); //Ustawiamy kolor przycisku, wykorzystywany przy wyborze
+        glUniform4fv(vertexColorLocation,1,glm::value_ptr(this->kolor));
     }
 
     //Macierz Projekcji
@@ -115,6 +142,11 @@ unsigned int object2D::addText(std::string newText, float newX, float newY, floa
 unsigned int object2D::addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
     return this->addText(newText,this->pos.x + this->size.x/2+(-this->font->length(newText,newSkala)/2+newX),-this->pos.y-this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
 //    return this->addText(newText,(-this->font->length(newText,newSkala)/2+newX),(-this->font->height(newSkala)/2+newY),newSkala,kolor);
+}
+
+
+unsigned int object2D::addTextLM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor) {
+    return this->addText(newText,this->pos.x + newX,-this->pos.y-this->size.y/2+(-this->font->height(newSkala)/2+newY),newSkala,kolor);
 }
 
 
