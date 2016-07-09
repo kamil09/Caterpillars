@@ -32,10 +32,11 @@ void MainMenu::loadSprites() {
 	float imgWidth,imgHeight,temp;
 	imgWidth=3774.0f;
 	imgHeight=447.0f;
-//	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
-	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
-	Sprite *title = new Sprite((-this->windowXsize/2)+pionowyMargines,this->windowYsize/2-poziomyMargines-temp,this->windowXsize-2*pionowyMargines,temp,"../src/img/title.png");
-//	Sprite *title = new Sprite((-1366/2)+pionowyMargines,768/2-poziomyMargines-temp,1366-2*pionowyMargines,temp,"../src/img/title.png");
+	//TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+//	temp = (1366.0f-2*pionowyMargines)*imgHeight/imgWidth;
+	temp = (1366.0f-2*pionowyMargines)*imgHeight/imgWidth;
+//	Sprite *title = new Sprite((-1366.0f/2)+pionowyMargines,1366.0f/2-poziomyMargines-temp,1366.0f-2*pionowyMargines,temp,"../src/img/title.png");
+	Sprite *title = new Sprite((-1366.0f/2)+pionowyMargines,768.0f/2-poziomyMargines-temp,1366.0f-2*pionowyMargines,temp,"../src/img/title.png");
 	this->listaSpritowFG.push_back(title);
 }
 
@@ -66,7 +67,9 @@ void MainMenu::loadCoordinates() {
 }
  
 void MainMenu::loadTranslates() {
-    float lewyMargines = (-this->windowXsize/2)+80;
+	//TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+	float lewyMargines = (-1366.0f/2)+80;
+//	float lewyMargines = (-1366.0f/2)+80;
     float yFirstButton = -90;
     float distance = 15;
     for (unsigned int i = 0; i<this->listaWspolrzednych.size();i++){

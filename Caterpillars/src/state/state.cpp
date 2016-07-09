@@ -9,7 +9,11 @@ State::State(GLFWwindow *currenWindow, GLFWcursor *cur){
     inputActions::getInstance().cursorFixedCenterPos=false;
     GLint viewport[4];
 	 glGetIntegerv(GL_VIEWPORT, viewport);
-    this->windowXsize=viewport[2];
+	//TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+
+//	this->windowXsize=1366.0f;
+//    this->windowYsize=768.0f;
+	this->windowXsize=viewport[2];
     this->windowYsize=viewport[3];
 }
 

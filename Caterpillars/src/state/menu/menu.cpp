@@ -99,10 +99,13 @@ float* Menu::readPixel(GLFWwindow *window){
 	// float data[4];
 	float *data = (float*) malloc(sizeof(float)*4);
 	inputActions::getInstance().getMouseCurrentPosition(window);
-	glReadPixels(inputActions::getInstance().getCursorLastX(),viewport[3]-1-inputActions::getInstance().getCursorLastY(),1,1, GL_RGBA, GL_FLOAT, data);
-	glFlush();
-	glFinish();
-	// std::cout << "red: " << data[0] << " green: " << data[1] << " blue: " << data[2] << " alpha: " << data[3] << std::endl;
+    //TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+    glReadPixels(inputActions::getInstance().getCursorLastX(),viewport[3]-1-inputActions::getInstance().getCursorLastY(),1,1, GL_RGBA, GL_FLOAT, data);
+
+    glFlush();
+    glFinish();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    // std::cout << "red: " << data[0] << " green: " << data[1] << " blue: " << data[2] << " alpha: " << data[3] << std::endl;
     return data;
 }
 

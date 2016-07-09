@@ -103,7 +103,9 @@ void object2D::draw(){
     //Macierz Projekcji
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
-    glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) -viewport[3]/2.0f,  (float) viewport[3]/2.0f,-1.0f,1.0f);
+    //TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+    glm::mat4 projection = glm::ortho((float) -1366.0f/2.0f,(float) 1366.0f/2.0f, (float) -768.0f/2.0f,  (float) 768.0f/2.0f,-1.0f,1.0f);
+//    glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) -viewport[3]/2.0f,  (float) viewport[3]/2.0f,-1.0f,1.0f);
     glUniformMatrix4fv(this->getUniform("P"),1,GL_FALSE,glm::value_ptr(projection));
     GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
     glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));

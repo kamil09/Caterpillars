@@ -244,10 +244,10 @@ void GameMenu::loadTranslates() {
     poziomyMargines = -20;
     pionowyMargines = -35;
     //TODO: Sprawdzic czy dziala na wszystkich rozdzielczosciach
-    this->listaPrzesuniec.push_back(glm::vec3(-this->windowXsize/4+pionowyMargines,-this->windowYsize/4+poziomyMargines,0.8f));
-    this->listaPrzesuniec.push_back(glm::vec3(-this->windowXsize/4+pionowyMargines,-this->windowYsize/4+poziomyMargines,0.8f));
-    this->listaPrzesuniec.push_back(glm::vec3(this->windowXsize/4-pionowyMargines-this->listaWspolrzednych[1].z,-this->windowYsize/4+poziomyMargines,0.8f));
-    this->listaPrzesuniec.push_back(glm::vec3(this->windowXsize/4-pionowyMargines-this->listaWspolrzednych[1].z,-this->windowYsize/4+poziomyMargines,0.8f));
+    this->listaPrzesuniec.push_back(glm::vec3(-1366.0f/4+pionowyMargines,-768.0f/4+poziomyMargines,0.8f));
+    this->listaPrzesuniec.push_back(glm::vec3(1366.0f/4-pionowyMargines-this->listaWspolrzednych[1].z,-768.0f/4+poziomyMargines,0.8f));
+//    this->listaPrzesuniec.push_back(glm::vec3(-1366.0f/4+pionowyMargines,-768.0f/4+poziomyMargines,0.8f));
+//    this->listaPrzesuniec.push_back(glm::vec3(1366.0f/4-pionowyMargines-this->listaWspolrzednych[1].z,-768.0f/4+poziomyMargines,0.8f));
 
 //    Menu::loadTranslates();
 }
@@ -263,15 +263,15 @@ void GameMenu::loadSprites() {
     float poziomyMargines, pionowyMargines;
     poziomyMargines = 80;
     pionowyMargines = 80;
-    Sprite *ramka = new Sprite(-this->windowXsize/4-pionowyMargines,-this->windowYsize/4-poziomyMargines,this->windowXsize/2+2*pionowyMargines,this->windowYsize/2+2*poziomyMargines,"../src/img/ramka.png");
-//    Sprite *ramka = new Sprite(0,0,this->windowXsize/2+2*pionowyMargines,this->windowYsize/2+2*poziomyMargines,"../src/img/ramka.png");
+    Sprite *ramka = new Sprite(-1366.0f/4-pionowyMargines,-768.0f/4-poziomyMargines,1366.0f/2+2*pionowyMargines,768.0f/2+2*poziomyMargines,"../src/img/ramka.png");
+//    Sprite *ramka = new Sprite(0,0,1366.0f/2+2*pionowyMargines,768.0f/2+2*poziomyMargines,"../src/img/ramka.png");
     float x,y,z;
-//    x= -this->windowXsize/4-pionowyMargines;
-//    y =-this->windowYsize/4-poziomyMargines;
+//    x= -1366.0f/4-pionowyMargines;
+//    y =-768.0f/4-poziomyMargines;
 //    z = 1.0f;
     x = y = 0.0f;
     ramka->setTraM(x,y,1.0f);
-//    Sprite *tlo = new Sprite(-this->windowXsize/4-pionowyMargines,-this->windowYsize/4-poziomyMargines,this->windowXsize/2+2*pionowyMargines,this->windowYsize/2+2*poziomyMargines,"../src/img/tlo.png");
+//    Sprite *tlo = new Sprite(-1366.0f/4-pionowyMargines,-768.0f/4-poziomyMargines,1366.0f/2+2*pionowyMargines,768.0f/2+2*poziomyMargines,"../src/img/tlo.png");
     Sprite *tlo = new Sprite(ramka->pos.x,ramka->pos.y,ramka->size.x,ramka->size.y,"../src/img/tlo.png");
     tlo->setTraM(x,y,0.2f);
     this->listaSpritowBG.push_back(tlo);
