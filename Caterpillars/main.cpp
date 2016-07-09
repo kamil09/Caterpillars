@@ -47,31 +47,31 @@ int main(void){
 
 
 	GLFWwindow* window;
-//	if ( Setting::getInstance().getFullWindow() ){
-//		std::cout << "full screen" << std::endl;
-//		if (Setting::getInstance().getFullResolution() ){
-//			std::cout << "full resolution" << std::endl;
-//			window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
-//		}
-//		else{
-//			std::cout << "no full resolution" << std::endl;
-//			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",glfwGetPrimaryMonitor(), NULL);
-//		}
-//	}
-//	else{
-//		std::cout << "no full screen" << std::endl;
-//		if (Setting::getInstance().getFullResolution() ){
-//			std::cout << "full resolution" << std::endl;
-//			window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",NULL, NULL);
-//		}
-//		else{
-//			std::cout << "no full resolution" << std::endl;
-//			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
-//		}
-//	}
+	if ( Setting::getInstance().getFullWindow() ){
+		std::cout << "full screen" << std::endl;
+		if (Setting::getInstance().getFullResolution() ){
+			std::cout << "full resolution" << std::endl;
+			window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+		}
+		else{
+			std::cout << "no full resolution" << std::endl;
+			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",glfwGetPrimaryMonitor(), NULL);
+		}
+	}
+	else{
+		std::cout << "no full screen" << std::endl;
+		if (Setting::getInstance().getFullResolution() ){
+			std::cout << "full resolution" << std::endl;
+			window = glfwCreateWindow(mode->width, mode->height, "Caterpillars",NULL, NULL);
+		}
+		else{
+			std::cout << "no full resolution" << std::endl;
+			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
+		}
+	}
 
 //	window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
-	window = glfwCreateWindow(1024,768, "Caterpillars",NULL, NULL);
+//	window = glfwCreateWindow(1024,768, "Caterpillars",NULL, NULL);
 	glfwMakeContextCurrent (window);
 	// glfwSetWindowSize(window, mode->width, mode->height);
 	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/main.cpp" line="74" />
+    <bookmark url="file://$PROJECT_DIR$/main.cpp" line="72" />
   </component>
   <component name="BuildServerSettings">
     <option name="LOGIN" value="" />
@@ -47,17 +48,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5195f8d0-6309-43b8-b860-8c3491920ff0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/font.cpp" afterPath="$PROJECT_DIR$/src/font.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/info.cpp" afterPath="$PROJECT_DIR$/src/info.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/game/game.cpp" afterPath="$PROJECT_DIR$/src/state/game/game.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/menu/mainMenu/gameMenu.cpp" afterPath="$PROJECT_DIR$/src/state/menu/mainMenu/gameMenu.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/menu/mainMenu/mainMenu.cpp" afterPath="$PROJECT_DIR$/src/state/menu/mainMenu/mainMenu.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/menu/mainMenu/optionMenu.cpp" afterPath="$PROJECT_DIR$/src/state/menu/mainMenu/optionMenu.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/menu/menu.cpp" afterPath="$PROJECT_DIR$/src/state/menu/menu.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/object2D.cpp" afterPath="$PROJECT_DIR$/src/state/object2D.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/state.cpp" afterPath="$PROJECT_DIR$/src/state/state.cpp" />
     </list>
     <ignored path="Caterpillars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,8 +85,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="74" column="36" selection-start-line="74" selection-start-column="36" selection-end-line="74" selection-end-column="36" />
+            <state relative-caret-position="375">
+              <caret line="72" column="114" selection-start-line="72" selection-start-column="114" selection-end-line="72" selection-end-column="114" />
               <folding />
             </state>
           </provider>
@@ -1173,8 +1164,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="74" column="36" selection-start-line="74" selection-start-column="36" selection-end-line="74" selection-end-column="36" />
+        <state relative-caret-position="375">
+          <caret line="72" column="114" selection-start-line="72" selection-start-column="114" selection-end-line="72" selection-end-column="114" />
           <folding />
         </state>
       </provider>
