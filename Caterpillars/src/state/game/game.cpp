@@ -34,8 +34,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    float min2=999;
    for(int i=0;i<100; i++) for(int k=0;k<100;k++) if (this->map->mapVert[i][k]<min1) min1=this->map->mapVert[i][k];
    for(int i=vertX-100;i<vertX; i++) for(int k=vertY-100;k<vertY;k++) if (this->map->mapVert[i][k]<min2) min2=this->map->mapVert[i][k];
-   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj" ,50,min1,50,80,200 ));
-   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj", vertX-50,min2,vertY-50,260,380) );
+   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj" ,50,min1+50,50,80,200 ));
+   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj", vertX-50,min2+50,vertY-50,260,380) );
 
 
    //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
