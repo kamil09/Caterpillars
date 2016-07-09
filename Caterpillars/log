@@ -1,0 +1,64 @@
+In file included from /home/no-one/Caterpillars/Caterpillars/src/state/game/map/map.hpp:18:0,
+                 from /home/no-one/Caterpillars/Caterpillars/main.cpp:9:
+/home/no-one/Caterpillars/Caterpillars/src/state/game/map/../../../object.hpp:41:20: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    bool sec_time = false;//zmienna ktora okresla ze drugi raz juz weszla do funkcji grawitacji
+                    ^
+/home/no-one/Caterpillars/Caterpillars/src/state/game/map/../../../object.hpp:74:26: warning: non-static data member initializers only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
+                          ^
+In file included from /home/no-one/Caterpillars/Caterpillars/src/inputActions.hpp:9:0,
+                 from /home/no-one/Caterpillars/Caterpillars/main.cpp:10:
+/home/no-one/Caterpillars/Caterpillars/src/state/game/game.hpp:31:13: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    void run() override;
+             ^
+/home/no-one/Caterpillars/Caterpillars/src/state/game/game.hpp:32:14: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+    void draw() override;
+              ^
+In file included from /home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:7:0,
+                 from /home/no-one/Caterpillars/Caterpillars/main.cpp:13:
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/button.hpp:22:124: error: ‘std::function’ has not been declared
+     Button(int i,GLfloat newX, GLfloat newY,GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath, std::function<void(GLFWwindow*,GLFWcursor*)> callBack);
+                                                                                                                            ^
+In file included from /home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:7:0,
+                 from /home/no-one/Caterpillars/Caterpillars/main.cpp:13:
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/button.hpp:22:132: error: expected ‘,’ or ‘...’ before ‘<’ token
+     Button(int i,GLfloat newX, GLfloat newY,GLfloat newZ, GLfloat newWidth,GLfloat newHeight,const char* texturePath, std::function<void(GLFWwindow*,GLFWcursor*)> callBack);
+                                                                                                                                    ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/button.hpp:35:1: error: ‘function’ in namespace ‘std’ does not name a type
+ std::function<void(GLFWwindow*,GLFWcursor*)> callBackFunction;
+ ^
+In file included from /home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:12:0,
+                 from /home/no-one/Caterpillars/Caterpillars/main.cpp:13:
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/../../font.hpp:39:22: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     void paramText2D() override;
+                      ^
+In file included from /home/no-one/Caterpillars/Caterpillars/main.cpp:13:0:
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:17:9: error: ‘function’ in namespace ‘std’ does not name a type
+ typedef std::function<void(GLFWwindow*,GLFWcursor*)> functionArray;
+         ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:25:17: error: ‘functionArray’ was not declared in this scope
+     std::vector<functionArray> callBackArray;
+                 ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:25:30: error: template argument 1 is invalid
+     std::vector<functionArray> callBackArray;
+                              ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:25:30: error: template argument 2 is invalid
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:40:15: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     void draw() override;
+               ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:42:14: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     void run() override;
+              ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:43:19: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     void pressESC() override;
+                   ^
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/menu.hpp:44:21: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     void releaseLMB() override;
+                     ^
+In file included from /home/no-one/Caterpillars/Caterpillars/main.cpp:14:0:
+/home/no-one/Caterpillars/Caterpillars/src/state/menu/mainMenu/mainMenu.hpp:13:27: warning: override controls (override/final) only available with -std=c++11 or -std=gnu++11 [enabled by default]
+     void loadTextureFiles() override;
+                           ^
+make[2]: *** [CMakeFiles/Caterpillars.dir/main.cpp.o] Błąd 1
+make[1]: *** [CMakeFiles/Caterpillars.dir/all] Błąd 2
+make: *** [all] Błąd 2

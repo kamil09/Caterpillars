@@ -4,16 +4,16 @@
 /**
  * Ustawienia mapy i genearatora
 */
-const int vertX=400;
-const int vertY=400;
+const int vertX=600;
+const int vertY=600;
 const int baseHeight=30;
-const int minMapHeight=50;
-const int maxMapHeight=250;
-const int maxHillRadius=100;
+const int minMapHeight=30;
+const int maxMapHeight=200;
+const int maxHillRadius=250;
 const int minHillRadius=50;
 const int minHillNum=25;
 const int maxHillNum=40;
-const int murHeight=300;
+const int murHeight=200;
 
 #include "../../../object.hpp"
 #include <stdlib.h>

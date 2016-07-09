@@ -8,11 +8,13 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "../../object.hpp"
-#include "../../caterpillar.hpp"
+#include "../../models/caterpillar.hpp"
+#include "../../models/tower.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 //#include "../object2D.hpp"
 #include "../sprite.hpp"
+
 
 class Game : public State{
 private:
@@ -20,6 +22,7 @@ private:
    void calcViewMatrix();
    Map *map;
    Wall *wall;
+   std::vector<Tower*> towers;
 //   object2D *targetView;
    Sprite *targetView;
 //   object2D *rose;

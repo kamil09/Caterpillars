@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 aux_source_directory(./src/ SRC_LIST)
 
 aux_source_directory(./src/state STATE_LIST)
+aux_source_directory(./src/models MODELS_LIST)
 aux_source_directory(./src/state/menu/ MENU_LIST)
 aux_source_directory(./src/shaders SHADER_LIST)
 aux_source_directory(src/state/menu/mainMenu SUBMENU_LIST)
@@ -52,6 +53,7 @@ add_executable(${PROJECT_NAME}
     ${SUBMENU_LIST}
     ${GAME_LIST}
     ${MAP_LIST}
+    ${MODELS_LIST}
     ${LOAD_DATA}
 
 )

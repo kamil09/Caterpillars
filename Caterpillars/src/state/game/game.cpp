@@ -9,36 +9,42 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 //   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
    this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
 //   this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
-    float roseWidth, roseHeight;
-    roseWidth = roseHeight = 200;
-    this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
+   float roseWidth, roseHeight;
+   roseWidth = roseHeight = 200;
+   this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
 //   this->rose->setTraM(0.8,-0.8,0.0f);
-//    this->rose->initFont("../src/fonts/Arial.ttf", 32);
-    this->targetView->initFont("../src/fonts/Arial.ttf", 32);
-    this->targetView->addTextL("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
+//   this->rose->initFont("../src/fonts/Arial.ttf", 32);
+   this->targetView->initFont("../src/fonts/Arial.ttf", 32);
+//   this->targetView->addTextL("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
 //    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
-    int width,height;
-    glfwGetWindowSize(window, &width,&height);
-    std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;
+   int width,height;
+   glfwGetWindowSize(window, &width,&height);
+   std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;
    this->rose->setTraM((width-roseWidth)/2,-(height-roseHeight)/2,0.0f);
 
    //Dodawanie Caterpillarow
    for(int i=0;i<1;i++) {
-
       this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
 
       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
       this->caterrVec[i]->teamID = (i%2)+1;
       std::cout << endl << this->caterrVec[i]->teamID;
-
    }
+   float min1=999;
+   float min2=999;
+   for(int i=0;i<100; i++) for(int k=0;k<100;k++) if (this->map->mapVert[i][k]<min1) min1=this->map->mapVert[i][k];
+   for(int i=vertX-100;i<vertX; i++) for(int k=vertY-100;k<vertY;k++) if (this->map->mapVert[i][k]<min2) min2=this->map->mapVert[i][k];
+   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj" ,50,min1,50,80,200 ));
+   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj", vertX-50,min2,vertY-50,260,380) );
+
+
    //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
    this->currentCutterpillar = this->caterrVec[0];
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
 
-   this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 500.0f);
+   this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
 
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;
@@ -47,28 +53,30 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 void Game::draw(){
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 
-//   this->map->draw(this->projection,this->modelView);
+   this->map->draw(this->projection,this->modelView);
    this->wall->draw(this->projection,this->modelView);
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     for(int i=0;i < (int)this->caterrVec.size(); i++){
         if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
-//            for (int j = 0; j < 10; j++) {
-//                this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
-//                this->caterrVec[i]->draw(this->projection,this->modelView);
-//            }
+            //for (int j = 0; j < 10; j++) {
+            //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
+            //    this->caterrVec[i]->draw(this->projection,this->modelView);
+            //}
         this->caterrVec[i]->draw(this->projection,this->modelView);
 
     }
+    for(int i=0;i<(int)this->towers.size();i++ )
+      this->towers[i]->draw(this->projection,this->modelView);
+
     if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
 
    this->drawRose();
    glDisable(GL_BLEND);
 }
-/*
- * DO POPRAWY !!!
-*/
+
 void Game::drawRose(){
    glm::vec2 look,wind;
    look.x=this->lookAt.x-this->lookFrom.x;
@@ -113,6 +121,8 @@ void Game::run(){
       this->caterrVec[i]->recalculateGravity();
       this->caterrVec[i]->recalculateMatrix();
    }
+   for(int i=0;i<(int)this->towers.size();i++ )
+     this->towers[i]->light->moveLight();
 }
 void Game::calcViewMatrix(){
    this->lookAt = this->currentCutterpillar->startLook;
