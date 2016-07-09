@@ -63,6 +63,8 @@ class inputActions{
       double getCursorLastX();
       double getCursorLastY();
 
+      GLfloat deltaTime = 0.0f;//Czas pomiedzy klatkami
+
 //      void setCallbacks(GLFWwindow* window,GLFWcursor* cursor);
     GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
       static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );

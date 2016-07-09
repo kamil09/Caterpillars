@@ -41,6 +41,11 @@ int main(void){
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
+
+	GLfloat deltaTime = 0.0f;		// Time between current frame and last frame
+	GLfloat lastFrame = 0.0f;  	// Time of last frame
+
+
 	GLFWwindow* window;
 	if ( Setting::getInstance().getFullWindow() ){
 		std::cout << "full screen" << std::endl;
@@ -112,8 +117,16 @@ int main(void){
 		}
 		// if(inputActions::getInstance().changeState) changeState(inputActions::getInstance().nextState,window,cursor);
 
-	   inputActions::getInstance().currentState->run();
+	  inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
+
+		//Liczenie deltatime
+		GLfloat currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		inputActions::getInstance().deltaTime = deltaTime;
+		//cout<<endl<<"TIME:"<<deltaTime;
+		
 
 		//INFORMACJE
 		info->draw();

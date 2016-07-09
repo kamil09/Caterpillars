@@ -1,6 +1,7 @@
 #include "object.hpp"
 #include "state/game/map/map.hpp"
 #include "state/game/game.hpp"
+#include "inputActions.hpp"
 
 Object::Object(){
 	this->teksturCount = 0;
@@ -76,19 +77,19 @@ void Object::recalculateGravity(){
 	//speedY > 0 oznaczac bedzie ruch w gore a < 0 spadanie
 	//Nie mam pojecia czy to jest dobra koncepcja
 
-	//cout<<endl<<endl<<"WYWOLANIE"<<endl;
-
+	//Drukowanie parametrow
 	//cout << "PosX: " << this->pos.x << "  SpeedX: "<< this->speed.x << endl;
-	//cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
+	cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
 	//cout << "PosZ: " << this->pos.z << "  SpeedZ: "<< this->speed.z << endl;
 
 
 
 	end = clock();
 	diff = ((float)end - (float)start);
-	bet_time = diff/CLOCKS_PER_SEC;
+	//bet_time = diff/CLOCKS_PER_SEC;
+	bet_time = inputActions::getInstance().deltaTime;
 	//cout<<"bet_time: "<< bet_time<<endl;
-	in_meter = 10;//ile jednostek mamy w pseudo metrze
+	in_meter = 1;//ile jednostek mamy w pseudo metrze
 	if(sec_time)
 	{
 		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)){
@@ -96,7 +97,7 @@ void Object::recalculateGravity(){
 			//cout << ""Mapa - kolizja" << endl;
 			this->pos.y = Map::getInstance().mapVert[(int)this->pos.x][(int)this->pos.z] + this->size.y + 1;
 			this->on_the_ground = true;
-			if(!this->speed.x || !this->speed.x || !this->speed.x) // zerowanie predkosci po opadnieciu na mape
+			if(!this->speed.x || !this->speed.y || !this->speed.z) // zerowanie predkosci po opadnieciu na mape
 			{
 				this->speed.x = 0;
 				this->speed.y = 0;
@@ -107,9 +108,9 @@ void Object::recalculateGravity(){
 
 			if(!this->on_the_ground)
 			{
-				windX = 10 * bet_time * Map::getInstance().windForce.x * this->windMul;
+				windX = bet_time * Map::getInstance().windForce.x * this->windMul;
 				windY = bet_time * Map::getInstance().windForce.y * this->windMul;
-				windZ = 10 * bet_time * Map::getInstance().windForce.z * this->windMul;
+				windZ = bet_time * Map::getInstance().windForce.z * this->windMul;
 				//cout << windMul;
 				//tutaj nalezy uwzglednic jeszcze sile wiatru
 				this->speed.x +=  windX;//*windMul
@@ -118,7 +119,7 @@ void Object::recalculateGravity(){
 			}
 
 
-			this->speed.y -= Map::getInstance().gravity * bet_time* in_meter -
+			this->speed.y -= Map::getInstance().gravity * bet_time * in_meter -
 				windY;
 
 			nextX = this->pos.x + this->speed.x;
