@@ -42,6 +42,8 @@ public:
    glm::vec3 lookAt;       //na co patrzymy
    glm::vec3 lookFrom;     //umiejscowanie kamery
 
+   glm::mat4 lightsMat;
+
    /**
    * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
    * Zwraca kolizję na Osi Y

@@ -6,6 +6,9 @@ void TowerLight::moveLight(){
    if (this->rot.y < this->startA) this->direction=0;
 
    this->recalculateMatrix();
+
+   this->lightDir = glm::vec4(0.0f,-0.3f,-1.0f,0.0f);
+   lightDir = this->rotM*lightDir;
 }
 
 TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int dir){

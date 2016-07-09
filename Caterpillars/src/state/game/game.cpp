@@ -41,6 +41,11 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    inputActions::getInstance().objectPointers.push_back(this->towers[0]);
    inputActions::getInstance().objectPointers.push_back(this->towers[1]);
 
+   this->lightsMat = glm::mat4(0);
+   if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,0.0f);
+   if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,0.0f);
+
+
    //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
    this->currentCutterpillar = this->caterrVec[0];
 
@@ -54,9 +59,13 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 }
 
 void Game::draw(){
+
+   if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
+   if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
+
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 
-   this->map->draw(this->projection,this->modelView);
+   this->map->draw(this->projection,this->modelView, this->lightsMat);
    this->wall->draw(this->projection,this->modelView);
 
    glEnable(GL_BLEND);

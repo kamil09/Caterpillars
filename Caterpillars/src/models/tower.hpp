@@ -22,6 +22,7 @@ public:
    int direction;
    float startA;
    float endA;
+   glm::vec4 lightDir;
    void draw(glm::mat4 projection, glm::mat4 modelView);
 };
 
