@@ -20,6 +20,6 @@ public:
     virtual void buttonControl() override;
 
 };
-void goBack(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void goBack(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
 #endif //CATERPILLARS_SUBMENU_HPP

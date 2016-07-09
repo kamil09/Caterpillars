@@ -14,13 +14,16 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
 //   this->rose->setTraM(0.8,-0.8,0.0f);
 //   this->rose->initFont("../src/fonts/Arial.ttf", 32);
-   this->targetView->initFont("../src/fonts/Arial.ttf", 32);
+//   this->targetView->initFont("../src/fonts/Arial.ttf", 32);
 //   this->targetView->addTextL("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
 //    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
-   int width,height;
-   glfwGetWindowSize(window, &width,&height);
-   std::cout << "Width: " << width <<  " rW: " << (width-roseWidth)/2 << " height: " << height << " rH " << -(height-roseHeight)/2;
-   this->rose->setTraM((width-roseWidth)/2,-(height-roseHeight)/2,0.0f);
+//   int width,height;
+//   glfwGetWindowSize(window, &width,&height);
+   std::cout << "Width: " << this->windowXsize <<  " rW: " << (this->windowXsize-roseWidth)/2 << " height: " << this->windowYsize << " rH " << -(this->windowYsize-roseHeight)/2;
+
+    //TODO: sprawdzic czy dziala dla wszystkich rozdzielczosci
+    this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,0.0f);
+//   this->rose->setTraM((this->windowXsize-roseWidth)/2,-(this->windowYsize-roseHeight)/2,0.0f);
 
    //Dodawanie Caterpillarow
    for(int i=0;i<1;i++) {

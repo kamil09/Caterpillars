@@ -1,12 +1,12 @@
 #include "button.hpp"
 
 Button::Button(int index, float x, float y, float width, float height, string fileName,
-               std::function<void(State *, GLFWwindow *, GLFWcursor *)> callBack) : object2D(x, y, width, height,
+               std::function<void(Button *, GLFWwindow *, GLFWcursor *)> callBack) : object2D(x, y, width, height,
                                                                                     fileName) {
     this->shader = new Shader("../src/shaders/button/buttonShaderTexture.vs","../src/shaders/button/buttonShaderTexture.frag");
     this->callBackFunction = callBack;
     this->check = 0;
-	int nowyIndex = index*100;
+    int nowyIndex = index;
     int red = ((nowyIndex & 0x000000FF) >>  0);
     int green = ((nowyIndex & 0x0000FF00) >>  8);
     int blue = ((nowyIndex & 0x00FF0000) >> 16);
@@ -17,6 +17,7 @@ Button::Button(int index, float x, float y, float width, float height, string fi
 //    this->r = red/255.0f;
 //    this->g = green/255.0f;
 //    this->b = blue/255.0f;
+    this->binds = -1;
 }
 
 Button::~Button(){
@@ -132,3 +133,11 @@ void Button::inUniform() {
 	glUniform1i(uniformLocation2,this->check);
 
 }
+
+
+void Button::drawText() {
+    if(this->check!=0){
+        object2D::drawText();
+    }
+}
+

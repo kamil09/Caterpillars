@@ -69,8 +69,10 @@ int main(void){
 			window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
 		}
 	}
-	glfwMakeContextCurrent (window);
+
 //	window = glfwCreateWindow(Setting::getInstance().getWidth(), Setting::getInstance().getHeight(), "Caterpillars",NULL, NULL);
+//	window = glfwCreateWindow(1024,768, "Caterpillars",NULL, NULL);
+	glfwMakeContextCurrent (window);
 	// glfwSetWindowSize(window, mode->width, mode->height);
 	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);
 

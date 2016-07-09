@@ -36,6 +36,7 @@ public:
     unsigned int addTextM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
     unsigned int addTextLM(std::string newText, float newX, float newY, float newSkala, glm::vec3 kolor);
    virtual void inUniform(){}
+    virtual void drawText();
 };
 
 #endif

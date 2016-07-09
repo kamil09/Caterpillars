@@ -22,7 +22,10 @@ void Info::initFps(){
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
 //    this->addText("",0.0f,0.0f,1.0f,'f');
-    this->addText("",-viewport[2]/2+30,-viewport[3]/2+30,1.0f,'f');
+    //TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+    this->addText("",-1366.0f/2+30,-768.0f/2+30,1.0f,'f');
+//    this->addText("",-viewport[2]/2+30,-viewport[3]/2+30,1.0f,'f');
+
     // this->fpsIndex = this->texty.size()-1;
     // std::cout << this->fpsIndex << std::endl;
 }

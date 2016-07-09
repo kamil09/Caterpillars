@@ -26,8 +26,12 @@ void Font::initChar(const char *ttf, int size) {
 	this->shader = new Shader("../src/shaders/font.vs","../src/shaders/font.frag");
     GLint viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
+	//TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+	glm::mat4 projection = glm::ortho((float) -1366.0f/2.0f,(float) 1366.0f/2.0f, (float) 768.0f/2.0f,  (float) -768.0f/2.0f,-1.0f,1.0f);
+//	glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) viewport[3]/2.0f,  (float) -viewport[3]/2.0f,-1.0f,1.0f);
+
+
 //    std::cout << "width: " << viewport[2] << " height: " << viewport[3] << std::endl;
-    glm::mat4 projection = glm::ortho((float) -viewport[2]/2.0f,(float) viewport[2]/2.0f, (float) viewport[3]/2.0f,  (float) -viewport[3]/2.0f,-1.0f,1.0f);
 //	glm::mat4 projection = glm::ortho(0.0f,(float) width, 0.0f,(float) height);
 //	glm::mat4 projection = glm::ortho(0.0f,(float) width, (float) height, 0.0f,-1.0f,1.0f);
 //	glm::mat4 projection = glm::ortho((float) -width/2,(float) width/2, (float) height/2,  (float) -height/2,-1.0f,1.0f);

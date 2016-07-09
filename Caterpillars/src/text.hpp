@@ -20,6 +20,7 @@
 class Text {
 public:
     Text(std::string newText,float newX,float newY,float newSkala,glm::vec3 color);
+    ~Text();
     std::string text;
     float x;
     float y;

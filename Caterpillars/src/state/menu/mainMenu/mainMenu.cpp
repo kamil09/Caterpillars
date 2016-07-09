@@ -1,12 +1,12 @@
 #include "mainMenu.hpp"
 #include "../../../inputActions.hpp"
 
-void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
-void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void singlePlayer(Button *state, GLFWwindow *window, GLFWcursor *cursor);
+void multiPlayer(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
-void options(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void options(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
-void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void exitWindow(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
 MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 	// this->callBackArray.push_back(this->singlePlayer);
@@ -32,10 +32,11 @@ void MainMenu::loadSprites() {
 	float imgWidth,imgHeight,temp;
 	imgWidth=3774.0f;
 	imgHeight=447.0f;
-//	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
-	temp = (this->windowXsize-2*pionowyMargines)*imgHeight/imgWidth;
-	Sprite *title = new Sprite((-this->windowXsize/2)+pionowyMargines,this->windowYsize/2-poziomyMargines-temp,this->windowXsize-2*pionowyMargines,temp,"../src/img/title.png");
-//	Sprite *title = new Sprite((-1366/2)+pionowyMargines,768/2-poziomyMargines-temp,1366-2*pionowyMargines,temp,"../src/img/title.png");
+	//TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+//	temp = (1366.0f-2*pionowyMargines)*imgHeight/imgWidth;
+	temp = (1366.0f-2*pionowyMargines)*imgHeight/imgWidth;
+//	Sprite *title = new Sprite((-1366.0f/2)+pionowyMargines,1366.0f/2-poziomyMargines-temp,1366.0f-2*pionowyMargines,temp,"../src/img/title.png");
+	Sprite *title = new Sprite((-1366.0f/2)+pionowyMargines,768.0f/2-poziomyMargines-temp,1366.0f-2*pionowyMargines,temp,"../src/img/title.png");
 	this->listaSpritowFG.push_back(title);
 }
 
@@ -66,7 +67,9 @@ void MainMenu::loadCoordinates() {
 }
  
 void MainMenu::loadTranslates() {
-    float lewyMargines = (-this->windowXsize/2)+80;
+	//TODO: Sprawdzić czy dziala dla wielu rozdzielczosci
+	float lewyMargines = (-1366.0f/2)+80;
+//	float lewyMargines = (-1366.0f/2)+80;
     float yFirstButton = -90;
     float distance = 15;
     for (unsigned int i = 0; i<this->listaWspolrzednych.size();i++){
@@ -83,16 +86,16 @@ void MainMenu::loadTranslates() {
     }
 }
 
-void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void singlePlayer(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Single Player!" << std::endl;
 	inputActions::getInstance().changeState('s',window,cursor);
 //	inputActions::getInstance().changeGame(window, cursor);
 }
-void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void multiPlayer(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "MultiPlayer!" << std::endl;
 }
 
-void options(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void options(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	// this->callBackArray.push_back(static_cast(MainMenu::singlePlayer));
 //	OptionMenu *optionMenu = new OptionMenu(state,window,cursor);
 	inputActions::getInstance().changeState('o',window,cursor);
@@ -100,7 +103,7 @@ void options(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 
 }
 
-void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void exitWindow(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Exit window!" << std::endl;
 	glfwSetWindowShouldClose(window, GL_TRUE);
 
