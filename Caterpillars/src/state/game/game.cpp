@@ -24,7 +24,9 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    //Dodawanie Caterpillarow
    for(int i=0;i<1;i++) {
-      this->caterrVec.push_back( new Caterpillar((char*)"../src/obj/caterpillar.obj") );
+      Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
+      this->caterrVec.push_back( cat );
+      inputActions::getInstance().objectPointers.push_back(cat);
 
       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
       this->caterrVec[i]->teamID = (i%2)+1;
@@ -36,7 +38,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    for(int i=vertX-100;i<vertX; i++) for(int k=vertY-100;k<vertY;k++) if (this->map->mapVert[i][k]<min2) min2=this->map->mapVert[i][k];
    this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj" ,50,min1,50,80,200 ));
    this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj", vertX-50,min2,vertY-50,260,380) );
-
+   inputActions::getInstance().objectPointers.push_back(this->towers[0]);
+   inputActions::getInstance().objectPointers.push_back(this->towers[1]);
 
    //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
    this->currentCutterpillar = this->caterrVec[0];
@@ -232,7 +235,7 @@ void Game::catterMove(){
   }
 
 
-   checkCollisionAndMove(this->currentCutterpillar,newPos);
+   checkCollisionAndMove(this->currentCutterpillar,newPos,inputActions::getInstance().objectPointers);
    if(inputActions::getInstance().movedX!=0){
       this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;
       if(this->currentCutterpillar->rot.y<-2*M_PI) this->currentCutterpillar->rot.y+=2*M_PI;
@@ -264,10 +267,10 @@ void Game::catterMove(){
 
    this->start = clock();
 }
-bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos){
-   return checkCollisionAndMove(o,pos.x,pos.y,pos.z);
+bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v){
+   return checkCollisionAndMove(o,pos.x,pos.y,pos.z,v);
 }
-bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ){
+bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vector<Object*> v){
    bool canX = true;
    bool canY = false;
    bool canZ = true;

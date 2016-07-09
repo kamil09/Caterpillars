@@ -92,7 +92,7 @@ void Object::recalculateGravity(){
 	in_meter = 1;//ile jednostek mamy w pseudo metrze
 	if(sec_time)
 	{
-		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)){
+		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z,inputActions::getInstance().objectPointers)){
 			//gdy mamy kolizje obiektu z mapa
 			//cout << ""Mapa - kolizja" << endl;
 			this->pos.y = Map::getInstance().mapVert[(int)this->pos.x][(int)this->pos.z] + this->size.y + 1;
@@ -104,7 +104,7 @@ void Object::recalculateGravity(){
 				this->speed.z = 0;
 			}
 		}
-		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z)) {
+		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z, inputActions::getInstance().objectPointers)) {
 
 			if(!this->on_the_ground)
 			{
@@ -126,7 +126,7 @@ void Object::recalculateGravity(){
 			nextY = this->pos.y + this->speed.y;
 			nextZ = this->pos.z + this->speed.z;
 
-			if(!Game::checkCollisionAndMove(this, nextX, nextY, nextZ))
+			if(!Game::checkCollisionAndMove(this, nextX, nextY, nextZ,inputActions::getInstance().objectPointers))
 			{
 				this->speed.x = 0;
 				this->speed.y = 0;

@@ -10,6 +10,8 @@
 #include "state/menu/mainMenu/mainMenu.hpp"
 #include "state/menu/mainMenu/optionMenu.hpp"
 #include "state/menu/mainMenu/gameMenu.hpp"
+#include "object.hpp"
+
 // #include "state/menu/menu.hpp"
 
 #define M_PI 3.14159265358979323846
@@ -25,7 +27,8 @@ class inputActions{
       static inputActions& getInstance();
       void getMouseCurrentPosition(GLFWwindow *window);
       State *currentState;
-    std::map<char,State*> mapStates;
+      std::map<char,State*> mapStates;
+      std::vector<Object*> objectPointers;
 
     //   gameCaseType nextState;
     //   bool changeState;

@@ -46,8 +46,8 @@ public:
    * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
    * Zwraca kolizję na Osi Y
    */
-   static bool checkCollisionAndMove(Object *o,float x, float y, float z );
-   static bool checkCollisionAndMove(Object *o,glm::vec3 pos);
+   static bool checkCollisionAndMove(Object *o,float x, float y, float z, std::vector<Object*> v );
+   static bool checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v);
 
 };
 
