@@ -16,7 +16,7 @@
 #include "../../errorGL.hpp"
 
 // typedef void (*functionArray)();
-typedef std::function<void(State *,GLFWwindow*,GLFWcursor*)> functionArray;
+typedef std::function<void(Button *,GLFWwindow*,GLFWcursor*)> functionArray;
 
 class Menu : public State{
 public:
@@ -35,9 +35,13 @@ public:
     int buttonCount;
     void createBackgroud(string fileName);
     virtual void draw() override;
-    void run() override;
+
+    virtual void run() override;
     virtual void pressESC() override;
-    virtual void releaseLMB() override;
+
+    virtual void pressLMB() override;
+
+//    virtual void releaseLMB() override;
     float* readPixel(GLFWwindow *window);
     virtual void createButtons();
     void checkCursor();

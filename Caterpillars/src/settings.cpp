@@ -71,6 +71,38 @@ Setting::Setting(){
 	if(difficulty>3) difficulty=3;
 	if(frames<15) frames=15;
 	if(frames>60) frames=60;
+
+	//LOAD PLAYERS DATA
+	int playerCount = 4;
+	std::vector<glm::vec3> kolory;
+	kolory ={
+//			glm::vec3(0.612, 0, 0),
+			glm::vec3(0.712, 0, 0),
+			glm::vec3(0.039, 0.227, 0.763),
+			glm::vec3(0.239, 0.718, 0.063),
+			glm::vec3(0.988, 0.408, 0.0),
+	};
+	std::vector<std::string> nazwy;
+	nazwy = {
+			"Player 1",
+			"Player 2",
+			"Player 3",
+			"Player 4"
+	};
+	int startCaterpillars = 1;
+	this->players.resize(playerCount);
+	for (int i = 0; i < playerCount; ++i) {
+		this->players[i].kolor=glm::vec4(kolory[i],1.0f);
+		this->players[i].nazwa=nazwy[i];
+		this->players[i].caterpillarsCount=startCaterpillars;
+		if(i == 0){
+			this->players[i].czyGra = true;
+		}
+		else{
+			this->players[i].czyGra = false;
+		}
+	}
+
 }
 
 void Setting::load(){

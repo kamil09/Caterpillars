@@ -66,15 +66,28 @@ void Menu::pressESC(){
     glfwSetWindowShouldClose(this->window, GL_TRUE);
 }
 
-void Menu::releaseLMB(){
+
+void Menu::pressLMB() {
     // this->readPixel(this->window);
 //    this->checkButtons();
     if(this->currentButton!=-1){
-        this->listaButtonow[this->currentButton]->callBackFunction(this,this->window,this->cursor);
+        this->listaButtonow[this->currentButton]->callBackFunction(this->listaButtonow[this->currentButton],this->window,this->cursor);
         inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
         this->currentButton=-1;
     }
 }
+
+
+
+//void Menu::releaseLMB(){
+//    // this->readPixel(this->window);
+////    this->checkButtons();
+//    if(this->currentButton!=-1){
+//        this->listaButtonow[this->currentButton]->callBackFunction(this->listaButtonow[this->currentButton],this->window,this->cursor);
+//        inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
+//        this->currentButton=-1;
+//    }
+//}
 
 float* Menu::readPixel(GLFWwindow *window){
 	glFlush();
@@ -107,16 +120,16 @@ void Menu::createButtons() {
     for(unsigned int i=0;i < this->listaWspolrzednych.size();i++){
         this->buttonCount++;
         glm::vec4 pozycja = this->listaWspolrzednych[this->buttonCount-1];
-        std::cout << "pozycja: " << pozycja.w << std::endl;
-        char *temp = new char[this->listaTekstur[this->buttonCount-1].size() + 1];
-        strcpy(temp,this->listaTekstur[this->buttonCount-1].c_str());
-        Button *nowyButton = new Button(this->buttonCount,pozycja.x,pozycja.y,pozycja.z,pozycja.w,temp,this->callBackArray[this->buttonCount-1]);
+//        std::cout << "pozycja: " << pozycja.w << std::endl;
+//        char *temp = new char[this->listaTekstur[this->buttonCount-1].size() + 1];
+//        strcpy(temp,this->listaTekstur[this->buttonCount-1].c_str());
+        Button *nowyButton = new Button(this->buttonCount,pozycja.x,pozycja.y,pozycja.z,pozycja.w,listaTekstur[this->buttonCount-1],this->callBackArray[this->buttonCount-1]);
         glm::vec3 translate = this->listaPrzesuniec[i];
         nowyButton->setTraM(translate.x,translate.y,translate.z);
         nowyButton->kolor.a=0.6f;
         this->listaButtonow.push_back(nowyButton);
     }
-    std::cout << "button width: " << this->listaButtonow[0]->size.x << std::endl;
+//    std::cout << "button width: " << this->listaButtonow[0]->size.x << std::endl;
 }
 
 

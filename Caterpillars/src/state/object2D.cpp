@@ -115,6 +115,11 @@ void object2D::draw(){
     glBindVertexArray(5);
 
     //Rysowanie napisów, jeżeli są jakieś dodane do tablicy
+    this->drawText();
+}
+
+
+void object2D::drawText() {
     if(!this->teksty.empty() && this->font != NULL){
         glm::mat4 temp = this->posM;
         temp[3][1] = -temp[3][1];
@@ -128,6 +133,7 @@ void object2D::draw(){
     }
 
 }
+
 
 void object2D::initFont(const char *ttf, int size) {
     this->font = new Font(ttf,size);

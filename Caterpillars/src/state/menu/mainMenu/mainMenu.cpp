@@ -1,12 +1,12 @@
 #include "mainMenu.hpp"
 #include "../../../inputActions.hpp"
 
-void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
-void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void singlePlayer(Button *state, GLFWwindow *window, GLFWcursor *cursor);
+void multiPlayer(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
-void options(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void options(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
-void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void exitWindow(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
 MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 	// this->callBackArray.push_back(this->singlePlayer);
@@ -83,16 +83,16 @@ void MainMenu::loadTranslates() {
     }
 }
 
-void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void singlePlayer(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Single Player!" << std::endl;
 	inputActions::getInstance().changeState('s',window,cursor);
 //	inputActions::getInstance().changeGame(window, cursor);
 }
-void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void multiPlayer(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "MultiPlayer!" << std::endl;
 }
 
-void options(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void options(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	// this->callBackArray.push_back(static_cast(MainMenu::singlePlayer));
 //	OptionMenu *optionMenu = new OptionMenu(state,window,cursor);
 	inputActions::getInstance().changeState('o',window,cursor);
@@ -100,7 +100,7 @@ void options(State *state, GLFWwindow *window, GLFWcursor *cursor) {
 
 }
 
-void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void exitWindow(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	std::cout << "Exit window!" << std::endl;
 	glfwSetWindowShouldClose(window, GL_TRUE);
 

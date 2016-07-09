@@ -12,7 +12,7 @@ SubMenu::SubMenu(State *state, GLFWwindow *window, GLFWcursor *cur) : Menu(windo
 }
 
 
-void goBack(State *state, GLFWwindow *window, GLFWcursor *cursor) {
+void goBack(Button *state, GLFWwindow *window, GLFWcursor *cursor) {
 //    state->buttonControl();
     inputActions::getInstance().changeState('m',window,cursor);
 }

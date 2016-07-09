@@ -23,9 +23,9 @@ public:
     // ~MainMenu();
     // Font *font;
 };
-void singlePlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
-void multiPlayer(State *state, GLFWwindow *window, GLFWcursor *cursor);
-void options(State *state, GLFWwindow *window, GLFWcursor *cursor);
-void exitWindow(State *state, GLFWwindow *window, GLFWcursor *cursor);
+void singlePlayer(Button *state, GLFWwindow *window, GLFWcursor *cursor);
+void multiPlayer(Button *state, GLFWwindow *window, GLFWcursor *cursor);
+void options(Button *state, GLFWwindow *window, GLFWcursor *cursor);
+void exitWindow(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 
 #endif
