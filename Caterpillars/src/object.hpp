@@ -63,6 +63,7 @@ public:
 
     int verticesCount;
     int indicesCount;
+    int normalsCount;
     std::vector<GLfloat> vertices;
     std::vector<GLuint> indices;
     int buffersCount;
@@ -104,10 +105,10 @@ public:
     void endBinding();
     GLuint currentVAO();
     GLint getUniform(const char *nazwa);
-    void bindBuffers(int stride,GLenum usage);
+    void bindBuffers(int stride,int stride2,GLenum usage);
     void recalculateMatrix();
     void bufferData(GLenum usage);
-    void vAttributePointer(int firstVertex, int stride);
+    void vAttributePointer(int firstVertex, int stride, int stride2);
     virtual void inBinding(){};
 //   virtual void activeTexture();
 //    virtual void uniforms();

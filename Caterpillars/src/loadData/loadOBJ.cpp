@@ -2,7 +2,7 @@
 
 /*
  * Blender:
- * OBJ + triangulate faces + not write materials + include UVs + inpude Nurmals
+ * OBJ + triangulate faces + write materials + include UVs + inpude Nurmals
  *
  */
 bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuint> *indices){
@@ -15,6 +15,7 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
    std::vector<double> ver;
    std::vector<double> nor;
    std::vector<int> uvIndices;
+   std::vector<double> normalIndices;
    int verNum=0;
    int texNum=0;
    int norNum=0;
@@ -61,19 +62,24 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
          uvIndices.push_back(uvIndex[0]);
          uvIndices.push_back(uvIndex[1]);
          uvIndices.push_back(uvIndex[2]);
-         // normalIndices.push_back(normalIndex[0]);
-         // normalIndices.push_back(normalIndex[1]);
-         // normalIndices.push_back(normalIndex[2]);
+         normalIndices.push_back(normalIndex[0]);
+         normalIndices.push_back(normalIndex[1]);
+         normalIndices.push_back(normalIndex[2]);
       }
    }
    for( unsigned int i=0; i<indices->size(); i++ ){
       unsigned int vertexIndex = (*indices)[i];
       unsigned int texIndex = uvIndices[i];
+      unsigned int normalIndex = normalIndices[i];
+
       vertices->push_back(ver[vertexIndex*3-3]);
       vertices->push_back(ver[vertexIndex*3-2]);
       vertices->push_back(ver[vertexIndex*3-1]);
       vertices->push_back(tex[texIndex*2-2]);
       vertices->push_back(tex[texIndex*2-1]);
+      vertices->push_back(nor[normalIndex*3-3]);
+      vertices->push_back(nor[normalIndex*3-2]);
+      vertices->push_back(nor[normalIndex*3-1]);
    }
    // for(int i=0;i<verNum;i++){
    //    vertices->push_back(ver[i*3]);

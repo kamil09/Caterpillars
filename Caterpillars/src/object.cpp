@@ -324,35 +324,22 @@ void Object::loadTexture3D(int number){
 		this->listaTekstur[i].textureHeight = height;
 	}
 
-
 	std::vector<unsigned char> imageTab;
 	for(int i=number-1;i>=0;i--)
 		for(int j=0; j < (int)this->listaTekstur[i].image.size();j++)
 			imageTab.push_back(this->listaTekstur[i].image[j]);
 
    glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageTab.data());
-
-	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) imageTab.data());
-	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-	// this->listaTekstur[0].image.data());
-
-	// glTexImage3D(GL_TEXTURE_3D,0,GL_RGBA,this->listaTekstur[0].textureWidth,this->listaTekstur[0].textureHeight,number, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-	// imageTab.data());
-
 	glGenerateMipmap(GL_TEXTURE_3D);
-
-	// for(int i=0;i<number;i++)
-	// delete imageTab[i];
-	// delete imageTab;
 }
 
-void Object::bindBuffers(int stride, GLenum usage) {
+void Object::bindBuffers(int stride, int stride2, GLenum usage) {
 	this->initBinding();
 	this->bufferData(usage);
 
 	this->inBinding();
 
-	this->vAttributePointer(3, stride);
+	this->vAttributePointer(3, stride, stride2);
 	this->endBinding();
 }
 
@@ -361,34 +348,25 @@ void Object::bufferData(GLenum usage) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), usage);
 }
 
-void Object::vAttributePointer(int firstVertex, int stride) {
-	glVertexAttribPointer(0, firstVertex, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)0);
+void Object::vAttributePointer(int firstVertex, int stride, int stride2) {
+	glVertexAttribPointer(0, firstVertex, GL_FLOAT, GL_FALSE, stride2 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+
 	int nextVertex = stride - firstVertex;
+
 	if(nextVertex > 0){
-		glVertexAttribPointer(1, nextVertex, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(firstVertex * sizeof(GLfloat)));
+		glVertexAttribPointer(1, nextVertex, GL_FLOAT, GL_FALSE, stride2 * sizeof(GLfloat), (GLvoid*)(firstVertex * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
 	}
-}
-
-//
-//void Object::draw(int points) {
-//	this->shader->useShaderProgram(0);
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-//
-//	glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
-//	GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
-//	glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM*this->rotM));
-//
-//	glBindVertexArray(this->currentVAO());
-//	glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
-//	glBindVertexArray(0);
-//}
-
-void Object::draw(){
+	nextVertex = stride2-stride;
+	if(nextVertex > 0){
+		glVertexAttribPointer(2, nextVertex, GL_FLOAT, GL_FALSE, stride2 * sizeof(GLfloat), (GLvoid*)(stride * sizeof(GLfloat)));
+		glEnableVertexAttribArray(2);
+	}
 
 }
+
+void Object::draw(){}
 
 GLint Object::getUniform(const char *nazwa) {
 	return glGetUniformLocation(this->shader->shaderProgram[this->currentShader],nazwa);

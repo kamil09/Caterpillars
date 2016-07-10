@@ -44,7 +44,7 @@ void object2D::initObject2D(float x, float y, float width, float height, string 
     this->indices = {
             0,1,2,3
     };
-    this->bindBuffers(5,GL_STATIC_DRAW);
+    this->bindBuffers(5,5,GL_STATIC_DRAW);
     if(!fileName.empty()){
         char *str = new char[fileName.length()+1];
         strcpy(str,fileName.c_str());

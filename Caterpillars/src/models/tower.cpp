@@ -41,7 +41,7 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
    this->recalculateMatrix();
 
    loadObj::load(filename,&this->vertices, &this->indices);
-   this->bindBuffers(5,GL_STATIC_DRAW);
+   this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/towerL.png");
    puts("created tower light");
 
@@ -90,7 +90,7 @@ Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int e
    this->recalculateMatrix();
 
    loadObj::load(filename,&this->vertices, &this->indices);
-   this->bindBuffers(5,GL_STATIC_DRAW);
+   this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/tower.png");
    puts("created tower");
 

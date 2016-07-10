@@ -18,7 +18,7 @@ Gun::Gun(char *filename, float min, float max,Object *owner){
    this->recalculateMatrix();
 
    loadObj::load(filename,&this->vertices, &this->indices);
-   this->bindBuffers(5,GL_STATIC_DRAW);
+   this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/weapon.png");
    puts("create weapon");
 }

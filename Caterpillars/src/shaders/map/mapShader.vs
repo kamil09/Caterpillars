@@ -10,6 +10,7 @@ out float towL2;
 
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 texture;
+layout (location = 2) in vec3 normal;
 
 float calcLightMul(vec4 Lpos, vec4 Ldir, vec3 pos){
 	float val=0;
@@ -24,15 +25,7 @@ float calcLightMul(vec4 Lpos, vec4 Ldir, vec3 pos){
    cosK= ((LdirV.x*MdirV.x) + (LdirV.y*MdirV.y) + (LdirV.z*MdirV.z)) / (LD*MD);
    float kat = -acos(cosK);
 	if(kat<0) kat*=-1;
-
-	//float diff = sqrt(pow(MdirV.x-LdirV.x,2)+pow(MdirV.y-LdirV.y,2)+pow(MdirV.z-LdirV.z,2));
-
-	//if( diff < 0.4) val=1;
-	//else val = diff/2;
-	//val=1-diff;
-	//if(val>0.8) val=1;
-	//if(val<0.5) val=0;
-	if(kat < 50*2*3.14/360) val=1;
+	if(kat < 55*2*3.14/360) val=1;
 
 	return val;
 }

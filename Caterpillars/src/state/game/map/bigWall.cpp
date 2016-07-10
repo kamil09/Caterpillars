@@ -20,7 +20,7 @@ Wall::Wall(int x, int width, int z, int depth, int min, int max){
       0,1,2,3,4,5,6,7,0,1
    };
 //   this->bindBuffers(true);
-   this->bindBuffers(5,GL_STATIC_DRAW);
+   this->bindBuffers(5,5,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/wall.png");
 }
 
