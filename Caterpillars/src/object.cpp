@@ -79,20 +79,23 @@ void Object::recalculateGravity(){
 
 	//Drukowanie parametrow
 	//cout << "PosX: " << this->pos.x << "  SpeedX: "<< this->speed.x << endl;
-	cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
+	//cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
 	//cout << "PosZ: " << this->pos.z << "  SpeedZ: "<< this->speed.z << endl;
 
 
 
-	end = clock();
-	diff = ((float)end - (float)start);
+	//end = clock();
+	//diff = ((float)end - (float)start);
 	//bet_time = diff/CLOCKS_PER_SEC;
 	bet_time = inputActions::getInstance().deltaTime;
 	//cout<<"bet_time: "<< bet_time<<endl;
 	in_meter = 1;//ile jednostek mamy w pseudo metrze
+	//jesli wejdzie drugi raz
 	if(sec_time)
 	{
-		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z,inputActions::getInstance().objectPointers)){
+		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
+			 			this->pos.z,inputActions::getInstance().objectPointers))
+		{
 			//gdy mamy kolizje obiektu z mapa
 			//cout << ""Mapa - kolizja" << endl;
 			this->pos.y = Map::getInstance().mapVert[(int)this->pos.x][(int)this->pos.z] + this->size.y + 1;
@@ -104,7 +107,9 @@ void Object::recalculateGravity(){
 				this->speed.z = 0;
 			}
 		}
-		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y, this->pos.z, inputActions::getInstance().objectPointers)) {
+		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
+			 				this->pos.z, inputActions::getInstance().objectPointers))
+		{
 
 			if(!this->on_the_ground)
 			{
@@ -152,7 +157,8 @@ void Object::recalculateGravity(){
 }
 
 
-void Object::diagonalThrow(glm::vec3 throw_speed){
+void Object::diagonalThrow(glm::vec3 throw_speed)
+{
 	this->on_the_ground = false;
 	this->speed.x = throw_speed.x;
 	this->speed.y = throw_speed.y;
