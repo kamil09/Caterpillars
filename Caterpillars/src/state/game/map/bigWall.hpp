@@ -20,7 +20,9 @@ class Wall : public Object{
 private:
    void recalculateTriangleMap();
 public:
+   //deprecated
    Wall(int x, int width, int z, int depth, int min, int max);
+   Wall(char *filename, int x, int width, int z, int depth, int min, int max);
    ~Wall();
 
 //   void bindBuffers(bool newBuffer);

@@ -7,6 +7,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    this->map= & Map::getInstance();
    this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
+   this->wall = new Wall((char*)"../src/obj/wall.obj",0,vertX,0,vertY,0,maxMapHeight*1.3);
 //   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
    this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
 //   this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
