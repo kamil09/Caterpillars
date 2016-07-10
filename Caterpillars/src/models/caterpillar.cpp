@@ -35,7 +35,7 @@ void Caterpillar::setPos(float x,float y,float z){
    this->recalculateMatrix();
 }
 
-void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
+void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
    this->shader->useShaderProgram(0);
    glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
@@ -44,14 +44,21 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView){
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+   GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
+
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotMY*this->sclM));
+   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+
+
 
    glBindVertexArray(this->currentVAO());
    glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
    glBindVertexArray(3);
 
-   this->weapon->draw(projection,modelView,this);
+   this->weapon->draw(projection,modelView,this,lights,sun);
 }

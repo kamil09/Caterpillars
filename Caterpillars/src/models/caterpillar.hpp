@@ -24,7 +24,7 @@ public:
    Caterpillar(char *filename);
    ~Caterpillar();
 //   void bindBuffers(bool newBuffer);
-   void draw(glm::mat4 projection, glm::mat4 modelView);
+   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun);
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
    float maxWalkSpeed;  //maksymalna prędkość chodzenia m/s

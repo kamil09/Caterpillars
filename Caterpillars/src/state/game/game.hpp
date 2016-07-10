@@ -44,6 +44,8 @@ public:
 
    glm::mat4 lightsMat;
 
+   glm::vec3 sunPosition;
+
    static int currCatIndex;
 
    /**
