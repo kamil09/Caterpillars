@@ -44,6 +44,8 @@ public:
 
    glm::mat4 lightsMat;
 
+   static int currCatIndex;
+
    /**
    * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
    * Zwraca kolizję na Osi Y

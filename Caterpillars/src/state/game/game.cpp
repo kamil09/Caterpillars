@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include <typeinfo>
 #include "../../inputActions.hpp"
 
 
@@ -26,7 +27,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 //   this->rose->setTraM((this->windowXsize-roseWidth)/2,-(this->windowYsize-roseHeight)/2,0.0f);
 
    //Dodawanie Caterpillarow
-   for(int i=0;i<1;i++) {
+   for(int i=0;i<4;i++) {
       Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
       this->caterrVec.push_back( cat );
       inputActions::getInstance().objectPointers.push_back(cat);
@@ -50,7 +51,13 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
 
    //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
+
    this->currentCutterpillar = this->caterrVec[0];
+
+   //ta wartosc wskazuje nam ktory jest aktyalny
+   //wykorzystywana w kolizjach
+   Game::currCatIndex = 0;
+
 
    this->lookFrom=glm::vec3(0, 400, 0);
    this->lookAt=glm::vec3(150,0,150);
@@ -60,6 +67,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;
 }
+
+int Game::currCatIndex;
 
 void Game::draw(){
 
@@ -207,11 +216,13 @@ void Game::catterMove(){
      }
      //Dodane przez Pawla do testow - to bedzie pozniej zmienione na myszke
      if(inputActions::getInstance().leftClick){
+       //Tu bedzie strzal - teraz to nic nie robi
         glm::vec3 shot;
 
-        shot.x = shotViewVec.x * 2;
-        shot.y = shotViewVec.y * 2;
-        shot.z = shotViewVec.z * 2;
+        shot.x = shotViewVec.x * 5;
+        shot.y = shotViewVec.y * 5;
+        shot.z = shotViewVec.z * 5;
+
         this->currentCutterpillar->diagonalThrow(shot);
      }
  }
@@ -286,12 +297,51 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
    bool canX = true;
    bool canY = false;
    bool canZ = true;
-   if(x<=5 || x>vertX-5) canX = false;
-   if(y<=0 || y>maxMapHeight+300) canY = false;
-   if(z<=5 || z>vertY-5) canZ = false;
+
+   if(x<=5 || x>vertX-5)
+      canX = false;
+   if(y<=0 || y>maxMapHeight+300)
+      canY = false;
+   if(z<=5 || z>vertY-5)
+      canZ = false;
 
    //..................TODO kolizja z mapą X
    //..................TODO kolizja z mapą Z
+
+   for(int i=0; i< v.size(); i++)
+   {
+     //Jesli wieza
+     if(dynamic_cast<Tower *>(v[i]))
+     {
+       //cout << i <<" : Tower" << endl;
+       //kolizja z Tower
+       if((x >= (int)v[i]->pos.x - (v[i]->size.x/2)) && (x <= (int)v[i]->pos.x + (v[i]->size.x/2))
+          && (z >= (int)v[i]->pos.z - (v[i]->size.z/2)) && (z <= (int)v[i]->pos.z + (v[i]->size.z/2)))
+       {
+         canX = false;
+         canZ = false;
+       }
+     }
+     else if(dynamic_cast<Caterpillar *>(v[i]))
+     {
+       //cout << i << " : Caterpillar" << endl;
+
+       //Kolizja z Caterpillar
+
+       if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
+       {
+         if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
+            //&& (z >= (int)v[i]->pos.y - 5) && (z <= (int)v[i]->pos.y + 5)
+            && (z >= (int)v[i]->pos.z - 3) && (z <= (int)v[i]->pos.z + 3))
+         {
+           canX = false;
+           canZ = false;
+         }
+       }
+
+
+     }
+   }
 
    if(((int)o->pos.x>=0) && ((int)o->pos.x <vertX) && ((int)o->pos.z>=0) && ((int)o->pos.z<vertY)){//jesli jest na mapie
      if(y-(o->size.y) > Map::getInstance().mapVert[(int)x][(int)z]) // Tu ta 30 jest troche slaba
@@ -303,9 +353,13 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
       }
    }
 
-   if(canX) o->pos.x = x;
-   if(canY) o->pos.y = y;
-   if(canZ) o->pos.z = z;
+   if(canX)
+      o->pos.x = x;
+   if(canY)
+      o->pos.y = y;
+   if(canZ)
+      o->pos.z = z;
+
    return canY;
 }
 

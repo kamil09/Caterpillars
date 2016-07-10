@@ -12,7 +12,13 @@ void TowerLight::moveLight(){
 }
 
 TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int dir){
+
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
+
+   //this->size = glm::vec3(40, 100, 40);
+   //this->size.y = 100; //Tu nie wiem jaka wartosc
+   //this->size.z = 40;
+   //cout<<this->size.x<<" : "<<this->size.y<<" : "<<this->size.z;
 
    this->scl.x=8;
    this->scl.y=8;
@@ -40,7 +46,9 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
    puts("created tower light");
 
 }
+
 TowerLight::~TowerLight(){};
+
 void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
    glActiveTexture(GL_TEXTURE0);
@@ -66,6 +74,10 @@ void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView){
 Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int endAngle){
 
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
+
+   this->size.x = 40;
+   this->size.y = 100; //Tu nie wiem jaka wartosc
+   this->size.z = 40;
 
    this->scl.x=10;
    this->scl.y=10;
