@@ -1,13 +1,13 @@
 #include "tower.hpp"
 
 void TowerLight::moveLight(){
-   this->direction == 0 ? this->rot.y+=0.05 : this->rot.y -=0.05;
+   this->direction == 0 ? this->rot.y+=0.005 : this->rot.y -=0.005;
    if (this->rot.y > this->endA) this->direction=1;
    if (this->rot.y < this->startA) this->direction=0;
 
    this->recalculateMatrix();
 
-   this->lightDir = glm::vec4(0.0f,-0.3f,-1.0f,0.0f);
+   this->lightDir = glm::vec4(0.0f,-1.0f,-1.0f,0.0f);
    lightDir = this->rotM*lightDir;
 }
 
@@ -50,6 +50,8 @@ void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView){
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+
+   printf("%f/%f/%f\n",this->lightDir.x,this->lightDir.y,this->lightDir.z);
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
