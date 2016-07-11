@@ -32,7 +32,7 @@ void Gun::setPos(float x,float y,float z){
    this->recalculateMatrix();
 }
 
-void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner){
+void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::mat4 lights,glm::vec3 sun){
   this->shader->useShaderProgram(0);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, this->texture2D);
@@ -41,13 +41,19 @@ void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner){
   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+  GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+  GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
+
 
   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr((owner->posM) *(owner->rotMY)* this->posMadd* (owner->sclM)));
+  glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+  glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+
+
   //
   glBindVertexArray(this->currentVAO());
-	// //glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
   glBindVertexArray(0);
 }

@@ -4,9 +4,10 @@
 
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
+   this->sunPosition=glm::vec3(100,1000,100);
 
    this->map= & Map::getInstance();
-   this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
+   //this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
    this->wall = new Wall((char*)"../src/obj/wall.obj",0,vertX,0,vertY,0,maxMapHeight*1.3);
 //   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
    this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
@@ -75,11 +76,10 @@ void Game::draw(){
 
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
-
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 
-   this->map->draw(this->projection,this->modelView, this->lightsMat);
-   this->wall->draw(this->projection,this->modelView);
+   this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
+   this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
 
    glEnable(GL_BLEND);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -90,11 +90,11 @@ void Game::draw(){
             //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
             //    this->caterrVec[i]->draw(this->projection,this->modelView);
             //}
-        this->caterrVec[i]->draw(this->projection,this->modelView);
+        this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
     }
     for(int i=0;i<(int)this->towers.size();i++ )
-      this->towers[i]->draw(this->projection,this->modelView);
+      this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
     if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
 

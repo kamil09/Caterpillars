@@ -19,7 +19,7 @@ private:
 public:
    Gun(char *filename, float min, float max,Object *owner);
    ~Gun();
-   void draw(glm::mat4 projection, glm::mat4 modelView, Object *owner);
+   void draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::mat4 lights,glm::vec3 sun);
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
    float viewBack;

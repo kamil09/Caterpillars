@@ -14,7 +14,7 @@ Map::Map(){
    this->rand();
    this->generateRandomMap();
    this->genTriangleTab();
-   this->bindBuffers(6,6,GL_DYNAMIC_DRAW);
+   this->bindBuffers(6,9,GL_DYNAMIC_DRAW);
     int numOfTex = 8;
 //   GLchar *texturePath[numOfTex];
    std::vector<std::string> texturePath;
@@ -141,7 +141,6 @@ void Map::kaboom(float x, float y, float z, float radius){
    int bottom = zz+rr;
 
    float minTab[2*rr+1][2*rr+1];
-
    /**
    * tablica nowych wartości
    */
@@ -174,28 +173,35 @@ void Map::kaboom(float x, float y, float z, float radius){
    }
 
    this->recalculateTriangleMap();
-   this->bindBuffers(6,6,GL_DYNAMIC_DRAW);
-    puts("kaboom done");
+   this->bindBuffers(6,9,GL_DYNAMIC_DRAW);
+   puts("kaboom done");
 }
 
 void Map::genTriangleTab(){
    int index=0;
-   this->vertices.resize(vertX*vertY*6);
+   this->vertices.resize(vertX*vertY*9);
    this->indices.resize(2*vertX*(vertY-1)+vertY-1);
    int modX=50;
    int modY=50;
 
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
+         //wierzchołek
          this->vertices[index] = (float)i;
          this->vertices[index+1] = this->mapVert[i][j];
          this->vertices[index+2] = (float)j;
+         //Tektura
          this->vertices[index+3] = (float)(i%modX)/(modX); //tesktura
          if(i/modX % 2 == 1)this->vertices[index+3]=1-this->vertices[index+3];
          this->vertices[index+4] = (float)(j%modY)/(modY);
          if(j/modY % 2 == 1)this->vertices[index+4]=1-this->vertices[index+4];
          this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+1)/2;
-         index+=6;
+         //Normals
+         this->vertices[index+6] = 0.0f;
+         this->vertices[index+7] = 1.0f;
+         this->vertices[index+8] = 0.0f;
+
+         index+=9;
       }
 
    GLuint indiVal=0;
@@ -211,30 +217,9 @@ void Map::genTriangleTab(){
       this->indices[index]=vertX*vertY;
       index++;
    }
-   // this->bindBuffers(false);
 }
-//
-//void Map::bindBuffers(bool newBuffer){
-//   // std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
-//   this->initBinding(newBuffer);
-//
-//   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*this->vertices.size(), &this->vertices.front(), GL_DYNAMIC_DRAW);
-//   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*this->indices.size(), &this->indices.front(), GL_DYNAMIC_DRAW);
-//
-//   glEnable(GL_PRIMITIVE_RESTART);
-//   glPrimitiveRestartIndex(vertX*vertY);
-//
-//   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-//	glEnableVertexAttribArray(0);
-//
-//   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-//   glEnableVertexAttribArray(1);
-//
-//   this->endBinding();
-//}
 
-
-void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights){
+void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
    this->shader->useShaderProgram(0);
 
    glActiveTexture(GL_TEXTURE0);
@@ -244,10 +229,13 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights){
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
    GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+
 
    glBindVertexArray(this->currentVAO());
 
@@ -255,7 +243,6 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights){
    glBindVertexArray(0);
 
 }
-
 
 void Map::recalculateTriangleMap(){
    int index=0;
@@ -265,7 +252,7 @@ void Map::recalculateTriangleMap(){
             this->vertices[index+1] = this->mapVert[i][j];
             this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+0.2)/1.2;
          }
-         index+=6;
+         index+=9;
       }
 }
 

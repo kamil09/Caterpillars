@@ -3,6 +3,7 @@
 uniform mat4 P;
 uniform mat4 V;
 uniform mat4 L;
+uniform vec3 SUN;
 
 out vec3 textCord;
 out float towL1;

@@ -49,7 +49,7 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
 
 TowerLight::~TowerLight(){};
 
-void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView){
+void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
    this->shader->useShaderProgram(0);
    glActiveTexture(GL_TEXTURE0);
    glBindTexture(GL_TEXTURE_2D, this->texture2D);
@@ -58,12 +58,18 @@ void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView){
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+   GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
+
 
    printf("%f/%f/%f\n",this->lightDir.x,this->lightDir.y,this->lightDir.z);
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM * this->sclM * this->rotM));
+   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+
    //
    glBindVertexArray(this->currentVAO());
  	// //glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
@@ -100,7 +106,7 @@ Tower::~Tower(){
 
 }
 
-void Tower::draw(glm::mat4 projection, glm::mat4 modelView){
+void Tower::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
   this->shader->useShaderProgram(0);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, this->texture2D);
@@ -109,15 +115,22 @@ void Tower::draw(glm::mat4 projection, glm::mat4 modelView){
   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+  GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+  GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
+
 
   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM * this->sclM));
+  glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+  glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+
+
   //
   glBindVertexArray(this->currentVAO());
 	// //glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
   glBindVertexArray(0);
 
-  this->light->draw(projection,modelView);
+  this->light->draw(projection,modelView,lights,sun);
 }

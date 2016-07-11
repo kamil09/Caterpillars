@@ -49,7 +49,7 @@ public:
 //   void bindBuffers(bool newBuffer);
    Map(const Map &);
    static Map& getInstance();
-   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights);
+   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun);
    void rand();     //Losuje wiatr itp
    void kaboom(float x, float y, float z, float radius);    //Robi kaboom na mapie
    void genTriangleTab();
