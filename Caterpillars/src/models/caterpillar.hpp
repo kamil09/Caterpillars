@@ -19,7 +19,7 @@ class Caterpillar : public Object{
 private:
    float life;          //Życie naszego bohatera :)
    float maxWalkAngle;  //Maksymalny kąt pod jakim może wchodzić worms na wzniesienie
-   Gun *weapon;
+
 public:
    Caterpillar(char *filename);
    ~Caterpillar();
@@ -31,6 +31,7 @@ public:
    float viewBack;
    float tmpViewBack;
    int teamID;
+   Gun *weapon;
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include "../../object.hpp"
 #include "../../models/caterpillar.hpp"
 #include "../../models/tower.hpp"
+#include "../../models/bullet.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 //#include "../object2D.hpp"
@@ -26,6 +27,7 @@ public:
    Map *map;
    Wall *wall;
    std::vector<Tower*> towers;
+   std::vector<Bullet*> bullets;
 //   object2D *targetView;
    Sprite *targetView;
 //   object2D *rose;
@@ -49,7 +51,13 @@ public:
 
    glm::vec3 sunPosition;
 
-   static int currCatIndex;
+
+   static int currCatIndex;//index currentCutterpillara w catterVec
+   glm::vec3 shot;
+   float shotPower;//sila stralu
+   float calculatedDamage;
+   float maxShotPower = 15;//wartosc do ktorej rosnie sila a potem od poczatku
+   bool powerischoosed = false;//po wybraniu sily strzalu true
 
    /**
    * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
