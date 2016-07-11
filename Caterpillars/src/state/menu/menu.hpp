@@ -37,7 +37,6 @@ public:
     virtual void draw() override;
 
     virtual void run() override;
-    virtual void pressESC() override;
 
     virtual void pressLMB() override;
 

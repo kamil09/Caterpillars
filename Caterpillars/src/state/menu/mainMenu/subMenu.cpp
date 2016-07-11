@@ -13,14 +13,12 @@ SubMenu::SubMenu(State *state, GLFWwindow *window, GLFWcursor *cur) : Menu(windo
 
 
 void goBack(Button *state, GLFWwindow *window, GLFWcursor *cursor) {
-//    state->buttonControl();
-    inputActions::getInstance().changeState('m',window,cursor);
+//    state->keysControl();
+//    inputActions::getInstance().changeState('m',window,cursor);
+    SubMenu* now =(SubMenu*)inputActions::getInstance().currentState;
+    inputActions::getInstance().currentState=now->primaryState;
 }
 
-
-void SubMenu::buttonControl() {
-
-}
 
 
 void SubMenu::draw() {
@@ -44,4 +42,9 @@ void SubMenu::draw() {
 //    }
 }
 
+
+void SubMenu::pressESC() {
+//    State::pressESC();
+    inputActions::getInstance().currentState = this->primaryState;
+}
 

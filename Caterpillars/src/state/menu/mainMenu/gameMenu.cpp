@@ -233,8 +233,10 @@ void GameMenu::loadTextureFiles() {
 
 
 void GameMenu::loadCoordinates() {
-    this->listaWspolrzednych.push_back(glm::vec4(0,0,151.7767906718,59.078289839));
-    this->listaWspolrzednych.push_back(glm::vec4(0,0,151.7767906718,59.078289839));
+    this->listaWspolrzednych.push_back(glm::vec4(0,0,189.8686311322,59.078289839));
+//    this->listaWspolrzednych.push_back(glm::vec4(0,0,151.7767906718,59.078289839));
+    this->listaWspolrzednych.push_back(glm::vec4(0,0,216.739619364,59.078289839));
+//    this->listaWspolrzednych.push_back(glm::vec4(0,0,151.7767906718,59.078289839));
 //    this->listaWspolrzednych.push_back(glm::vec4());
 //    Menu::loadCoordinates();
 }
@@ -283,10 +285,10 @@ void GameMenu::loadSprites() {
 
 
 void goStart(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
-    inputActions::getInstance().changeState('g',window,cursor);
+    inputActions::getInstance().changeState('l',window,cursor);
 }
 
-
+ ;
 void increase(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
     if(    Setting::getInstance().players[clickedButton->binds].caterpillarsCount < 10){
         Setting::getInstance().players[clickedButton->binds].caterpillarsCount++;
@@ -323,6 +325,8 @@ void deletePlayer(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor)
         Setting::getInstance().players[clickedButton->binds].czyGra = false;
     }
 }
+
+
 
 
 

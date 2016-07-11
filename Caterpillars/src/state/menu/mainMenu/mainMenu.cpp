@@ -108,3 +108,9 @@ void exitWindow(Button *button, GLFWwindow *window, GLFWcursor *cursor) {
 	glfwSetWindowShouldClose(window, GL_TRUE);
 
 }
+
+void MainMenu::pressESC() {
+//	State::pressESC();
+	glfwSetWindowShouldClose(this->window, GL_TRUE);
+}
+

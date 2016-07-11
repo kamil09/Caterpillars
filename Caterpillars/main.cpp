@@ -17,6 +17,8 @@
 #include "src/info.hpp"
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
+#include <thread>
+#include <mutex>
 // #include "src/font.hpp"
 
 using namespace std;
@@ -146,7 +148,7 @@ int main(void){
 
 
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
-	glfwMakeContextCurrent(window);
+//	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	errorCheck("Przed glewInit");
 	GLenum error_code = glewInit();

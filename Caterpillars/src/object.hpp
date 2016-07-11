@@ -88,7 +88,7 @@ public:
     int textureHeight;
     GLuint texture2D;
     GLuint texture3D;
-   void bindTexture3D(int number,GLchar *texturePath[]);
+   void bindTexture3D(int number, std::vector<std::string> texturePath);
 
     void loadTexture3D(int number);
    // GLuint texture3D;

@@ -13,11 +13,12 @@
 
 class SubMenu : public Menu{
 public:
+    virtual void pressESC() override;
+
     SubMenu(State *state, GLFWwindow *window, GLFWcursor *cur);
     State *primaryState;
 
     virtual void draw() override;
-    virtual void buttonControl() override;
 
 };
 void goBack(Button *state, GLFWwindow *window, GLFWcursor *cursor);

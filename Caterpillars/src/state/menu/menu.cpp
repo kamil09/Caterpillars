@@ -21,6 +21,9 @@ void Menu::run(){
     this->draw();
     this->checkCursor();
     glfwPollEvents();
+//    this->keysControl();
+    glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->check=1;
     this->draw();
     errorCheck("RYSOWANIE MENU");
@@ -62,9 +65,7 @@ void Menu::draw(){
 }
 
 
-void Menu::pressESC(){
-    glfwSetWindowShouldClose(this->window, GL_TRUE);
-}
+
 
 
 void Menu::pressLMB() {
@@ -74,6 +75,7 @@ void Menu::pressLMB() {
         this->listaButtonow[this->currentButton]->callBackFunction(this->listaButtonow[this->currentButton],this->window,this->cursor);
         inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
         this->currentButton=-1;
+        inputActions::getInstance().leftClick=false;
     }
 }
 

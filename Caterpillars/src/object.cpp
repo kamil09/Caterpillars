@@ -281,7 +281,7 @@ void Object::loadTexture2D(const GLchar *texturePath){
 
 }
 
-void Object::bindTexture3D(int number,GLchar *texturePath[]){
+void Object::bindTexture3D(int number, vector<std::string> texturePath){
 
 	glGenTextures(1, &this->texture3D);
 	glBindTexture(GL_TEXTURE_3D, this->texture3D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
@@ -302,8 +302,10 @@ void Object::bindTexture3D(int number,GLchar *texturePath[]){
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	listaTekstur.resize(number);
-	for( int i=0;i<number;i++ ) this->listaTekstur[i].texturePath = texturePath[i];
-
+	for( int i=0;i<number;i++ ) this->listaTekstur[i].texturePath = texturePath[i].c_str();
+//	for (int j = 0; j < this->listaTekstur.size(); ++j) {
+//		std::cout << this->listaTekstur[j].texturePath << std::endl;
+//	}
 	this->loadTexture3D(number);
 	glBindTexture(GL_TEXTURE_3D, 0);
 	errorCheck("Po loadTexture");

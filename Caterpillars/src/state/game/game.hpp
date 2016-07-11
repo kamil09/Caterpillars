@@ -18,7 +18,10 @@
 
 class Game : public State{
 private:
-   void drawRose();
+public:
+    virtual void pressESC() override;
+
+    void drawRose();
    void calcViewMatrix();
    Map *map;
    Wall *wall;

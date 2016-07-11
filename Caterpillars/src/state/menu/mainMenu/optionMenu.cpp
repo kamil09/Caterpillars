@@ -21,7 +21,7 @@ void OptionMenu::loadTextureFiles() {
 }
 
 void OptionMenu::loadCoordinates() {
-    this->listaWspolrzednych.push_back(glm::vec4(0,0,151.7767906718,59.078289839));
+    this->listaWspolrzednych.push_back(glm::vec4(0,0,189.8686311322,59.078289839));
 //    Menu::loadCoordinates();
 }
 
@@ -66,7 +66,7 @@ void OptionMenu::loadSprites() {
 void OptionMenu::settingsPrint(Sprite *sprite) {
     this->readSettings();
 //    sprite->initFont("../src/fonts/NotoSansCJK-Black.ttc",14);
-    sprite->initFont("../src/fonts/Coalition.ttf",14);
+    sprite->initFont("../src/fonts/Coalition.ttf",15);
     float poziomyMargines, pionowyMargines,distance;
     poziomyMargines = 100;
     pionowyMargines = 40;

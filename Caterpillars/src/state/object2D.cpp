@@ -114,7 +114,7 @@ void object2D::draw(){
 
     glBindVertexArray(this->currentVAO());
     glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(5);
+    glBindVertexArray(0);
 
     //Rysowanie napisów, jeżeli są jakieś dodane do tablicy
     this->drawText();

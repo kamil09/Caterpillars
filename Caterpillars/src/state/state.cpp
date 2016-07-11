@@ -60,7 +60,7 @@ void State::key_callback(GLFWwindow* window,int key, int scancode, int action, i
 	//ESC
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		inputActions::getInstance().escape_pressed=true;
-//		this->pressESC();
+		this->pressESC();
 	}
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
 		inputActions::getInstance().escape_pressed=false;
@@ -92,12 +92,19 @@ void State::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
 	inputActions::getInstance().movedY-=inputActions::getInstance().lastY-ypos;
    if(inputActions::getInstance().cursorFixedCenterPos){
       glfwSetCursorPos(window,windowXsize/2,windowYsize/2);
+	   if(!inputActions::getInstance().cursorDisabled){
+		   inputActions::getInstance().cursorDisabled = true;
+	   }
       glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_DISABLED);
       inputActions::getInstance().lastX=windowXsize/2;
       inputActions::getInstance().lastY=windowYsize/2;
    }
    else{
-      inputActions::getInstance().lastX=xpos;
+	   if(inputActions::getInstance().cursorDisabled){
+		   inputActions::getInstance().cursorDisabled = false;
+		   glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_NORMAL);
+	   }
+	   inputActions::getInstance().lastX=xpos;
       inputActions::getInstance().lastY=ypos;
    }
 }
@@ -127,30 +134,31 @@ void State::scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
 }
 
 
-void State::inputControl() {
-	bool *keys = inputActions::getInstance().keys;
-	if(keys[GLFW_KEY_LEFT_SHIFT]){
+void State::keysControl() {
+//	bool *keys = inputActions::getInstance().keys;
+	if(inputActions::getInstance().keys[GLFW_KEY_LEFT_SHIFT]){
 		this->pressShift();
 	}
-	if(keys[GLFW_KEY_W]){
+	if(inputActions::getInstance().keys[GLFW_KEY_W]){
 		this->pressW();
 	}
-	if(keys[GLFW_KEY_S]){
+	if(inputActions::getInstance().keys[GLFW_KEY_S]){
 		this->pressS();
 	}
-	if(keys[GLFW_KEY_A]){
+	if(inputActions::getInstance().keys[GLFW_KEY_A]){
 		this->pressA();
 	}
-	if(keys[GLFW_KEY_D]){
+	if(inputActions::getInstance().keys[GLFW_KEY_D]){
 		this->pressD();
 	}
-	if(keys[GLFW_KEY_ESCAPE]){
+	if(inputActions::getInstance().keys[GLFW_KEY_ESCAPE]){
+//		std::cout << "hej" << std::endl;
 		this->pressESC();
 	}
-	if(keys[GLFW_KEY_SPACE]){
+	if(inputActions::getInstance().keys[GLFW_KEY_SPACE]){
 		this->pressSpace();
 	}
-	if(keys[GLFW_KEY_I]){
+	if(inputActions::getInstance().keys[GLFW_KEY_I]){
 		this->pressI();
 	}
 }

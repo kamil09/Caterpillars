@@ -10,7 +10,12 @@
 #include "state/menu/mainMenu/mainMenu.hpp"
 #include "state/menu/mainMenu/optionMenu.hpp"
 #include "state/menu/mainMenu/gameMenu.hpp"
+#include "state/menu/mainMenu/loadingScreen.hpp"
+#include "state/game/pauseMenu.hpp"
 #include "object.hpp"
+#include <thread>
+#include <mutex>
+#include <functional>
 
 // #include "state/menu/menu.hpp"
 
@@ -21,6 +26,7 @@ class State;
 // enum class gameCaseType {MAIN=0,START=1,START_WIELU=2,OPTIONS=3,EXIT=4,INFO=5,GAME_ST=6,PAUSE=7,GAME_END=8};
 class inputActions{
    public:
+//    static std::mutex barrier;
       inputActions();
       inputActions(const inputActions &);
       ~inputActions();
@@ -61,7 +67,7 @@ class inputActions{
       double lastX;
       double lastY;
       bool cursorFixedCenterPos;
-
+        bool cursorDisabled;
       void clear();
       double getCursorLastX();
       double getCursorLastY();

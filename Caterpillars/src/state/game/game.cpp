@@ -410,3 +410,9 @@ void Game::testViewMov(){
       this->lookAt[1]-=inputActions::getInstance().movedY/2;
    }
 }
+
+void Game::pressESC() {
+    inputActions::getInstance().changeState('p',this->window,this->cursor);
+    inputActions::getInstance().cursorFixedCenterPos=false;
+}
+

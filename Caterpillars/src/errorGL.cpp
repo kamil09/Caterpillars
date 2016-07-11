@@ -15,7 +15,7 @@ void errorCheck(const char* napis){
     if(i!=0){
         std::cout << "ERROR::Koniec: " << napis << " ERROR::COUNT: " << i << std::endl;
         if(!glewInit){
-            sleep(10);
+//            sleep(10);
         }
     }
 }

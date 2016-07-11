@@ -13,6 +13,9 @@
 #include <vector>
 #include "../../../settings.hpp"
 #include <algorithm>
+#include <thread>
+#include <functional>
+#include "../../game/map/map.hpp"
 
 struct block{
     Sprite *back;
@@ -47,4 +50,5 @@ void increase(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 void decrease(Button *state, GLFWwindow *window, GLFWcursor *cursor);
 void addPlayer(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor);
 void deletePlayer(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor);
+
 #endif //CATERPILLARS_GAMEMENU_HPP

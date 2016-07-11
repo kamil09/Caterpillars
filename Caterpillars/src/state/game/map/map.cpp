@@ -16,11 +16,17 @@ Map::Map(){
    this->genTriangleTab();
    this->bindBuffers(6,6,GL_DYNAMIC_DRAW);
     int numOfTex = 8;
-   GLchar *texturePath[numOfTex];
-   texturePath[0] = (char*)"../src/img/map/map1.png";texturePath[1] = (char*)"../src/img/map/map2.png";
-   texturePath[2] = (char*)"../src/img/map/map3.png";texturePath[3] = (char*)"../src/img/map/map4.png";
-   texturePath[4] = (char*)"../src/img/map/map5.png";texturePath[5] = (char*)"../src/img/map/map6.png";
-   texturePath[6] = (char*)"../src/img/map/map7.png";texturePath[7] = (char*)"../src/img/map/map8.png";
+//   GLchar *texturePath[numOfTex];
+   std::vector<std::string> texturePath;
+   texturePath.resize(8);
+   texturePath[0] = "../src/img/map/map1.png";texturePath[1] = "../src/img/map/map2.png";
+   texturePath[2] = "../src/img/map/map3.png";texturePath[3] = "../src/img/map/map4.png";
+   texturePath[4] = "../src/img/map/map5.png";texturePath[5] = "../src/img/map/map6.png";
+   texturePath[6] = "../src/img/map/map7.png";texturePath[7] = "../src/img/map/map8.png";
+//   texturePath[0] = (char*)"../src/img/map/map1.png";texturePath[1] = (char*)"../src/img/map/map2.png";
+//   texturePath[2] = (char*)"../src/img/map/map3.png";texturePath[3] = (char*)"../src/img/map/map4.png";
+//   texturePath[4] = (char*)"../src/img/map/map5.png";texturePath[5] = (char*)"../src/img/map/map6.png";
+//   texturePath[6] = (char*)"../src/img/map/map7.png";texturePath[7] = (char*)"../src/img/map/map8.png";
    this->bindTexture3D(numOfTex,texturePath);
 
 }
@@ -231,9 +237,9 @@ void Map::genTriangleTab(){
 void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights){
    this->shader->useShaderProgram(0);
 
-   glActiveTexture(GL_TEXTURE2);
+   glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_3D, this->texture3D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 1);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
@@ -246,7 +252,7 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights){
    glBindVertexArray(this->currentVAO());
 
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
-   glBindVertexArray(1);
+   glBindVertexArray(0);
 
 }
 

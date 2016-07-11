@@ -53,9 +53,9 @@ public:
     virtual void pressRMB(){}
     virtual void releaseRMB(){}
     //Sprawdzanie Wcisnietych Klawiszy
-    void inputControl();
+    void keysControl();
     //Do obslugiPrzyciskow
-    virtual void buttonControl(){}
+
 };
 
 

@@ -11,6 +11,8 @@
 
 class MainMenu : public Menu{
 public:
+    virtual void pressESC() override;
+
     virtual void loadSprites() override;
 
     MainMenu(GLFWwindow *window,GLFWcursor *cur);
