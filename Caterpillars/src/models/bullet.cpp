@@ -16,6 +16,9 @@ Bullet::Bullet(char *filename, float randDam){
   //  loadObj::load(filename,&this->vertices, &this->indices);
   //  this->bindBuffers(5,GL_STATIC_DRAW);
   //  this->bindTexture2D("../src/img/gunTX.png");
+  this->bindLightMap2D("../src/img/light/example.png");
+  this->bindShadwMap2D("../src/img/shadow/example.png");
+
   //  this->startLook = glm::vec3(1.0f,0.0f,0.0f);
    //
   //  this->size.y=2;
@@ -34,9 +37,7 @@ void Bullet::setPos(float x,float y,float z){
 
 void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
   //  this->shader->useShaderProgram(0);
-  //  glActiveTexture(GL_TEXTURE0);
-	//  glBindTexture(GL_TEXTURE_2D, this->texture2D);
-  //  glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+  this->uniformTextures();
   //
   //  GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
   //  GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");

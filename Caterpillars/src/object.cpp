@@ -23,6 +23,17 @@ Object::Object(){
 
 Object::~Object(){
 }
+void Object::uniformTextures(){
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->texture2D);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
+   glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, this->lightMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
+}
 
 void Object::recalculateMatrix(){
 	this->rotM = glm::mat4(1);
@@ -252,14 +263,25 @@ void Object::paramText2D(){
 
 void Object::bindTexture2D(const GLchar *texturePath){
 	glGenTextures(1, &this->texture2D);
-	glBindTexture(GL_TEXTURE_2D, this->texture2D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
-// Set our texture parameters
-
+	glBindTexture(GL_TEXTURE_2D, this->texture2D);
 	this->paramText2D();
 	this->loadTexture2D(texturePath);
-	// std::cout << "hej" << std::endl;
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-	// errorCheck("Po loadTexture");
+}
+//Powyższa metoda wywoływana w wielu miejscach,, nie chciało mi się dodawać parametru i musieć wszędzie zmieniać
+void Object::bindShadwMap2D(const GLchar *texturePath){
+	glGenTextures(1, &this->shadowMap);
+	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
+	this->paramText2D();
+	this->loadTexture2D(texturePath);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
+}
+void Object::bindLightMap2D(const GLchar *texturePath){
+	glGenTextures(1, &this->lightMap);
+	glBindTexture(GL_TEXTURE_2D, this->lightMap);
+	this->paramText2D();
+	this->loadTexture2D(texturePath);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 }
 
 void Object::loadTexture2D(const GLchar *texturePath){

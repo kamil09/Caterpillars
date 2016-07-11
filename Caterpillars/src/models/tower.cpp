@@ -27,7 +27,7 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
    this->pos.x=o->pos.x;
    this->pos.y=o->pos.y;
    this->pos.z=o->pos.z;
-   this->pos.y+=(2.8*o->scl.y);
+   this->pos.y+=(14.8*o->scl.y);
 
    this->rot.x=0;
    this->rot.z=0;
@@ -43,6 +43,8 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/towerL.png");
+   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindShadwMap2D("../src/img/shadow/example.png");
    puts("created tower light");
 
 }
@@ -51,9 +53,7 @@ TowerLight::~TowerLight(){};
 
 void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
    this->shader->useShaderProgram(0);
-   glActiveTexture(GL_TEXTURE0);
-   glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   this->uniformTextures();
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
@@ -62,7 +62,7 @@ void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 light
    GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
 
 
-   printf("%f/%f/%f\n",this->lightDir.x,this->lightDir.y,this->lightDir.z);
+   //printf("%f/%f/%f\n",this->lightDir.x,this->lightDir.y,this->lightDir.z);
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
@@ -98,6 +98,8 @@ Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int e
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/tower.png");
+   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindShadwMap2D("../src/img/shadow/example.png");
    puts("created tower");
 
    this->light = new TowerLight((char*)"../src/obj/towerL.obj",this,(float)startAngle,(float)endAngle,0);
@@ -108,9 +110,7 @@ Tower::~Tower(){
 
 void Tower::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
   this->shader->useShaderProgram(0);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, this->texture2D);
-  glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+  this->uniformTextures();
 
   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");

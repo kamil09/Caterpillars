@@ -38,15 +38,15 @@ Wall::Wall(char *filename, int x, int width, int z, int depth, int min, int max)
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/wall.png");
+   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindShadwMap2D("../src/img/shadow/example.png");
 }
 
 Wall::~Wall(){}
 
 void Wall::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
    this->shader->useShaderProgram(0);
-   glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"),1);
+   this->uniformTextures();
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");

@@ -81,12 +81,16 @@ public:
     void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);
+   void bindShadwMap2D(const GLchar *texturePath);
+   void bindLightMap2D(const GLchar *texturePath);
 
     virtual void loadTexture2D(const GLchar *texturePath);
     virtual void paramText2D();
     int textureWidth;
     int textureHeight;
     GLuint texture2D;
+    GLuint shadowMap;
+    GLuint lightMap;
     GLuint texture3D;
    void bindTexture3D(int number, std::vector<std::string> texturePath);
 
@@ -109,6 +113,8 @@ public:
     void recalculateMatrix();
     void bufferData(GLenum usage);
     void vAttributePointer(int firstVertex, int stride, int stride2);
+
+    void uniformTextures();
     virtual void inBinding(){};
 //   virtual void activeTexture();
 //    virtual void uniforms();

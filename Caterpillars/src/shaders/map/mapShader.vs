@@ -26,7 +26,7 @@ float calcLightMul(vec4 Lpos, vec4 Ldir, vec3 pos){
    cosK= ((LdirV.x*MdirV.x) + (LdirV.y*MdirV.y) + (LdirV.z*MdirV.z)) / (LD*MD);
    float kat = -acos(cosK);
 	if(kat<0) kat*=-1;
-	if(kat < 55*2*3.14/360) val=1;
+	if(kat < 50*2*3.14/360) val=1;
 
 	return val;
 }
