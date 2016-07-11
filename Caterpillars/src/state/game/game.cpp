@@ -27,44 +27,45 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     //TODO: sprawdzic czy dziala dla wszystkich rozdzielczosci
     this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,0.0f);
 //   this->rose->setTraM((this->windowXsize-roseWidth)/2,-(this->windowYsize-roseHeight)/2,0.0f);
+    this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
 
-   //Dodawanie Caterpillarow
-   for(int i=0;i<4;i++) {
-      Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
-      this->caterrVec.push_back( cat );
-      inputActions::getInstance().objectPointers.push_back(cat);
+    //Dodawanie Caterpillarow
+    for(int i=0;i<4;i++) {
+       Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
+       cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
+       this->caterrVec.push_back( cat );
+       inputActions::getInstance().objectPointers.push_back(cat);
 
-      this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
-      this->caterrVec[i]->teamID = (i%2)+1;
-      std::cout << endl << this->caterrVec[i]->teamID;
+       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
+       this->caterrVec[i]->teamID = (i%2)+1;
+       std::cout << endl << this->caterrVec[i]->teamID;
    }
-   float min1=999;
-   float min2=999;
-   for(int i=0;i<100; i++) for(int k=0;k<100;k++) if (this->map->mapVert[i][k]<min1) min1=this->map->mapVert[i][k];
-   for(int i=vertX-100;i<vertX; i++) for(int k=vertY-100;k<vertY;k++) if (this->map->mapVert[i][k]<min2) min2=this->map->mapVert[i][k];
-   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj" ,50,min1,50,80,200 ));
-   this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj", vertX-50,min2,vertY-50,260,380) );
-   inputActions::getInstance().objectPointers.push_back(this->towers[0]);
-   inputActions::getInstance().objectPointers.push_back(this->towers[1]);
+    float min1=999;
+    float min2=999;
+    for(int i=0;i<100; i++) for(int k=0;k<100;k++) if (this->map->mapVert[i][k]<min1) min1=this->map->mapVert[i][k];
+    for(int i=vertX-100;i<vertX; i++) for(int k=vertY-100;k<vertY;k++) if (this->map->mapVert[i][k]<min2) min2=this->map->mapVert[i][k];
+    this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj" ,50,min1,50,80,200 ));
+    this->towers.push_back(new Tower ((char*)"../src/obj/tower.obj", vertX-50,min2,vertY-50,260,380) );
+    inputActions::getInstance().objectPointers.push_back(this->towers[0]);
+    inputActions::getInstance().objectPointers.push_back(this->towers[1]);
 
-   this->lightsMat = glm::mat4(0);
-   if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,0.0f);
-   if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,0.0f);
-
-
-   //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
-
-   this->currentCutterpillar = this->caterrVec[0];
-
-   //ta wartosc wskazuje nam ktory jest aktyalny
-   //wykorzystywana w kolizjach
-   Game::currCatIndex = 0;
+    this->lightsMat = glm::mat4(0);
+    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,0.0f);
+    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,0.0f);
 
 
-   this->lookFrom=glm::vec3(0, 400, 0);
-   this->lookAt=glm::vec3(150,0,150);
+    //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
 
-   this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
+    this->currentCutterpillar = this->caterrVec[0];
+
+    //ta wartosc wskazuje nam ktory jest aktyalny
+    //wykorzystywana w kolizjach
+    Game::currCatIndex = 0;
+
+
+    this->lookFrom=glm::vec3(0, 400, 0);
+    this->lookAt=glm::vec3(150,0,150);
+
 
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;

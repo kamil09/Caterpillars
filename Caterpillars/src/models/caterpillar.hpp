@@ -13,6 +13,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../loadData/loadOBJ.hpp"
 #include "gun.hpp"
+#include "../font.hpp"
 
 
 class Caterpillar : public Object{
@@ -31,6 +32,7 @@ public:
    float viewBack;
    float tmpViewBack;
    int teamID;
+    Font *font;
 };
 
 #endif
