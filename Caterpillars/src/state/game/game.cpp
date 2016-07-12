@@ -97,6 +97,16 @@ void Game::draw(){
     for(int i=0;i<(int)this->towers.size();i++ )
       this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
+      if((int)this->bullets.size() > 0)
+      {
+        for(int i=0; i < (int)this->bullets.size(); i++)
+        {
+
+          this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+
+         }
+       }
+
     if(!(this->currentCutterpillar->viewBack < -20))
       this->targetView->draw();
 
@@ -417,6 +427,11 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          canY=true;
       else{
          y = Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
+        //  if(dynamic_cast<Bullet *>(o))
+        //  {
+        //    cout << "Boooooom" <<endl<<endl;
+        //    Map::getInstance().kaboom(x,y,z,25);
+        //  }
       }
    }
 
