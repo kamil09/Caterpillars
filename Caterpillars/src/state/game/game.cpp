@@ -30,7 +30,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
 
     //Dodawanie Caterpillarow
-    for(int i=0;i<4;i++) {
+    for(int i=0;i<1;i++) {
        Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
        cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
        this->caterrVec.push_back( cat );
@@ -97,7 +97,8 @@ void Game::draw(){
     for(int i=0;i<(int)this->towers.size();i++ )
       this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
-    if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
+    if(!(this->currentCutterpillar->viewBack < -20))
+      this->targetView->draw();
 
    this->drawRose();
    glDisable(GL_BLEND);
@@ -147,8 +148,22 @@ void Game::run(){
       this->caterrVec[i]->recalculateGravity();
       this->caterrVec[i]->recalculateMatrix();
    }
-   for(int i=0;i<(int)this->towers.size();i++ )
+   for(int i=0; i< (int)this->towers.size() - 1;i++ )
      this->towers[i]->light->moveLight();
+
+   //Pociski
+   if((int)this->bullets.size() > 0)
+   {
+     for(int i=0; i < (int)this->bullets.size(); i++)
+     {
+
+       this->bullets[i]->recalculateGravity();
+       this->bullets[i]->recalculateMatrix();
+       cout << "Bullet : " << i << " Position: " << this->bullets[i]->pos.x << ", " <<
+       this->bullets[i]->pos.y << ", " << this->bullets[i]->pos.z << endl;
+
+      }
+    }
 }
 void Game::calcViewMatrix(){
    this->lookAt = this->currentCutterpillar->startLook;
@@ -216,8 +231,8 @@ void Game::catterMove(){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
         newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
      }
-     //Dodane przez Pawla do testow
-     if(inputActions::getInstance().leftClick)
+     //Warunek na strzal - widok z celowikiem i lewy przycisk
+     if(inputActions::getInstance().leftClick && !(this->currentCutterpillar->viewBack < -20))
      {
 
        if( shotPower >= maxShotPower )
@@ -246,21 +261,23 @@ void Game::catterMove(){
 
 
        cout << "Damage: " << calculatedDamage << endl;
-       
+
        //tworzenie obiektu Bullet
        Bullet *bullecik = new Bullet ((char*)"../src/obj/bullet.obj" , calculatedDamage);
        //ustawienie pozycji poczatkowej
        bullecik->setPos(this->currentCutterpillar->pos.x, this->currentCutterpillar->pos.y, this->currentCutterpillar->pos.z);
+       //bullecik->setPos(200,500,200);
+       //ustawienie szybkosci wystrzelonego pocisku
+       shot.x = shotViewVec.x * shotPower;
+       shot.y = shotViewVec.y * shotPower;
+       shot.z = shotViewVec.z * shotPower;
+
        //dodanie wyzej stworzonego obiektu do listy pociskow
        this->bullets.push_back( bullecik );
        //dodanie do listy wszystkich obiektow
        inputActions::getInstance().objectPointers.push_back( bullecik );
 
-       shot.x = shotViewVec.x * shotPower;
-       shot.y = shotViewVec.y * shotPower;
-       shot.z = shotViewVec.z * shotPower;
-
-       this->currentCutterpillar->diagonalThrow(shot);
+       this-> bullets.back()->diagonalThrow(shot);
 
        powerischoosed = false;
        shotPower = 0;
@@ -272,25 +289,26 @@ void Game::catterMove(){
    else if(inputActions::getInstance().space_pressed){
      if(this->currentCutterpillar->on_the_ground)
      {
+      int jump_coefficient = 1;
       glm::vec3 shot;
       //skok w przod
       if(inputActions::getInstance().w_pressed){
-         shot.x = catViewVec.x * 2;
-         shot.z = catViewVec.z * 2;
+         shot.x = catViewVec.x * jump_coefficient;
+         shot.z = catViewVec.z * jump_coefficient;
       }
       //skok w tyl
       if(inputActions::getInstance().s_pressed){
-        shot.x = catViewVec.x * -2;
-        shot.z = catViewVec.z * -2;
+        shot.x = catViewVec.x * -jump_coefficient;
+        shot.z = catViewVec.z * -jump_coefficient;
       }
       if(inputActions::getInstance().a_pressed){
-         shot.x = prosVec.x * 2;
-         shot.z = prosVec.z * 2;
+         shot.x = prosVec.x * jump_coefficient;
+         shot.z = prosVec.z * jump_coefficient;
       }
       //skok w tyl
       if(inputActions::getInstance().d_pressed){
-        shot.x = prosVec.x * -2;
-        shot.z = prosVec.z * -2;
+        shot.x = prosVec.x * -jump_coefficient;
+        shot.z = prosVec.z * -jump_coefficient;
       }
 
       //shot.x = 0;

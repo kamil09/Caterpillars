@@ -171,6 +171,7 @@ void Object::recalculateGravity(){
 void Object::diagonalThrow(glm::vec3 throw_speed)
 {
 	this->on_the_ground = false;
+
 	this->speed.x = throw_speed.x;
 	this->speed.y = throw_speed.y;
 	this->speed.z = throw_speed.z;
