@@ -44,6 +44,10 @@ public:
    glm::vec3 windForce;
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    float **mapVertFirst;
+   glm::vec3 ***meshNormals;
+   void calcMeshNormals(int xStart, int xStop, int yStart, int yStop);
+   void generateMeshNormals();
+
    Map();
    ~Map();
 //   void bindBuffers(bool newBuffer);
