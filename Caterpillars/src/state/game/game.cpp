@@ -355,27 +355,33 @@ bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v
    return checkCollisionAndMove(o,pos.x,pos.y,pos.z,v);
 }
 bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vector<Object*> v){
+   //Czy ruch moze byc wykonany - zmienne dla 3 wymiarow
    bool canX = true;
    bool canY = false;
    bool canZ = true;
 
+   //Kolizja z murem
    if(x<=5 || x>vertX-5)
       canX = false;
+   //Ograniczenie na y
    if(y<=0 || y>maxMapHeight+300)
       canY = false;
+   //Kolizja z murem
    if(z<=5 || z>vertY-5)
       canZ = false;
 
    //..................TODO kolizja z mapą X
    //..................TODO kolizja z mapą Z
 
+   //Przejscie po przekazanej tablicy obiektow
+   //sprawdzenie kolizji z kazdem z tych obiektow
    for(int i=0; i< v.size(); i++)
    {
-     //Jesli wieza
+     //Dla wiez
      if(dynamic_cast<Tower *>(v[i]))
      {
        //cout << i <<" : Tower" << endl;
-       //kolizja z Tower
+       //Kolizja z Tower
        if((x >= (int)v[i]->pos.x - (v[i]->size.x/2)) && (x <= (int)v[i]->pos.x + (v[i]->size.x/2))
           && (z >= (int)v[i]->pos.z - (v[i]->size.z/2)) && (z <= (int)v[i]->pos.z + (v[i]->size.z/2)))
        {
@@ -383,12 +389,11 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          canZ = false;
        }
      }
+     //Dla Caterpillar
      else if(dynamic_cast<Caterpillar *>(v[i]))
      {
        //cout << i << " : Caterpillar" << endl;
-
        //Kolizja z Caterpillar
-
        if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
        {
          if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
@@ -405,16 +410,17 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
      }
    }
 
-   if(((int)o->pos.x>=0) && ((int)o->pos.x <vertX) && ((int)o->pos.z>=0) && ((int)o->pos.z<vertY)){//jesli jest na mapie
-     if(y-(o->size.y) > Map::getInstance().mapVert[(int)x][(int)z]) // Tu ta 30 jest troche slaba
+   //jesli jest na mapie
+   if(((int)o->pos.x >= 0) && ((int)o->pos.x < vertX) && ((int)o->pos.z >= 0) && ((int)o->pos.z < vertY))
+   {
+     if(y-(o->size.y) > Map::getInstance().mapVert[(int)x][(int)z])
          canY=true;
       else{
-         //canX=false;
-         //canZ=false;
-         y=Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
+         y = Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
       }
    }
 
+   //Jesli moze wykonac ruch -> wykonaj go
    if(canX)
       o->pos.x = x;
    if(canY)
