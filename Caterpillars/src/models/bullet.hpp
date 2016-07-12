@@ -23,8 +23,6 @@ public:
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights, glm::vec3 sun);
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
-   float viewBack;
-   float tmpViewBack;
    float Damage;
 };
 
