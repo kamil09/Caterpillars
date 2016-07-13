@@ -1,6 +1,12 @@
 #version 330 core
 
 in vec2 TexCoord;
+in vec4 vN; //interpolowany wektor normalny w przestrzeni oka
+in vec4 vV; //interpolowany wektor do obserwatora w przestrzeni oka
+in vec4 vL1; //interpolowany wektor do zrodla swiatla 1 w przestrzeni oka
+in vec4 vL2; //interpolowany wektor do zrodla swiatla 2 w przestrzeni oka
+in vec4 vL3; //interpolowany wektor do zrodla swiatla 3 w przestrzeni oka
+
 out vec4 color;
 
 uniform sampler2D ourTexture1;
@@ -11,6 +17,6 @@ void main(){
 	color = texture(ourTexture1,TexCoord);
 	vec4 shadow = texture(shadowMap,TexCoord);
 	vec4 light = texture(lightMap,TexCoord);
-	
+
    //color = vec4(1.0f,0.0f,0.0f,0.5f);
 }

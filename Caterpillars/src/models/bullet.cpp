@@ -20,6 +20,7 @@ Bullet::Bullet(char *filename, float randDam){
   this->size.y=0;//2
   this->size.x=2;//2
   this->size.z=1;//1
+  this->used=false;
 }
 Bullet::~Bullet(){
 

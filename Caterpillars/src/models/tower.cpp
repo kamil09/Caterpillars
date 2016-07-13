@@ -7,7 +7,7 @@ void TowerLight::moveLight(){
 
    this->recalculateMatrix();
 
-   this->lightDir = glm::vec4(0.0f,-1.0f,-1.0f,0.0f);
+   this->lightDir = glm::vec4(0.0f,-1.0f,-1.0f,1.0f);
    lightDir = this->rotM*lightDir;
 }
 
@@ -105,7 +105,6 @@ Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int e
    this->light = new TowerLight((char*)"../src/obj/towerL.obj",this,(float)startAngle,(float)endAngle,0);
 }
 Tower::~Tower(){
-
 }
 
 void Tower::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){

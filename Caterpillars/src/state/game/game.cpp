@@ -50,8 +50,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     inputActions::getInstance().objectPointers.push_back(this->towers[1]);
 
     this->lightsMat = glm::mat4(0);
-    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,0.0f);
-    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,0.0f);
+    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,1.0f);
+    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,1.0f);
 
 
     //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
@@ -101,10 +101,10 @@ void Game::draw(){
       {
         for(int i=0; i < (int)this->bullets.size(); i++)
         {
-
-          this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
-
-
+         if(!this->bullets[i]->colission)
+            this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+         else
+            this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
          }
        }
 
@@ -450,7 +450,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
               Map::getInstance().kaboom(x,y,z,20);
 
            o->colission = true;
-          //  v.erase( o );
+           v.erase(std::remove(v.begin(), v.end(), o), v.end());
          }
       }
    }
