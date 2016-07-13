@@ -1,8 +1,9 @@
 #include "bullet.hpp"
 
 Bullet::Bullet(char *filename, float randDam){
-    //wartosci wylosowana Damage
-    this->Damage = randDam;
+   //wartosci wylosowana Damage
+   this->Damage = randDam;
+
 
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
    this->scl.x=4;
@@ -16,9 +17,9 @@ Bullet::Bullet(char *filename, float randDam){
   this->bindLightMap2D("../src/img/light/example.png");
   this->bindShadwMap2D("../src/img/shadow/example.png");
 
-  this->size.y=2;
-  this->size.x=2;
-  this->size.z=1;
+  this->size.y=0;//2
+  this->size.x=2;//2
+  this->size.z=1;//1
 }
 Bullet::~Bullet(){
 

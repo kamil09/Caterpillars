@@ -104,6 +104,7 @@ void Game::draw(){
 
           this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
+
          }
        }
 
@@ -249,7 +250,7 @@ void Game::catterMove(){
           shotPower = 0;
 
        //Wybieranie sily strzalu:
-       shotPower = shotPower + 0.05;
+       shotPower = shotPower + 0.1;
        powerischoosed = true;
        calculatedDamage = 0;
 
@@ -279,7 +280,7 @@ void Game::catterMove(){
        //bullecik->setPos(200,500,200);
        //ustawienie szybkosci wystrzelonego pocisku
        shot.x = shotViewVec.x * shotPower;
-       shot.y = shotViewVec.y * shotPower;
+       shot.y = shotViewVec.y * shotPower * 1.5;
        shot.z = shotViewVec.z * shotPower;
 
        //dodanie wyzej stworzonego obiektu do listy pociskow
@@ -385,12 +386,16 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
 
    //Przejscie po przekazanej tablicy obiektow
    //sprawdzenie kolizji z kazdem z tych obiektow
+
+   cout << endl << "-----------------" << endl;
+
    for(int i=0; i< v.size(); i++)
    {
+
      //Dla wiez
      if(dynamic_cast<Tower *>(v[i]))
      {
-       //cout << i <<" : Tower" << endl;
+       cout << i <<" : Tower" << endl;
        //Kolizja z Tower
        if((x >= (int)v[i]->pos.x - (v[i]->size.x/2)) && (x <= (int)v[i]->pos.x + (v[i]->size.x/2))
           && (z >= (int)v[i]->pos.z - (v[i]->size.z/2)) && (z <= (int)v[i]->pos.z + (v[i]->size.z/2)))
@@ -402,7 +407,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
      //Dla Caterpillar
      else if(dynamic_cast<Caterpillar *>(v[i]))
      {
-       //cout << i << " : Caterpillar" << endl;
+       cout << i << " : Caterpillar" << endl;
        //Kolizja z Caterpillar
        if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
        {
@@ -415,8 +420,19 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            canZ = false;
          }
        }
+     }
+     else if(dynamic_cast<Bullet *>(v[i]))
+     {
+       cout << i <<" : Bullet" << endl;
+       //Kolizja pocisku z podlozem
+       if(o->colission == true)
+       {
+         cout << "usuwanie pocisku";
+         v.pop_back();
+       }
 
 
+       //Kolizja pocisku z Caterpillarem
      }
    }
 
@@ -427,11 +443,15 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          canY=true;
       else{
          y = Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
-        //  if(dynamic_cast<Bullet *>(o))
-        //  {
-        //    cout << "Boooooom" <<endl<<endl;
-        //    Map::getInstance().kaboom(x,y,z,25);
-        //  }
+         if(dynamic_cast<Bullet *>(o))
+         {
+           cout << "Boooooom" <<endl<<endl;
+           if(!o->colission)
+              Map::getInstance().kaboom(x,y,z,20);
+
+           o->colission = true;
+          //  v.erase( o );
+         }
       }
    }
 

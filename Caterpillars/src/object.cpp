@@ -6,6 +6,8 @@
 Object::Object(){
 	this->teksturCount = 0;
 
+	this->colission = false;//dla bulleta
+
 
 	this->currentBinding = 0;
 	this->buffersCount = 0;

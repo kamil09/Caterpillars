@@ -24,6 +24,7 @@ public:
    void setPos(float x,float y,float z);
    glm::vec3 startLook;
    float Damage;
+   
 };
 
 #endif

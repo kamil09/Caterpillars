@@ -61,6 +61,8 @@ public:
    glm::vec3 speed;
    glm::vec3 size;
 
+   bool colission;
+
     int verticesCount;
     int indicesCount;
     int normalsCount;
