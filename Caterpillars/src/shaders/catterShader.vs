@@ -16,15 +16,22 @@ out vec4 vL1; //interpolowany wektor do zrodla swiatla 1 w przestrzeni oka
 out vec4 vL2; //interpolowany wektor do zrodla swiatla 2 w przestrzeni oka
 out vec4 vL3; //interpolowany wektor do zrodla swiatla 3 w przestrzeni oka
 
+out vec4 vLD1;	//wektor kierunku światła 1
+out vec4 vLD2; //wektor kierunku światła 2
+
 out vec2 TexCoord;
 
 void main(){
 	vec4 vertex = vec4(position.x, position.y, position.z, 1.0f);
 
 	vN=normalize(V*M*vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni oka
+
 	vL1=normalize(V*L[0]-V*M*vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni oka
 	vL2=normalize(V*L[2]-V*M*vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni oka
 	vL3=normalize(V*vec4(SUN.xyz,1.0f)-V*M*vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni oka
+	vLD1=normalize(L[1]);
+	vLD2=normalize(L[3]);
+
 	vV=normalize(vec4(0,0,0,1)-V*M*vertex); //Oblicz i interpoluj wektor do obserwatora w przestrzeni oka
 
 	TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);

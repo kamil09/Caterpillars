@@ -4,10 +4,9 @@
 
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
-   this->sunPosition=glm::vec3(100,1000,100);
+   this->sunPosition=glm::vec3(vertX/2,2000,vertY/2);
 
    this->map= & Map::getInstance();
-   //this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
    this->wall = new Wall((char*)"../src/obj/wall.obj",0,vertX,0,vertY,0,maxMapHeight*1.3);
 //   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
    this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
@@ -78,12 +77,8 @@ void Game::draw(){
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-
    this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
    this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
-
-   glEnable(GL_BLEND);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     for(int i=0;i < (int)this->caterrVec.size(); i++){
         if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
@@ -101,16 +96,18 @@ void Game::draw(){
       {
         for(int i=0; i < (int)this->bullets.size(); i++)
         {
-         if(!this->bullets[i]->colission)
-            this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
-         else
-            this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
+            if(!this->bullets[i]->colission)
+               this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+            else{
+               this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
+               inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
+            }
          }
        }
 
-    if(!(this->currentCutterpillar->viewBack < -20))
-      this->targetView->draw();
-
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
    this->drawRose();
    glDisable(GL_BLEND);
 }
@@ -450,7 +447,6 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
               Map::getInstance().kaboom(x,y,z,20);
 
            o->colission = true;
-           v.erase(std::remove(v.begin(), v.end(), o), v.end());
          }
       }
    }
