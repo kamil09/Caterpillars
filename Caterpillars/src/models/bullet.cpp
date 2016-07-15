@@ -2,7 +2,7 @@
 
 Bullet::Bullet(char *filename, float randDam){
    //wartosci wylosowana Damage
-   this->Damage = randDam;
+   this->damage = randDam;
 
 
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");

@@ -1,6 +1,6 @@
 #include "gun.hpp"
 
-Gun::Gun(char *filename, float min, float max,Object *owner){
+Gun::Gun(char *filename, int min, int max,Object *owner){
 
    //wartosci pomiedzy ktorymi bedziemy losowac Damage podczas strzelu
    this->minDamage = min;

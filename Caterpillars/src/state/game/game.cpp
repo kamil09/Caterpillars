@@ -29,7 +29,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
 
     //Dodawanie Caterpillarow
-    for(int i=0;i<1;i++) {
+    for(int i=0;i<4;i++) {
        Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
        cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
        this->caterrVec.push_back( cat );
@@ -243,11 +243,13 @@ void Game::catterMove(){
      if(inputActions::getInstance().leftClick && !(this->currentCutterpillar->viewBack < -20))
      {
 
+       if(!powerischoosed)
+          shotPower = 5;
        if( shotPower >= maxShotPower )
-          shotPower = 0;
+          shotPower = 5;
 
        //Wybieranie sily strzalu:
-       shotPower = shotPower + 0.1;
+       shotPower = shotPower + 0.15;
        powerischoosed = true;
        calculatedDamage = 0;
 
@@ -274,11 +276,11 @@ void Game::catterMove(){
        Bullet *bullecik = new Bullet ((char*)"../src/obj/bullet.obj" , calculatedDamage);
        //ustawienie pozycji poczatkowej
        bullecik->setPos(this->currentCutterpillar->pos.x, this->currentCutterpillar->pos.y, this->currentCutterpillar->pos.z);
-       //bullecik->setPos(200,500,200);
+
        //ustawienie szybkosci wystrzelonego pocisku
-       shot.x = shotViewVec.x * shotPower;
+       shot.x = shotViewVec.x * shotPower * 1;
        shot.y = shotViewVec.y * shotPower * 1.5;
-       shot.z = shotViewVec.z * shotPower;
+       shot.z = shotViewVec.z * shotPower * 1;
 
        //dodanie wyzej stworzonego obiektu do listy pociskow
        this->bullets.push_back( bullecik );
@@ -368,6 +370,10 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
    bool canY = false;
    bool canZ = true;
 
+   Caterpillar* cat;
+   Bullet* bul;
+   int boomRadius = 20;
+
    //Kolizja z murem
    if(x<=5 || x>vertX-5)
       canX = false;
@@ -389,6 +395,8 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
    for(int i=0; i< v.size(); i++)
    {
 
+
+
      //Dla wiez
      if(dynamic_cast<Tower *>(v[i]))
      {
@@ -402,9 +410,9 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
        }
      }
      //Dla Caterpillar
-     else if(dynamic_cast<Caterpillar *>(v[i]))
+     else if(cat = dynamic_cast<Caterpillar *>(v[i]))
      {
-       cout << i << " : Caterpillar" << endl;
+       cout << i << " : Caterpillar LIFE:" << cat->life << endl;
        //Kolizja z Caterpillar
        if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
        {
@@ -415,21 +423,13 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            canX = false;
            canY = false;
            canZ = false;
+           //Jesli kolizja z pociskiem to zmniejszamy zycie Caterpillara
+           if(bul = dynamic_cast<Bullet *>(o))
+           {
+             cat->life = cat->life - bul->damage;
+           }
          }
        }
-     }
-     else if(dynamic_cast<Bullet *>(v[i]))
-     {
-       cout << i <<" : Bullet" << endl;
-       //Kolizja pocisku z podlozem
-       if(o->colission == true)
-       {
-         cout << "usuwanie pocisku";
-         v.pop_back();
-       }
-
-
-       //Kolizja pocisku z Caterpillarem
      }
    }
 
@@ -440,13 +440,26 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          canY=true;
       else{
          y = Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
-         if(dynamic_cast<Bullet *>(o))
+         if(bul = dynamic_cast<Bullet *>(o))
          {
-           cout << "Boooooom" <<endl<<endl;
+           cout << "Boooooom" <<endl;
            if(!o->colission)
-              Map::getInstance().kaboom(x,y,z,20);
+              Map::getInstance().kaboom(x,y,z,boomRadius);
 
            o->colission = true;
+
+           for(int i=0; i< v.size(); i++)
+           {
+             if(cat = dynamic_cast<Caterpillar *>(v[i]))
+             {
+               //Zmniejszanie zycia jesli w promieniu boom booma kabooma
+               float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+pow((cat->pos.z - o->pos.z),2));
+               cout << "Radius: " << rad << endl;
+               if(rad <= boomRadius)
+                  cat->life = cat->life - (int)(bul->damage/rad);
+
+             }
+           }
          }
       }
    }
