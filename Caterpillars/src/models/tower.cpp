@@ -51,7 +51,7 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
 
 TowerLight::~TowerLight(){};
 
-void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
    this->shader->useShaderProgram(0);
    this->uniformTextures();
 
@@ -107,7 +107,7 @@ Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int e
 Tower::~Tower(){
 }
 
-void Tower::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void Tower::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
   this->shader->useShaderProgram(0);
   this->uniformTextures();
 

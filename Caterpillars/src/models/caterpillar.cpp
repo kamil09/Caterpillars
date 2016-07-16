@@ -37,7 +37,7 @@ void Caterpillar::setPos(float x,float y,float z){
    this->recalculateMatrix();
 }
 
-void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
    this->shader->useShaderProgram(0);
 
    this->uniformTextures();

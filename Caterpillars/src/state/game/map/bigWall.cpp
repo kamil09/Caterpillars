@@ -44,7 +44,7 @@ Wall::Wall(char *filename, int x, int width, int z, int depth, int min, int max)
 
 Wall::~Wall(){}
 
-void Wall::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void Wall::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
    this->shader->useShaderProgram(0);
    this->uniformTextures();
 

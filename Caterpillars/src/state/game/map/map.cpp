@@ -255,7 +255,7 @@ void Map::genTriangleTab(){
    }
 }
 
-void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
    this->shader->useShaderProgram(0);
 
    glActiveTexture(GL_TEXTURE0);

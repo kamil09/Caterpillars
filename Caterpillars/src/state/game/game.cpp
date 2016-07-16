@@ -4,7 +4,7 @@
 
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
-   this->sunPosition=glm::vec3(vertX/2,2000,vertY/2);
+   this->sunPosition=glm::vec4(vertX/2,700,vertY/2,1.0f);
 
    this->map= & Map::getInstance();
    this->wall = new Wall((char*)"../src/obj/wall.obj",0,vertX,0,vertY,0,maxMapHeight*1.3);
@@ -49,8 +49,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     inputActions::getInstance().objectPointers.push_back(this->towers[1]);
 
     this->lightsMat = glm::mat4(0);
-    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,1.0f);
-    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,1.0f);
+    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->light->pos.y,this->towers[0]->pos.z,1.0f);
+    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->light->pos.y,this->towers[1]->pos.z,1.0f);
 
 
     //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
@@ -73,6 +73,11 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 int Game::currCatIndex;
 
 void Game::draw(){
+
+   //printf("%f/%f/%f/%f\n", this->lightsMat[0][0], this->lightsMat[0][1], this->lightsMat[0][2], this->lightsMat[0][3]);
+   //printf("%f/%f/%f/%f\n", this->lightsMat[2][0], this->lightsMat[2][1], this->lightsMat[2][2], this->lightsMat[2][3]);
+   //printf("%f/%f/%f/%f\n" ,this->sunPosition[0], this->sunPosition[1], this->sunPosition[2], this->sunPosition[3]);
+
 
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
@@ -156,7 +161,7 @@ void Game::run(){
       this->caterrVec[i]->recalculateGravity();
       this->caterrVec[i]->recalculateMatrix();
    }
-   for(int i=0; i< (int)this->towers.size() - 1;i++ )
+   for(int i=0; i< (int)this->towers.size();i++ )
      this->towers[i]->light->moveLight();
 
    //Pociski

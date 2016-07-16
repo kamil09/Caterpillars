@@ -49,7 +49,7 @@ public:
 
    glm::mat4 lightsMat;
 
-   glm::vec3 sunPosition;
+   glm::vec4 sunPosition;
 
 
    static int currCatIndex;//index currentCutterpillara w catterVec

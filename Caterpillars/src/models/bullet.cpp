@@ -32,7 +32,7 @@ void Bullet::setPos(float x,float y,float z){
    this->recalculateMatrix();
 }
 
-void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
   this->shader->useShaderProgram(0);
   this->uniformTextures();
 

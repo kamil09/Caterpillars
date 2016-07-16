@@ -23,7 +23,7 @@ public:
    float startA;
    float endA;
    glm::vec4 lightDir;
-   void draw(glm::mat4 projection, glm::mat4 modelView,glm::mat4 lights,glm::vec3 sun);
+   void draw(glm::mat4 projection, glm::mat4 modelView,glm::mat4 lights,glm::vec4 sun);
 };
 
 class Tower : public Object{
@@ -32,7 +32,7 @@ private:
 public:
    Tower(char *filename, int posX, int posY, int posZ, int startAngle, int endAngle);
    ~Tower();
-   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun);
+   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun);
    TowerLight *light;
 };
 
