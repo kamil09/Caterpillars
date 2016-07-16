@@ -15,6 +15,8 @@
 #include <glm/gtc/type_ptr.hpp>
 //#include "../object2D.hpp"
 #include "../sprite.hpp"
+#include "player.hpp"
+#include "../../settings.hpp"
 
 
 class Game : public State{
@@ -53,12 +55,14 @@ public:
 
 
    static int currCatIndex;//index currentCutterpillara w catterVec
+
    glm::vec3 shot;
    float shotPower;//sila stralu
    float calculatedDamage;
    float maxShotPower = 15;//wartosc do ktorej rosnie sila a potem od poczatku
    bool powerischoosed = false;//po wybraniu sily strzalu true
-
+    void createPlayers();
+   std::vector<Player*> players;
    /**
    * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
    * Zwraca kolizję na Osi Y

@@ -14,6 +14,7 @@
 #include "../loadData/loadOBJ.hpp"
 #include "gun.hpp"
 #include "../font.hpp"
+#include "../state/game/player.hpp"
 
 
 class Caterpillar : public Object{
@@ -22,7 +23,12 @@ private:
    float maxWalkAngle;  //Maksymalny kąt pod jakim może wchodzić worms na wzniesienie
 
 public:
-   Caterpillar(char *filename);
+//    static std::vector<GLfloat> verticesStatic;
+//    static std::vector<GLuint> indicesStatic;
+   static Caterpillar *parent;
+   void copyParent();
+    Caterpillar(char *filename);
+    Caterpillar(Player *player,char *filename);
    ~Caterpillar();
 //   void bindBuffers(bool newBuffer);
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun);
@@ -31,10 +37,12 @@ public:
    float maxWalkSpeed;  //maksymalna prędkość chodzenia m/s
    float viewBack;
    float tmpViewBack;
-   int teamID;
+//   int teamID;
+   Player *player;
    Gun *weapon;
    Font *font;
    int life;          //Życie naszego bohatera :)
 };
+
 
 #endif

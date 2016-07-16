@@ -46,7 +46,7 @@ void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,gl
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotMY*this->sclM));
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+   glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
    glBindVertexArray(this->currentVAO());
 	   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());

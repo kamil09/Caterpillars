@@ -54,7 +54,7 @@ void GameMenu::createBlocks() {
 //        std::cout << Setting::getInstance().players[i].kolor.x << std::endl;
         //Tworzenie tla i napisu
         Sprite *back = new Sprite(this->listaSpritowBG[0]->pos.x + pionowyMargines, -this->blockHeight / 2,
-                                  this->listaSpritowBG[0]->size.x - 2 * pionowyMargines, this->blockHeight, Setting::getInstance().players[i].kolor);
+                                  this->listaSpritowBG[0]->size.x - 2 * pionowyMargines, this->blockHeight, glm::vec4(Setting::getInstance().players[i].kolor,1.0f));
         back->font = this->font;
         this->blocks[i].back=back;
 //        float moveY = this->listaSpritowBG[0]->size.y/2-back->size.y/2-temp-20.0f;
@@ -321,7 +321,7 @@ void deletePlayer(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor)
             playerCount++;
         }
     }
-    if(playerCount > 1){
+    if(playerCount > 2){
         Setting::getInstance().players[clickedButton->binds].czyGra = false;
     }
 }

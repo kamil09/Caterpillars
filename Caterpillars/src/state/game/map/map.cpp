@@ -16,21 +16,16 @@ Map::Map(){
    this->generateMeshNormals();
    this->genTriangleTab();
    this->bindBuffers(6,9,GL_DYNAMIC_DRAW);
-    int numOfTex = 8;
-//   GLchar *texturePath[numOfTex];
+   int numOfTex = 8;
    std::vector<std::string> texturePath;
    texturePath.resize(8);
    texturePath[0] = "../src/img/map/map1.png";texturePath[1] = "../src/img/map/map2.png";
    texturePath[2] = "../src/img/map/map3.png";texturePath[3] = "../src/img/map/map4.png";
    texturePath[4] = "../src/img/map/map5.png";texturePath[5] = "../src/img/map/map6.png";
    texturePath[6] = "../src/img/map/map7.png";texturePath[7] = "../src/img/map/map8.png";
-//   texturePath[0] = (char*)"../src/img/map/map1.png";texturePath[1] = (char*)"../src/img/map/map2.png";
-//   texturePath[2] = (char*)"../src/img/map/map3.png";texturePath[3] = (char*)"../src/img/map/map4.png";
-//   texturePath[4] = (char*)"../src/img/map/map5.png";texturePath[5] = (char*)"../src/img/map/map6.png";
-//   texturePath[6] = (char*)"../src/img/map/map7.png";texturePath[7] = (char*)"../src/img/map/map8.png";
    this->bindTexture3D(numOfTex,texturePath);
    this->bindLightMap2D("../src/img/light/example.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
+   this->bindShadwMap2D("../src/img/shadow/mapShadow.png");
 }
 Map::~Map(){}
 
@@ -278,7 +273,7 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+   glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
 
    glBindVertexArray(this->currentVAO());
@@ -303,6 +298,7 @@ void Map::recalculateTriangleMap(){
             if(i!=vertX-1 && j!=vertY-1) for(int x=0;x<2;x++) normal+=this->meshNormals[x][i][j];
             if(i!=vertX-1 && j!=0) normal+=this->meshNormals[0][i][j-1];
             normal=glm::normalize(normal);
+            if(normal.y<0) normal*=-1;
             this->vertices[index+6] = normal.x;
             this->vertices[index+7] = normal.y;
             this->vertices[index+8] = normal.z;
