@@ -48,6 +48,7 @@ void Wall::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm:
    this->shader->useShaderProgram(0);
    this->uniformTextures();
 
+   printf("%f %f %f %f\n",sun.x,sun.y,sun.z,sun.a);
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
@@ -59,9 +60,7 @@ void Wall::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm:
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM));
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
    glUniform4fv(SUN, 1, glm::value_ptr(sun));
-
-
-
+   
    glBindVertexArray(this->currentVAO());
    glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
    glBindVertexArray(1);

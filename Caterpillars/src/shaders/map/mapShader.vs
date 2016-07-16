@@ -12,7 +12,6 @@ layout (location = 1) in vec3 texture;
 layout (location = 2) in vec3 normal;
 
 out vec4 vN; //interpolowany wektor normalny w przestrzeni swiata
-out vec4 vV; //interpolowany wektor do obserwatora w przestrzeni swiata
 out vec4 vL1; //interpolowany wektor do zrodla swiatla 1 w przestrzeni swiata
 out vec4 vL2; //interpolowany wektor do zrodla swiatla 2 w przestrzeni swiata
 out vec4 vL3; //interpolowany wektor do zrodla swiatla 3 w przestrzeni swiata
@@ -51,11 +50,10 @@ void main(){
 	towL2 = calcLightMul(L2pos,L2dir,position);
 
 	vec4 vertex = vec4(position.x, position.y, position.z, 1.0f);
-	vN=normalize(M*vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni swiata
-	vL1=normalize(L1pos-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
-	vL2=normalize(L2pos-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
-	vL3=normalize(SUN-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
-	vV=normalize(vec4(0,0,0,1)-(M*vertex)); //Oblicz i interpoluj wektor do obserwatora w przestrzeni swiata
+	vN=normalize(vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni swiata
+	vL1=normalize(L1pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
+	vL2=normalize(L2pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
+	vL3=normalize(SUN-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 
 	gl_Position = P*V*M*vec4(position.x, position.y, position.z, 1.0);
 	textCord = texture;

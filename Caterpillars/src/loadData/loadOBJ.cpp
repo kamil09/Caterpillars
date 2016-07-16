@@ -3,7 +3,6 @@
 /*
  * Blender:
  * OBJ + triangulate faces + write materials + include UVs + inpude Nurmals
- *
  */
 bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuint> *indices){
    FILE * file = fopen(path, "r");
@@ -51,7 +50,6 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
          unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
 
          int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-         //int matches = fscanf(file, " %d//%d %d//%d %d//%d\n", &vertexIndex[0], &normalIndex[0], &vertexIndex[1], &normalIndex[1], &vertexIndex[2], &normalIndex[2] );
          if (matches != 9){
               printf("File can't be read by our simple parser : ( Try exporting with other options\n");
               return false;
@@ -82,21 +80,15 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
       vertices->push_back(nor[normalIndex*3-1]);
    }
    // for(int i=0;i<verNum;i++){
-   //    vertices->push_back(ver[i*3]);
-   //    vertices->push_back(ver[i*3+1]);
-   //    vertices->push_back(ver[i*3+2]);
-   //    if(i<texNum){
-   //       vertices->push_back(tex[i*2]);
-   //       vertices->push_back(tex[i*2+1]);
-   //    }
-   //    else{
-   //       vertices->push_back(0);
-   //       vertices->push_back(0);
-   //    }
+   //    vertices->push_back(ver[i*3-3]);
+   //    vertices->push_back(ver[i*3-2]);
+   //    vertices->push_back(ver[i*3-1]);
+   //    vertices->push_back(tex[i*2-2]);
+   //    vertices->push_back(tex[i*2-1]);
+   //    vertices->push_back(nor[normalIndex*3-3]);
+   //    vertices->push_back(nor[normalIndex*3-2]);
+   //    vertices->push_back(nor[normalIndex*3-1]);
    // }
-
-
-
 
    return true;
 }
