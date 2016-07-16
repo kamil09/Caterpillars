@@ -51,12 +51,12 @@ void main(){
 	towL2 = calcLightMul(L2pos,L2dir,position);
 
 	vec4 vertex = vec4(position.x, position.y, position.z, 1.0f);
-	vN=normalize(V*M*vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni oka
-	vL1=normalize(V*L1pos-V*M*vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni oka
-	vL2=normalize(V*L2pos-V*M*vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni oka
-	vL3=normalize(V*SUN-V*M*vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni oka
-	vV=normalize(vec4(0,0,0,1)-V*M*vertex); //Oblicz i interpoluj wektor do obserwatora w przestrzeni oka
+	vN=normalize(M*vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni swiata
+	vL1=normalize(L1pos-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
+	vL2=normalize(L2pos-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
+	vL3=normalize(SUN-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
+	vV=normalize(vec4(0,0,0,1)-(M*vertex)); //Oblicz i interpoluj wektor do obserwatora w przestrzeni swiata
 
-	gl_Position = P*V*vec4(position.x, position.y, position.z, 1.0);
+	gl_Position = P*V*M*vec4(position.x, position.y, position.z, 1.0);
 	textCord = texture;
 }

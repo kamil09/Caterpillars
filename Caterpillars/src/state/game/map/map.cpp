@@ -233,9 +233,11 @@ void Map::genTriangleTab(){
          if(i!=vertX-1 && j!=vertY-1) for(int x=0;x<2;x++) normal+=this->meshNormals[x][i][j];
          if(i!=vertX-1 && j!=0) normal+=this->meshNormals[0][i][j-1];
          normal=glm::normalize(normal);
+         if(normal.y<0) normal*=-1;
          this->vertices[index+6] = normal.x;
          this->vertices[index+7] = normal.y;
          this->vertices[index+8] = normal.z;
+         //printf("%f| %f | %f \n",this->vertices[index+6],this->vertices[index+7],this->vertices[index+8]);
 
          index+=9;
       }
