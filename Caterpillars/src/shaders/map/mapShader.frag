@@ -17,7 +17,9 @@ uniform sampler2D lightMap;
 
 void main(){
 	vec4 De=vec4(0.1f,0.1f,0.1f,1.0f);
-	vec4 Ld=vec4(1,1,1,1);
+	vec4 Ld=vec4(1.0f,1.0f,1.0f,1.0f);
+	//vec4 Ms=vec4(1,1,1,1);
+	//vec4 Ls=vec4(1,1,1,1);
 
 	vec4 mN=normalize(vN);
 	vec4 mL1=normalize(vec4(vL1.xyz,1.0f));
@@ -35,5 +37,5 @@ void main(){
 	float nl2=max(0,dot(mN,mL2));
 	float nl3=max(0,dot(mN,mL3));
 
-	color = (De*Md)+(Md*Ld*towL1*nl1)+(Md*Ld*towL2*nl2)+(Md*Ld*nl3*0.6);
+	color = (De*Md)+(Md*Ld*towL1*nl1)+(Md*Ld*towL2*nl2)+(Md*Ld*nl3*0.6f);
 }

@@ -89,13 +89,13 @@ Setting::Setting(){
 			"Player 3",
 			"Player 4"
 	};
-	int startCaterpillars = 1;
+	int startCaterpillars = 2;
 	this->players.resize(playerCount);
 	for (int i = 0; i < playerCount; ++i) {
-		this->players[i].kolor=glm::vec4(kolory[i],1.0f);
+		this->players[i].kolor=kolory[i];
 		this->players[i].nazwa=nazwy[i];
 		this->players[i].caterpillarsCount=startCaterpillars;
-		if(i == 0){
+		if(i < 2){
 			this->players[i].czyGra = true;
 		}
 		else{

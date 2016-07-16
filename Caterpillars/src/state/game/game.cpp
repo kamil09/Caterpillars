@@ -27,18 +27,19 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,0.0f);
 //   this->rose->setTraM((this->windowXsize-roseWidth)/2,-(this->windowYsize-roseHeight)/2,0.0f);
     this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
-
-    //Dodawanie Caterpillarow
-    for(int i=0;i<4;i++) {
-       Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
-       cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
-       this->caterrVec.push_back( cat );
-       inputActions::getInstance().objectPointers.push_back(cat);
-
-       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
-       this->caterrVec[i]->teamID = (i%2)+1;
-       std::cout << endl << this->caterrVec[i]->teamID;
-   }
+    this->createPlayers();
+//    //Dodawanie Caterpillarow
+//    for(int i=0;i<4;i++) {
+//       Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
+//        //Życie
+//       cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
+//       this->caterrVec.push_back( cat );
+//       inputActions::getInstance().objectPointers.push_back(cat);
+//
+//       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
+////       this->caterrVec[i]->teamID = (i%2)+1;
+////       std::cout << endl << this->caterrVec[i]->teamID;
+//   }
     float min1=999;
     float min2=999;
     for(int i=0;i<100; i++) for(int k=0;k<100;k++) if (this->map->mapVert[i][k]<min1) min1=this->map->mapVert[i][k];
@@ -69,6 +70,26 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;
 }
+
+
+void Game::createPlayers() {
+    //Dodawanie Caterpillarow
+    Font *font  = new Font("../src/fonts/Coalition.ttf",400,this->projection);
+    for(int i=0;i< Setting::getInstance().players.size();i++) {
+        if(Setting::getInstance().players[i].czyGra){
+            Player *newPlayer = new Player(i);
+            this->players.push_back(newPlayer);
+            for (int j = 0; j < newPlayer->aliveCaterpillars.size(); j++) {
+                Caterpillar *cat = newPlayer->aliveCaterpillars[j];
+                cat->font = font;
+                cat->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
+                this->caterrVec.push_back( cat );
+                inputActions::getInstance().objectPointers.push_back(cat);
+            }
+        }
+    }
+}
+
 
 int Game::currCatIndex;
 

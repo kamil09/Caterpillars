@@ -15,7 +15,7 @@
 using namespace std;
 
 struct player{
-    glm::vec4 kolor;
+    glm::vec3 kolor;
     std::string nazwa;
     int caterpillarsCount;
     bool czyGra;

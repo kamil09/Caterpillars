@@ -33,9 +33,10 @@ float calcLightMul(vec4 Lpos, vec4 Ldir, vec3 pos){
 	if(abs(kat)>=0.6f ) val=0.0f;
 	if(abs(kat)>0.4f && abs(kat)<0.6f) val=1.0f-(abs(kat)*5.0f-2.0f);
 	//W zalezności od długości wektora do reflektora
-	if(MD>=500) val=0;
-	if(MD<=400) val*=1;
-	if( (MD>400) && (MD<500) ) val*=(1-((MD*10-4000)/1000));
+
+	if(MD>=500.0f) val=0.0f;
+	if(MD<=400.0f) val*=1.0f;
+	if(MD>400.0f && MD<500.0f) val*=1-((MD*10.0f-4000.0f)/1000.0f);
 	return val;
 }
 
@@ -50,6 +51,7 @@ void main(){
 	towL2 = calcLightMul(L2pos,L2dir,position);
 
 	vec4 vertex = vec4(position.x, position.y, position.z, 1.0f);
+
 	vN=normalize(vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni swiata
 	vL1=normalize(L1pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 	vL2=normalize(L2pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
