@@ -1,26 +1,26 @@
 #include "bullet.hpp"
 
 Bullet::Bullet(char *filename, float randDam){
+   //wartosci wylosowana Damage
+   this->damage = randDam;
 
-    //wartosci wylosowana Damage
-    this->Damage = randDam;
 
-  //  this->shader = new Shader("../src/shaders/bulletShader.vs","../src/shaders/bulletShader.frag");
-  //  this->scl.x=4;
-  //  this->scl.y=4;
-  //  this->scl.z=4;
-  //  this->recalculateMatrix();
-  //  this->viewBack=0.0f;
-  //  this->tmpViewBack=666.0f;
-   //
-  //  loadObj::load(filename,&this->vertices, &this->indices);
-  //  this->bindBuffers(5,GL_STATIC_DRAW);
-  //  this->bindTexture2D("../src/img/gunTX.png");
-  //  this->startLook = glm::vec3(1.0f,0.0f,0.0f);
-   //
-  //  this->size.y=2;
-  //  this->size.x=2;
-  //  this->size.z=1;
+   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
+   this->scl.x=4;
+   this->scl.y=4;
+   this->scl.z=4;
+   this->recalculateMatrix();
+
+  loadObj::load(filename,&this->vertices, &this->indices);
+  this->bindBuffers(5,8,GL_STATIC_DRAW);
+  this->bindTexture2D("../src/img/bullet.png");
+  this->bindLightMap2D("../src/img/light/example.png");
+  this->bindShadwMap2D("../src/img/shadow/example.png");
+
+  this->size.y=0;//2
+  this->size.x=2;//2
+  this->size.z=1;//1
+  this->used=false;
 }
 Bullet::~Bullet(){
 
@@ -32,28 +32,23 @@ void Bullet::setPos(float x,float y,float z){
    this->recalculateMatrix();
 }
 
-void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
-  //  this->shader->useShaderProgram(0);
-  //  glActiveTexture(GL_TEXTURE0);
-	//  glBindTexture(GL_TEXTURE_2D, this->texture2D);
-  //  glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
-  //
-  //  GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
-  //  GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
-  //  GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
-  //  GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
-  //     GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
-  //
-  //  glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
-  //  glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
-  //  glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotMY*this->sclM));
-  //  glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-  //  glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
+  this->shader->useShaderProgram(0);
+  this->uniformTextures();
 
+   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
+   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
+   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+   GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
 
-  //
-  //  glBindVertexArray(this->currentVAO());
-	// //glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-  //  glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
-  //  glBindVertexArray(0);
+   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
+   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
+   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotMY*this->sclM));
+   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+
+   glBindVertexArray(this->currentVAO());
+	   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+   glBindVertexArray(0);
 }

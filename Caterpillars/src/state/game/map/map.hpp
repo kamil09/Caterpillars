@@ -44,12 +44,16 @@ public:
    glm::vec3 windForce;
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    float **mapVertFirst;
+   glm::vec3 ***meshNormals;
+   void calcMeshNormals(int xStart, int xStop, int yStart, int yStop);
+   void generateMeshNormals();
+
    Map();
    ~Map();
 //   void bindBuffers(bool newBuffer);
    Map(const Map &);
    static Map& getInstance();
-   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun);
+   void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun);
    void rand();     //Losuje wiatr itp
    void kaboom(float x, float y, float z, float radius);    //Robi kaboom na mapie
    void genTriangleTab();

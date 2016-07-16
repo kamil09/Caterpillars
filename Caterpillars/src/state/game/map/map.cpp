@@ -13,6 +13,7 @@ Map::Map(){
    this->shader = new Shader("../src/shaders/map/mapShader.vs","../src/shaders/map/mapShader.frag");
    this->rand();
    this->generateRandomMap();
+   this->generateMeshNormals();
    this->genTriangleTab();
    this->bindBuffers(6,9,GL_DYNAMIC_DRAW);
     int numOfTex = 8;
@@ -28,9 +29,38 @@ Map::Map(){
 //   texturePath[4] = (char*)"../src/img/map/map5.png";texturePath[5] = (char*)"../src/img/map/map6.png";
 //   texturePath[6] = (char*)"../src/img/map/map7.png";texturePath[7] = (char*)"../src/img/map/map8.png";
    this->bindTexture3D(numOfTex,texturePath);
-
+   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindShadwMap2D("../src/img/shadow/example.png");
 }
 Map::~Map(){}
+
+void Map::generateMeshNormals(){
+   this->meshNormals = new glm::vec3**[2];
+
+   this->meshNormals[0] = new glm::vec3*[vertX-1];
+   this->meshNormals[1] = new glm::vec3*[vertX-1];
+   for(int i=0;i<vertX-1;i++) {
+      meshNormals[0][i] = new glm::vec3[vertY-1];
+      meshNormals[1][i] = new glm::vec3[vertY-1];
+   }
+   calcMeshNormals(0,vertX-1,0,vertY-1);
+}
+
+void Map::calcMeshNormals(int xS, int xE, int yS, int yE){
+   for(int i=xS;i<xE;i++)
+      for(int j=yS;j<yE;j++){
+         glm::vec3 vert1 = glm::vec3(i,mapVert[i][j],j);
+         glm::vec3 vert2 = glm::vec3(i+1,mapVert[i+1][j],j);
+         glm::vec3 vert3 = glm::vec3(i+1,mapVert[i+1][j+1],j+1);
+         glm::vec3 vert4 = glm::vec3(i,mapVert[i][j+1],j+1);
+
+         glm::vec3 vTriangleNorm0 = glm::cross(vert1-vert2, vert2-vert3);
+         glm::vec3 vTriangleNorm1 = glm::cross(vert3-vert4, vert4-vert1);
+
+         this->meshNormals[0][i][j] = glm::normalize(vTriangleNorm0);
+         this->meshNormals[1][i][j] = glm::normalize(vTriangleNorm1);
+      }
+}
 
 void makeHill(float **map){
    float hillHeight = rand() % (maxMapHeight*5/6-minMapHeight)+minMapHeight;
@@ -197,9 +227,17 @@ void Map::genTriangleTab(){
          if(j/modY % 2 == 1)this->vertices[index+4]=1-this->vertices[index+4];
          this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+1)/2;
          //Normals
-         this->vertices[index+6] = 0.0f;
-         this->vertices[index+7] = 1.0f;
-         this->vertices[index+8] = 0.0f;
+         glm::vec3 normal = glm::vec3(0,0,0);
+         if(i!=0 && j!=0) for(int x=0;x<2;x++) normal+=this->meshNormals[x][i-1][j-1];
+         if(i!=0 && j!=vertY-1) normal+=this->meshNormals[1][i-1][j];
+         if(i!=vertX-1 && j!=vertY-1) for(int x=0;x<2;x++) normal+=this->meshNormals[x][i][j];
+         if(i!=vertX-1 && j!=0) normal+=this->meshNormals[0][i][j-1];
+         normal=glm::normalize(normal);
+         if(normal.y<0) normal*=-1;
+         this->vertices[index+6] = normal.x;
+         this->vertices[index+7] = normal.y;
+         this->vertices[index+8] = normal.z;
+         //printf("%f| %f | %f \n",this->vertices[index+6],this->vertices[index+7],this->vertices[index+8]);
 
          index+=9;
       }
@@ -219,12 +257,18 @@ void Map::genTriangleTab(){
    }
 }
 
-void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec3 sun){
+void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
    this->shader->useShaderProgram(0);
 
    glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_3D, this->texture3D);
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
+   glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, this->lightMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
@@ -245,12 +289,23 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::
 }
 
 void Map::recalculateTriangleMap(){
+   calcMeshNormals(0,vertX-1,0,vertY-1);
    int index=0;
    for(int j=0;j<vertY;j++)
       for(int i=0;i<vertX;i++){
          if(this->vertices[index+1] != this->mapVert[i][j]){
             this->vertices[index+1] = this->mapVert[i][j];
             this->vertices[index+5] = ((float)this->mapVert[i][j]/maxMapHeight+0.2)/1.2;
+
+            glm::vec3 normal = glm::vec3(0,0,0);
+            if(i!=0 && j!=0) for(int x=0;x<2;x++) normal+=this->meshNormals[x][i-1][j-1];
+            if(i!=0 && j!=vertY-1) normal+=this->meshNormals[1][i-1][j];
+            if(i!=vertX-1 && j!=vertY-1) for(int x=0;x<2;x++) normal+=this->meshNormals[x][i][j];
+            if(i!=vertX-1 && j!=0) normal+=this->meshNormals[0][i][j-1];
+            normal=glm::normalize(normal);
+            this->vertices[index+6] = normal.x;
+            this->vertices[index+7] = normal.y;
+            this->vertices[index+8] = normal.z;
          }
          index+=9;
       }

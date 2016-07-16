@@ -1,6 +1,6 @@
 #include "gun.hpp"
 
-Gun::Gun(char *filename, float min, float max,Object *owner){
+Gun::Gun(char *filename, int min, int max,Object *owner){
 
    //wartosci pomiedzy ktorymi bedziemy losowac Damage podczas strzelu
    this->minDamage = min;
@@ -20,6 +20,8 @@ Gun::Gun(char *filename, float min, float max,Object *owner){
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/weapon.png");
+   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindShadwMap2D("../src/img/shadow/example.png");
    puts("create weapon");
 }
 Gun::~Gun(){
@@ -32,11 +34,9 @@ void Gun::setPos(float x,float y,float z){
    this->recalculateMatrix();
 }
 
-void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::mat4 lights,glm::vec3 sun){
+void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::mat4 lights,glm::vec4 sun){
   this->shader->useShaderProgram(0);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, this->texture2D);
-  glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+  this->uniformTextures();
 
   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");

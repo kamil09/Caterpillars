@@ -4,10 +4,9 @@
 
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
-   this->sunPosition=glm::vec3(100,1000,100);
+   this->sunPosition=glm::vec4(vertX/2,700,vertY/2,1.0f);
 
    this->map= & Map::getInstance();
-   //this->wall = new Wall(0,vertX,0,vertY,0,maxMapHeight*1.3);
    this->wall = new Wall((char*)"../src/obj/wall.obj",0,vertX,0,vertY,0,maxMapHeight*1.3);
 //   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
    this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
@@ -50,8 +49,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     inputActions::getInstance().objectPointers.push_back(this->towers[1]);
 
     this->lightsMat = glm::mat4(0);
-    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->pos.y,this->towers[0]->pos.z,0.0f);
-    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->pos.y,this->towers[1]->pos.z,0.0f);
+    if(this->towers.size() > 0 ) this->lightsMat[0] = glm::vec4(this->towers[0]->pos.x,this->towers[0]->light->pos.y,this->towers[0]->pos.z,1.0f);
+    if(this->towers.size() > 1 ) this->lightsMat[2] = glm::vec4(this->towers[1]->pos.x,this->towers[1]->light->pos.y,this->towers[1]->pos.z,1.0f);
 
 
     //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
@@ -75,15 +74,16 @@ int Game::currCatIndex;
 
 void Game::draw(){
 
+   //printf("%f/%f/%f/%f\n", this->lightsMat[0][0], this->lightsMat[0][1], this->lightsMat[0][2], this->lightsMat[0][3]);
+   //printf("%f/%f/%f/%f\n", this->lightsMat[2][0], this->lightsMat[2][1], this->lightsMat[2][2], this->lightsMat[2][3]);
+   //printf("%f/%f/%f/%f\n" ,this->sunPosition[0], this->sunPosition[1], this->sunPosition[2], this->sunPosition[3]);
+
+
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-
    this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
    this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
-
-   glEnable(GL_BLEND);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     for(int i=0;i < (int)this->caterrVec.size(); i++){
         if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
@@ -97,8 +97,22 @@ void Game::draw(){
     for(int i=0;i<(int)this->towers.size();i++ )
       this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
-    if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
+      if((int)this->bullets.size() > 0)
+      {
+        for(int i=0; i < (int)this->bullets.size(); i++)
+        {
+            if(!this->bullets[i]->colission)
+               this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+            else{
+               this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
+               inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
+            }
+         }
+       }
 
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
    this->drawRose();
    glDisable(GL_BLEND);
 }
@@ -147,8 +161,22 @@ void Game::run(){
       this->caterrVec[i]->recalculateGravity();
       this->caterrVec[i]->recalculateMatrix();
    }
-   for(int i=0;i<(int)this->towers.size();i++ )
+   for(int i=0; i< (int)this->towers.size();i++ )
      this->towers[i]->light->moveLight();
+
+   //Pociski
+   if((int)this->bullets.size() > 0)
+   {
+     for(int i=0; i < (int)this->bullets.size(); i++)
+     {
+
+       this->bullets[i]->recalculateGravity();
+       this->bullets[i]->recalculateMatrix();
+       cout << "Bullet : " << i << " Position: " << this->bullets[i]->pos.x << ", " <<
+       this->bullets[i]->pos.y << ", " << this->bullets[i]->pos.z << endl;
+
+      }
+    }
 }
 void Game::calcViewMatrix(){
    this->lookAt = this->currentCutterpillar->startLook;
@@ -216,15 +244,17 @@ void Game::catterMove(){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
         newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
      }
-     //Dodane przez Pawla do testow
-     if(inputActions::getInstance().leftClick)
+     //Warunek na strzal - widok z celowikiem i lewy przycisk
+     if(inputActions::getInstance().leftClick && !(this->currentCutterpillar->viewBack < -20))
      {
 
+       if(!powerischoosed)
+          shotPower = 5;
        if( shotPower >= maxShotPower )
-          shotPower = 0;
+          shotPower = 5;
 
        //Wybieranie sily strzalu:
-       shotPower = shotPower + 0.05;
+       shotPower = shotPower + 0.15;
        powerischoosed = true;
        calculatedDamage = 0;
 
@@ -246,21 +276,23 @@ void Game::catterMove(){
 
 
        cout << "Damage: " << calculatedDamage << endl;
-       
+
        //tworzenie obiektu Bullet
        Bullet *bullecik = new Bullet ((char*)"../src/obj/bullet.obj" , calculatedDamage);
        //ustawienie pozycji poczatkowej
        bullecik->setPos(this->currentCutterpillar->pos.x, this->currentCutterpillar->pos.y, this->currentCutterpillar->pos.z);
+
+       //ustawienie szybkosci wystrzelonego pocisku
+       shot.x = shotViewVec.x * shotPower * 1;
+       shot.y = shotViewVec.y * shotPower * 1.5;
+       shot.z = shotViewVec.z * shotPower * 1;
+
        //dodanie wyzej stworzonego obiektu do listy pociskow
        this->bullets.push_back( bullecik );
        //dodanie do listy wszystkich obiektow
        inputActions::getInstance().objectPointers.push_back( bullecik );
 
-       shot.x = shotViewVec.x * shotPower;
-       shot.y = shotViewVec.y * shotPower;
-       shot.z = shotViewVec.z * shotPower;
-
-       this->currentCutterpillar->diagonalThrow(shot);
+       this-> bullets.back()->diagonalThrow(shot);
 
        powerischoosed = false;
        shotPower = 0;
@@ -272,25 +304,26 @@ void Game::catterMove(){
    else if(inputActions::getInstance().space_pressed){
      if(this->currentCutterpillar->on_the_ground)
      {
+      int jump_coefficient = 1;
       glm::vec3 shot;
       //skok w przod
       if(inputActions::getInstance().w_pressed){
-         shot.x = catViewVec.x * 2;
-         shot.z = catViewVec.z * 2;
+         shot.x = catViewVec.x * jump_coefficient;
+         shot.z = catViewVec.z * jump_coefficient;
       }
       //skok w tyl
       if(inputActions::getInstance().s_pressed){
-        shot.x = catViewVec.x * -2;
-        shot.z = catViewVec.z * -2;
+        shot.x = catViewVec.x * -jump_coefficient;
+        shot.z = catViewVec.z * -jump_coefficient;
       }
       if(inputActions::getInstance().a_pressed){
-         shot.x = prosVec.x * 2;
-         shot.z = prosVec.z * 2;
+         shot.x = prosVec.x * jump_coefficient;
+         shot.z = prosVec.z * jump_coefficient;
       }
       //skok w tyl
       if(inputActions::getInstance().d_pressed){
-        shot.x = prosVec.x * -2;
-        shot.z = prosVec.z * -2;
+        shot.x = prosVec.x * -jump_coefficient;
+        shot.z = prosVec.z * -jump_coefficient;
       }
 
       //shot.x = 0;
@@ -337,27 +370,43 @@ bool Game::checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v
    return checkCollisionAndMove(o,pos.x,pos.y,pos.z,v);
 }
 bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vector<Object*> v){
+   //Czy ruch moze byc wykonany - zmienne dla 3 wymiarow
    bool canX = true;
    bool canY = false;
    bool canZ = true;
 
+   Caterpillar* cat;
+   Bullet* bul;
+   int boomRadius = 20;
+
+   //Kolizja z murem
    if(x<=5 || x>vertX-5)
       canX = false;
+   //Ograniczenie na y
    if(y<=0 || y>maxMapHeight+300)
       canY = false;
+   //Kolizja z murem
    if(z<=5 || z>vertY-5)
       canZ = false;
 
    //..................TODO kolizja z mapą X
    //..................TODO kolizja z mapą Z
 
+   //Przejscie po przekazanej tablicy obiektow
+   //sprawdzenie kolizji z kazdem z tych obiektow
+
+   cout << endl << "-----------------" << endl;
+
    for(int i=0; i< v.size(); i++)
    {
-     //Jesli wieza
+
+
+
+     //Dla wiez
      if(dynamic_cast<Tower *>(v[i]))
      {
-       //cout << i <<" : Tower" << endl;
-       //kolizja z Tower
+       cout << i <<" : Tower" << endl;
+       //Kolizja z Tower
        if((x >= (int)v[i]->pos.x - (v[i]->size.x/2)) && (x <= (int)v[i]->pos.x + (v[i]->size.x/2))
           && (z >= (int)v[i]->pos.z - (v[i]->size.z/2)) && (z <= (int)v[i]->pos.z + (v[i]->size.z/2)))
        {
@@ -365,12 +414,11 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          canZ = false;
        }
      }
-     else if(dynamic_cast<Caterpillar *>(v[i]))
+     //Dla Caterpillar
+     else if(cat = dynamic_cast<Caterpillar *>(v[i]))
      {
-       //cout << i << " : Caterpillar" << endl;
-
+       cout << i << " : Caterpillar LIFE:" << cat->life << endl;
        //Kolizja z Caterpillar
-
        if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
        {
          if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
@@ -380,23 +428,48 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            canX = false;
            canY = false;
            canZ = false;
+           //Jesli kolizja z pociskiem to zmniejszamy zycie Caterpillara
+           if(bul = dynamic_cast<Bullet *>(o))
+           {
+             cat->life = cat->life - bul->damage;
+           }
          }
        }
-
-
      }
    }
 
-   if(((int)o->pos.x>=0) && ((int)o->pos.x <vertX) && ((int)o->pos.z>=0) && ((int)o->pos.z<vertY)){//jesli jest na mapie
-     if(y-(o->size.y) > Map::getInstance().mapVert[(int)x][(int)z]) // Tu ta 30 jest troche slaba
+   //jesli jest na mapie
+   if(((int)o->pos.x >= 0) && ((int)o->pos.x < vertX) && ((int)o->pos.z >= 0) && ((int)o->pos.z < vertY))
+   {
+     if(y-(o->size.y) > Map::getInstance().mapVert[(int)x][(int)z])
          canY=true;
       else{
-         //canX=false;
-         //canZ=false;
-         y=Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
+         y = Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
+         if(bul = dynamic_cast<Bullet *>(o))
+         {
+           cout << "Boooooom" <<endl;
+           if(!o->colission)
+              Map::getInstance().kaboom(x,y,z,boomRadius);
+
+           o->colission = true;
+
+           for(int i=0; i< v.size(); i++)
+           {
+             if(cat = dynamic_cast<Caterpillar *>(v[i]))
+             {
+               //Zmniejszanie zycia jesli w promieniu boom booma kabooma
+               float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+pow((cat->pos.z - o->pos.z),2));
+               cout << "Radius: " << rad << endl;
+               if(rad <= boomRadius)
+                  cat->life = cat->life - (int)(bul->damage/rad);
+
+             }
+           }
+         }
       }
    }
 
+   //Jesli moze wykonac ruch -> wykonaj go
    if(canX)
       o->pos.x = x;
    if(canY)

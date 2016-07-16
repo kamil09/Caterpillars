@@ -6,6 +6,8 @@
 Object::Object(){
 	this->teksturCount = 0;
 
+	this->colission = false;//dla bulleta
+
 
 	this->currentBinding = 0;
 	this->buffersCount = 0;
@@ -22,6 +24,17 @@ Object::Object(){
 }
 
 Object::~Object(){
+}
+void Object::uniformTextures(){
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->texture2D);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+   glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
+   glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, this->lightMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
 }
 
 void Object::recalculateMatrix(){
@@ -160,6 +173,7 @@ void Object::recalculateGravity(){
 void Object::diagonalThrow(glm::vec3 throw_speed)
 {
 	this->on_the_ground = false;
+
 	this->speed.x = throw_speed.x;
 	this->speed.y = throw_speed.y;
 	this->speed.z = throw_speed.z;
@@ -252,14 +266,25 @@ void Object::paramText2D(){
 
 void Object::bindTexture2D(const GLchar *texturePath){
 	glGenTextures(1, &this->texture2D);
-	glBindTexture(GL_TEXTURE_2D, this->texture2D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
-// Set our texture parameters
-
+	glBindTexture(GL_TEXTURE_2D, this->texture2D);
 	this->paramText2D();
 	this->loadTexture2D(texturePath);
-	// std::cout << "hej" << std::endl;
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-	// errorCheck("Po loadTexture");
+}
+//Powyższa metoda wywoływana w wielu miejscach,, nie chciało mi się dodawać parametru i musieć wszędzie zmieniać
+void Object::bindShadwMap2D(const GLchar *texturePath){
+	glGenTextures(1, &this->shadowMap);
+	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
+	this->paramText2D();
+	this->loadTexture2D(texturePath);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
+}
+void Object::bindLightMap2D(const GLchar *texturePath){
+	glGenTextures(1, &this->lightMap);
+	glBindTexture(GL_TEXTURE_2D, this->lightMap);
+	this->paramText2D();
+	this->loadTexture2D(texturePath);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 }
 
 void Object::loadTexture2D(const GLchar *texturePath){
