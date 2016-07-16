@@ -31,6 +31,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     //Dodawanie Caterpillarow
     for(int i=0;i<4;i++) {
        Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
+        //Życie
        cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
        this->caterrVec.push_back( cat );
        inputActions::getInstance().objectPointers.push_back(cat);

@@ -2,7 +2,7 @@
 #EKRAN
 width:800
 height:600
-fullWindow:1
+fullWindow:0
 #IF ON width and height are not used;
 fullResolution:1
 #ranking

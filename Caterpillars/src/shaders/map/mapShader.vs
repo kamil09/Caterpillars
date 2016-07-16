@@ -34,9 +34,9 @@ float calcLightMul(vec4 Lpos, vec4 Ldir, vec3 pos){
 	if(abs(kat)>=0.6f ) val=0.0f;
 	if(abs(kat)>0.4f && abs(kat)<0.6f) val=1.0f-(abs(kat)*5.0f-2.0f);
 	//W zalezności od długości wektora do reflektora
-	if(MD>=500) val=0;
-	if(MD<=400) val*=1;
-	if(MD>400 && MD<500) val*=1-((MD*10-4000)/1000);
+	if(MD>=500.0f) val=0.0f;
+	if(MD<=400.0f) val*=1.0f;
+	if(MD>400.0f && MD<500.0f) val*=1-((MD*10.0f-4000.0f)/1000.0f);
 	return val;
 }
 
@@ -55,7 +55,7 @@ void main(){
 	vL1=normalize(L1pos-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 	vL2=normalize(L2pos-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 	vL3=normalize(SUN-(M*vertex)); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
-	vV=normalize(vec4(0,0,0,1)-(M*vertex)); //Oblicz i interpoluj wektor do obserwatora w przestrzeni swiata
+	vV=normalize(vec4(0.0f,0.0f,0.0f,1.0f)-(M*vertex)); //Oblicz i interpoluj wektor do obserwatora w przestrzeni swiata
 
 	gl_Position = P*V*M*vec4(position.x, position.y, position.z, 1.0);
 	textCord = texture;

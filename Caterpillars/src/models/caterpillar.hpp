@@ -34,7 +34,7 @@ public:
    int teamID;
    Gun *weapon;
    Font *font;
-   float life;          //Życie naszego bohatera :)
+   int life;          //Życie naszego bohatera :)
 };
 
 #endif
