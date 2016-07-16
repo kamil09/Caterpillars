@@ -43,8 +43,6 @@ void main(){
 	float nl2=max(0,dot(mN,mL2));
 	float nl3=max(0,dot(mN,mL3));
 
-	color = (De*Md)+(Md*Ld*towL1*nl1)+(Md*Ld*towL2*nl2)+(Md*Ld*nl3);
-//	color = (De*Md)+(((Md*Ld*towL1)+(Md*Ld*towL2))*Da);
-
-
+	//color = (De*Md)+(Md*Ld*towL1*nl1)+(Md*Ld*towL2*nl2)+(Md*Ld*nl3);
+	color = (De*Md)+(Md*Ld*towL1*nl1)+(Md*Ld*towL2*nl2)+(Md*Ld*nl3*0.1f);
 }

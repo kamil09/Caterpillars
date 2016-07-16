@@ -49,7 +49,7 @@ void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::ma
   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr((owner->posM) *(owner->rotMY)* this->posMadd* (owner->sclM)));
   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-  glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+  glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
 
   //

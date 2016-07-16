@@ -11,11 +11,11 @@ layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 texture;
 layout (location = 2) in vec3 normal;
 
-out vec4 vN; //interpolowany wektor normalny w przestrzeni oka
-out vec4 vV; //interpolowany wektor do obserwatora w przestrzeni oka
-out vec4 vL1; //interpolowany wektor do zrodla swiatla 1 w przestrzeni oka
-out vec4 vL2; //interpolowany wektor do zrodla swiatla 2 w przestrzeni oka
-out vec4 vL3; //interpolowany wektor do zrodla swiatla 3 w przestrzeni oka
+out vec4 vN; //interpolowany wektor normalny w przestrzeni swiata
+out vec4 vV; //interpolowany wektor do obserwatora w przestrzeni swiata
+out vec4 vL1; //interpolowany wektor do zrodla swiatla 1 w przestrzeni swiata
+out vec4 vL2; //interpolowany wektor do zrodla swiatla 2 w przestrzeni swiata
+out vec4 vL3; //interpolowany wektor do zrodla swiatla 3 w przestrzeni swiata
 out float towL1;
 out float towL2;
 
@@ -36,7 +36,7 @@ float calcLightMul(vec4 Lpos, vec4 Ldir, vec3 pos){
 	//W zalezności od długości wektora do reflektora
 	if(MD>=500) val=0;
 	if(MD<=400) val*=1;
-	if(MD>400 && MD<500) val*=1-((MD*10-4000)/1000);
+	if( (MD>400) && (MD<500) ) val*=(1-((MD*10-4000)/1000));
 	return val;
 }
 

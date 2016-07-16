@@ -58,7 +58,7 @@ void Wall::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm:
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->sclM));
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-   glUniformMatrix4fv(SUN, 1, GL_FALSE, glm::value_ptr(sun));
+   glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
 
 
