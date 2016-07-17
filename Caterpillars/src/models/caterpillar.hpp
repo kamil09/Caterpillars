@@ -41,7 +41,8 @@ public:
    Player *player;
    Gun *weapon;
    Font *font;
-   int life;          //Życie naszego bohatera :)
+   int life;//Życie naszego bohatera :)
+    std::string getLife();
 };
 
 

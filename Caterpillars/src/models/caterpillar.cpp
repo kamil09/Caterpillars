@@ -128,6 +128,16 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 ligh
         temp[3][2] += 0.0f;
         this->font->posM = temp;
 //        this->font->print3d("+"+std::to_string(this->life),10.0f,0.0f,0.01f,glm::vec3(1.0f,0.0f,0.0f));
-        this->font->print3d("+"+std::to_string(this->life),0.0f,0.0f,0.01f,this->player->kolor);
+        this->font->print3d(this->getLife(),0.0f,0.0f,0.01f,this->player->kolor);
     }
 }
+
+std::string Caterpillar::getLife() {
+    std::string temp;
+    if(this->life >=0){
+        temp="+";
+    }
+    temp +=std::to_string(this->life);
+    return temp;
+}
+
