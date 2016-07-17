@@ -37,7 +37,7 @@ void PauseMenu::loadTranslates() {
     float distance= 70.0f;
     //TODO: Sprawdzic czy dziala na wszystkich rozdzielczosciach
     float y = 0.0f;
-    for (int i = 0; i < this->listaSpritowBG[0]->teksty.size(); ++i) {
+    for (unsigned int i = 0; i < this->listaSpritowBG[0]->teksty.size(); ++i) {
         y -= this->listaSpritowBG[0]->font->height(1.0f);
     }
     y -= this->listaWspolrzednych[0].w + 10.0f;
@@ -64,9 +64,7 @@ void goExit(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
     inputActions::getInstance().changeState('m',window,cursor);
 }
 
-
 void goBack2(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
     inputActions::getInstance().cursorFixedCenterPos=true;
     goBack(clickedButton,window,cursor);
 }
-

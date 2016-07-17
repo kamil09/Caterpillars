@@ -10,16 +10,10 @@ void TowerLight::moveLight(){
 }
 
 TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int dir){
-   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-
-   this->scl.x=8;
-   this->scl.y=8;
-   this->scl.z=8;
-
-   this->pos.x=o->pos.x;
-   this->pos.y=o->pos.y;
-   this->pos.z=o->pos.z;
-   this->pos.y+=(14.8*o->scl.y);
+   this->shader = new Shader("../src/shaders/basic3DShader.vs","../src/shaders/basic3DShader.frag");
+   this->scl=glm::vec3(8,8,8);
+   this->pos=o->pos;
+   this->pos.y+=(14.6*o->scl.y);
 
    this->rot.x=0;
    this->rot.z=0;
@@ -36,9 +30,8 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/towerL.png");
    this->bindLightMap2D("../src/img/light/example.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
+   this->bindShadwMap2D("../src/img/towerL.png");
    puts("created tower light");
-
 }
 
 TowerLight::~TowerLight(){};
@@ -49,19 +42,10 @@ void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 light
 }
 
 Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int endAngle){
-   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-
-   this->size.x = 40;
-   this->size.y = 100; //Tu nie wiem jaka wartosc
-   this->size.z = 40;
-
-   this->scl.x=10;
-   this->scl.y=10;
-   this->scl.z=10;
-
-   this->pos.x=posX;
-   this->pos.y=posY;
-   this->pos.z=posZ;
+   this->shader = new Shader("../src/shaders/basic3DShader.vs","../src/shaders/basic3DShader.frag");
+   this->size=glm::vec3(40,100,40);
+   this->scl=glm::vec3(10,10,10);
+   this->pos=glm::vec3(posX,posY,posZ);
 
    this->recalculateMatrix();
 
@@ -69,7 +53,7 @@ Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int e
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/tower.png");
    this->bindLightMap2D("../src/img/light/example.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
+   this->bindShadwMap2D("../src/img/tower.png");
    puts("created tower");
 
    this->light = new TowerLight((char*)"../src/obj/towerL.obj",this,(float)startAngle,(float)endAngle,0);

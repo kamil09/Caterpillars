@@ -44,13 +44,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5195f8d0-6309-43b8-b860-8c3491920ff0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Caterpillars.iml" afterPath="$PROJECT_DIR$/.idea/Caterpillars.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/obj/mur.blend4" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/shaders/catterShader.frag" afterPath="$PROJECT_DIR$/src/shaders/basic3DShader.frag" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/shaders/catterShader.vs" afterPath="$PROJECT_DIR$/src/shaders/basic3DShader.vs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/img/normal/wallNormal.png" afterPath="$PROJECT_DIR$/src/img/normal/wallNormal.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/obj/mur.blend" afterPath="$PROJECT_DIR$/src/obj/mur.blend" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/obj/mur.blend1" afterPath="$PROJECT_DIR$/src/obj/mur.blend1" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/obj/mur.blend2" afterPath="$PROJECT_DIR$/src/obj/mur.blend2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/obj/mur.blend3" afterPath="$PROJECT_DIR$/src/obj/mur.blend3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/font.cpp" afterPath="$PROJECT_DIR$/src/font.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/bullet.cpp" afterPath="$PROJECT_DIR$/src/models/bullet.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/caterpillar.cpp" afterPath="$PROJECT_DIR$/src/models/caterpillar.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/gun.cpp" afterPath="$PROJECT_DIR$/src/models/gun.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/tower.cpp" afterPath="$PROJECT_DIR$/src/models/tower.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/tower.hpp" afterPath="$PROJECT_DIR$/src/models/tower.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/obj/wall.obj" afterPath="$PROJECT_DIR$/src/obj/wall.obj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/object.cpp" afterPath="$PROJECT_DIR$/src/object.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/object.hpp" afterPath="$PROJECT_DIR$/src/object.hpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/game/game.cpp" afterPath="$PROJECT_DIR$/src/state/game/game.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/game/game.hpp" afterPath="$PROJECT_DIR$/src/state/game/game.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/object2D.cpp" afterPath="$PROJECT_DIR$/src/state/object2D.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/game/map/bigWall.cpp" afterPath="$PROJECT_DIR$/src/state/game/map/bigWall.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/state/game/pauseMenu.cpp" afterPath="$PROJECT_DIR$/src/state/game/pauseMenu.cpp" />
     </list>
     <ignored path="Caterpillars.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -72,11 +86,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="game.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="game.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/state/game/game.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="96" column="116" selection-start-line="96" selection-start-column="116" selection-end-line="96" selection-end-column="116" />
+            <state relative-caret-position="95">
+              <caret line="74" column="116" selection-start-line="74" selection-start-column="116" selection-end-line="74" selection-end-column="116" />
               <folding />
             </state>
           </provider>
@@ -85,7 +99,7 @@
       <file leaf-file-name="object2D.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/state/object2D.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1050">
+            <state relative-caret-position="1875">
               <caret line="125" column="36" selection-start-line="125" selection-start-column="36" selection-end-line="125" selection-end-column="36" />
               <folding />
             </state>
@@ -95,8 +109,8 @@
       <file leaf-file-name="caterpillar.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/models/caterpillar.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1350">
-              <caret line="90" column="48" selection-start-line="90" selection-start-column="48" selection-end-line="90" selection-end-column="48" />
+            <state relative-caret-position="1260">
+              <caret line="84" column="48" selection-start-line="84" selection-start-column="48" selection-end-line="84" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -109,11 +123,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="font.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="font.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/font.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+            <state relative-caret-position="120">
+              <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -122,8 +136,8 @@
       <file leaf-file-name="game.hpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/state/game/game.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+            <state relative-caret-position="585">
+              <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
               <folding>
                 <element signature="e#27#50#0" expanded="true" />
                 <element signature="e#407#431#0" expanded="true" />
@@ -226,11 +240,11 @@
         <option value="$PROJECT_DIR$/src/state/menu/button.cpp" />
         <option value="$PROJECT_DIR$/src/state/powerBar.hpp" />
         <option value="$PROJECT_DIR$/src/state/game/game.hpp" />
-        <option value="$PROJECT_DIR$/src/font.cpp" />
         <option value="$PROJECT_DIR$/src/models/caterpillar.cpp" />
         <option value="$PROJECT_DIR$/src/state/powerBar.cpp" />
         <option value="$PROJECT_DIR$/src/state/object2D.cpp" />
         <option value="$PROJECT_DIR$/src/state/game/game.cpp" />
+        <option value="$PROJECT_DIR$/src/font.cpp" />
       </list>
     </option>
   </component>
@@ -693,26 +707,26 @@
     <frame x="1415" y="24" width="1631" height="1026" extended-state="6" />
     <editor active="false" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13817035" sideWeight="0.49411765" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32473117" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25698924" sideWeight="0.50473183" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32795697" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4172043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1362776" sideWeight="0.49411765" order="0" side_tool="false" content_ui="combo" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25698924" sideWeight="0.50473183" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32795697" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24984227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1362776" sideWeight="0.5058824" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26881722" sideWeight="0.49526814" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32473117" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4172043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3268817" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26881722" sideWeight="0.49526814" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="UnknownFeatures">
@@ -1017,7 +1031,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="21" column="48" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1025,7 +1038,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1053,18 +1065,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/font.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/models/caterpillar.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="90" column="48" selection-start-line="90" selection-start-column="48" selection-end-line="90" selection-end-column="48" />
+        <state relative-caret-position="1260">
+          <caret line="84" column="48" selection-start-line="84" selection-start-column="48" selection-end-line="84" selection-end-column="48" />
           <folding />
         </state>
       </provider>
@@ -1084,8 +1088,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/state/game/game.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+        <state relative-caret-position="585">
+          <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
           <folding>
             <element signature="e#27#50#0" expanded="true" />
             <element signature="e#407#431#0" expanded="true" />
@@ -1095,7 +1099,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/state/object2D.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1050">
+        <state relative-caret-position="1875">
           <caret line="125" column="36" selection-start-line="125" selection-start-column="36" selection-end-line="125" selection-end-column="36" />
           <folding />
         </state>
@@ -1103,8 +1107,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/state/game/game.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="96" column="116" selection-start-line="96" selection-start-column="116" selection-end-line="96" selection-end-column="116" />
+        <state relative-caret-position="95">
+          <caret line="74" column="116" selection-start-line="74" selection-start-column="116" selection-end-line="74" selection-end-column="116" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/font.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
           <folding />
         </state>
       </provider>

@@ -60,6 +60,7 @@ public:
    int buffersCount;
    std::vector<Buffers*> buffers;
    Shader *shader;
+   int czyNormalMap;
    Object();
    ~Object();
    bool on_the_ground = false;//gdy bedzie skakal to sie ustawi na false
@@ -73,6 +74,7 @@ public:
    void bindTexture2D(const GLchar *texturePath);
    void bindShadwMap2D(const GLchar *texturePath);
    void bindLightMap2D(const GLchar *texturePath);
+   void bindNormalMap2D(const GLchar *texturePath);
 
    virtual void loadTexture2D(const GLchar *texturePath);
    virtual void paramText2D();

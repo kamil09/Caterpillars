@@ -3,21 +3,15 @@
 Bullet::Bullet(char *filename, float randDam){
    //wartosci wylosowana Damage
    this->damage = randDam;
-   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-   this->scl.x=4;
-   this->scl.y=4;
-   this->scl.z=4;
+   this->shader = new Shader("../src/shaders/basic3DShader.vs","../src/shaders/basic3DShader.frag");
+   this->scl=glm::vec3(4,4,4);
    this->recalculateMatrix();
-
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/bullet.png");
    this->bindLightMap2D("../src/img/light/example.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
-
-   this->size.y=0;//2
-   this->size.x=2;//2
-   this->size.z=1;//1
+   this->bindShadwMap2D("../src/img/bullet.png");
+   this->size=glm::vec3(0,2,1);
    this->used=false;
 }
 

@@ -13,7 +13,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../loadData/loadOBJ.hpp"
 
-
 class TowerLight : public Object{
 public:
    void moveLight();

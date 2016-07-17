@@ -11,7 +11,7 @@ Object::Object(){
 	this->buffersCount = 0;
 	this->verticesCount = 0;
 	this->indicesCount = 0;
-
+	this->czyNormalMap = 0;
 	this->windMul=0;
 	this->speed.x=0;
 	this->speed.y=0;
@@ -22,8 +22,8 @@ Object::Object(){
 	this->normalMap = 0;
 }
 
-Object::~Object(){
-}
+Object::~Object(){}
+
 void Object::uniformTextures(){
 	glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
 	if(this->shadowMap!=0)glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
@@ -226,6 +226,13 @@ void Object::bindLightMap2D(const GLchar *texturePath){
 	this->loadTexture2D(texturePath);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 }
+void Object::bindNormalMap2D(const GLchar *texturePath){
+	glGenTextures(1, &this->normalMap);
+	glBindTexture(GL_TEXTURE_2D, this->normalMap);
+	this->paramText2D();
+	this->loadTexture2D(texturePath);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
+}
 
 void Object::loadTexture2D(const GLchar *texturePath){
 	std::vector<unsigned char> image;
@@ -327,12 +334,14 @@ void Object::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,gl
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
    GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
    GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+	GLint N = glGetUniformLocation(this->shader->shaderProgram[0], "czyNormalMap");
    GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
 
    glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
    glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
    glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->modM));
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+	glUniform1i(N, this->czyNormalMap);
    glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
    glBindVertexArray(this->currentVAO());

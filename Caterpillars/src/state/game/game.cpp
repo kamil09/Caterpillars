@@ -8,38 +8,16 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    this->map= & Map::getInstance();
    this->wall = new Wall((char*)"../src/obj/wall.obj",0,vertX,0,vertY,0,maxMapHeight*1.3);
-//   this->targetView = new object2D(-60,-60,120,120,(char*)"../src/img/target-viewfinder.png");
    this->targetView = new Sprite(-30, -30, 60, 60, (char *) "../src/img/target-viewfinder.png");
-//   this->rose = new object2D(-200,-200,400, 400,(char*)"../src/img/rose.png");
    float roseWidth, roseHeight;
    roseWidth = roseHeight = 200;
    this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
-//   this->rose->setTraM(0.8,-0.8,0.0f);
-//   this->rose->initFont("../src/fonts/Arial.ttf", 32);
-//   this->targetView->initFont("../src/fonts/Arial.ttf", 32);
-//   this->targetView->addTextL("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
-//    this->rose->addTextM("Wind Rose", 0,0, 1, (glm::vec3(0.0f,0.0f,0.0f)));
-//   int width,height;
-//   glfwGetWindowSize(window, &width,&height);
    std::cout << "Width: " << this->windowXsize <<  " rW: " << (this->windowXsize-roseWidth)/2 << " height: " << this->windowYsize << " rH " << -(this->windowYsize-roseHeight)/2;
+   //TODO: sprawdzic czy dziala dla wszystkich rozdzielczosci
+   this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,0.0f);
+   this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
+   this->createPlayers();
 
-    //TODO: sprawdzic czy dziala dla wszystkich rozdzielczosci
-    this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,0.0f);
-//   this->rose->setTraM((this->windowXsize-roseWidth)/2,-(this->windowYsize-roseHeight)/2,0.0f);
-    this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
-    this->createPlayers();
-//    //Dodawanie Caterpillarow
-//    for(int i=0;i<4;i++) {
-//       Caterpillar *cat = new Caterpillar((char*)"../src/obj/caterpillar.obj");
-//        //Życie
-//       cat->font = new Font("../src/fonts/Coalition.ttf",400,this->projection);
-//       this->caterrVec.push_back( cat );
-//       inputActions::getInstance().objectPointers.push_back(cat);
-//
-//       this->caterrVec[i]->setPos(rand() % vertX/2+(vertY/4),maxMapHeight + 200,rand() % vertY/2+(vertY/4)); // Tutaj usunac 200 Pawelek
-////       this->caterrVec[i]->teamID = (i%2)+1;
-////       std::cout << endl << this->caterrVec[i]->teamID;
-//   }
     float min1=999;
     float min2=999;
     for(int i=0;i<100; i++) for(int k=0;k<100;k++) if (this->map->mapVert[i][k]<min1) min1=this->map->mapVert[i][k];
@@ -106,12 +84,6 @@ void Game::createPlayers() {
 int Game::currCatIndex;
 
 void Game::draw(){
-
-   //printf("%f/%f/%f/%f\n", this->lightsMat[0][0], this->lightsMat[0][1], this->lightsMat[0][2], this->lightsMat[0][3]);
-   //printf("%f/%f/%f/%f\n", this->lightsMat[2][0], this->lightsMat[2][1], this->lightsMat[2][2], this->lightsMat[2][3]);
-   //printf("%f/%f/%f/%f\n" ,this->sunPosition[0], this->sunPosition[1], this->sunPosition[2], this->sunPosition[3]);
-
-
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -443,9 +415,6 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
 
    for(int i=0; i< v.size(); i++)
    {
-
-
-
      //Dla wiez
      if(dynamic_cast<Tower *>(v[i]))
      {
@@ -459,7 +428,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
        }
      }
      //Dla Caterpillar
-     else if(cat = dynamic_cast<Caterpillar *>(v[i]))
+     else if((cat = dynamic_cast<Caterpillar *>(v[i])))
      {
        cout << i << " : Caterpillar LIFE:" << cat->life << endl;
        //Kolizja z Caterpillar
@@ -473,7 +442,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            canY = false;
            canZ = false;
            //Jesli kolizja z pociskiem to zmniejszamy zycie Caterpillara
-           if(bul = dynamic_cast<Bullet *>(o))
+           if((bul = dynamic_cast<Bullet *>(o)))
            {
              cat->life = cat->life - bul->damage;
            }
@@ -489,7 +458,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          canY=true;
       else{
          y = Map::getInstance().mapVert[(int)x][(int)z]+(o->size.y);
-         if(bul = dynamic_cast<Bullet *>(o))
+         if((bul = dynamic_cast<Bullet *>(o)))
          {
            cout << "Boooooom" <<endl;
            if(!o->colission)
@@ -499,7 +468,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
 
            for(int i=0; i< v.size(); i++)
            {
-             if(cat = dynamic_cast<Caterpillar *>(v[i]))
+             if((cat = dynamic_cast<Caterpillar *>(v[i])))
              {
                //Zmniejszanie zycia jesli w promieniu boom booma kabooma
                float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+pow((cat->pos.z - o->pos.z),2));
