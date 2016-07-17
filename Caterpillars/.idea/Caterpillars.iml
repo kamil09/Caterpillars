@@ -30,6 +30,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/shaders/shader.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/shaders/shader.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/state.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/powerBar.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/menu.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/subMenu.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/menu/mainMenu/optionMenu.hpp" isTestSource="false" />
@@ -56,8 +57,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/state/game/map/map.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/game/map/bigWall.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/game/pauseMenu.hpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/state/state.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/object2D.hpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/state.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/state/powerBar.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/state/sprite.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/object.hpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/text.hpp" isTestSource="false" />

@@ -125,7 +125,7 @@ void object2D::drawText() {
     if(!this->teksty.empty() && this->font != NULL){
         glm::mat4 temp = this->posM;
         temp[3][1] = -temp[3][1];
-        temp[3][2] = 0.0f;
+        temp[3][2] = this->font->posM[3][2];
         this->font->posM = temp;
 
         for(unsigned int i=0;i < this->teksty.size();i++){

@@ -92,7 +92,6 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 ligh
    Object::draw(projection,modelView,lights,sun) ;
 
    this->weapon->draw(projection,modelView,this,lights,sun);
-<<<<<<< HEAD
     if(this->font!= NULL){
         glm::mat4 temp = this->posM;
         this->font->projection = projection;
@@ -104,18 +103,6 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 ligh
         this->font->posM = temp;
 //        this->font->print3d("+"+std::to_string(this->life),10.0f,0.0f,0.01f,glm::vec3(1.0f,0.0f,0.0f));
         this->font->print3d(this->getLife(),0.0f,0.0f,0.01f,this->player->kolor);
-=======
-   if(this->font!= NULL){
-      glm::mat4 temp = this->posM;
-      this->font->projection = projection;
-      this->font->view = modelView;
-      this->font->rotMY = this->rotMY;
-      temp[3][0] += 0.0f;
-      temp[3][1] += 10.0f;
-      temp[3][2] += 0.0f;
-      this->font->posM = temp;
-      this->font->print3d("+"+std::to_string(this->life),0.0f,0.0f,0.01f,this->player->kolor);
->>>>>>> 3a4562dc36f7ff5bf953726377cd92c94d3dee5d
     }
 }
 

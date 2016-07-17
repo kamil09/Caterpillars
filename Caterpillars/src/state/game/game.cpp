@@ -69,9 +69,18 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;
-
+    this->shotPower = this->minShotPower;
     this->font = new Font("../src/fonts/Coalition.ttf",32);
     this->font->posM[3][2] = -1.0f;
+    float barWidth, barHeight;
+    barWidth = 300.0f;
+    barHeight = 40.0f;
+
+    this->powerBar = new PowerBar(0.0f,0.0f,barWidth,barHeight,"../src/img/gradient.png");
+    this->powerBar->setTraM(-1366.0f/2.0f + 10.0f,-768.0f/2.0f + this->font->height(1.0f) + 20.0f,0.0f);
+    this->powerBar->font = new Font("../src/fonts/Coalition.ttf",26);
+    this->powerBar->font->posM[3][2] = -0.9f;
+    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(0.0f,0.0f,0.0f));
 }
 
 
@@ -141,6 +150,8 @@ void Game::draw(){
     float margines = 10.0f;
     this->font->print(this->currentCutterpillar->getLife(),-1366.0f/2.0f + margines,768.0f/2.0f - this->font->height(1.0f) - margines,1.0f,this->currentCutterpillar->player->kolor);
     this->font->print(this->currentCutterpillar->player->nazwa,-this->font->length(this->currentCutterpillar->player->nazwa,1.0f)/2.0f,768.0f/2.0f - this->font->height(1.0f) - margines,1.0f,this->currentCutterpillar->player->kolor);
+    this->powerBar->teksty[0]->text = "Power: " + std::to_string(this->procentShotPower()) +"%";
+    this->powerBar->draw(this->procentShotPower());
    glDisable(GL_BLEND);
 }
 
@@ -278,12 +289,15 @@ void Game::catterMove(){
        if(!powerischoosed)
           shotPower = this->minShotPower;
 //          shotPower = 5;
-       if( shotPower >= maxShotPower )
-          shotPower = maxShotPower;
+       if( shotPower >= maxShotPower ){
+           shotPower = maxShotPower;
+       }
+         else{
+           shotPower = shotPower + 0.15f;
+       }
 //          shotPower = 5;
 
-       //Wybieranie sily strzalu:
-       shotPower = shotPower + 0.15;
+         //Wybieranie sily strzalu:
        powerischoosed = true;
        calculatedDamage = 0;
 
@@ -324,7 +338,8 @@ void Game::catterMove(){
        this-> bullets.back()->diagonalThrow(shot);
 
        powerischoosed = false;
-       shotPower = 0;
+       shotPower = this->minShotPower;
+//       shotPower = 0;
 
        //cout << endl << shot.x << " : " << shot.y << " : " << shot.z << endl << endl;
 
@@ -560,3 +575,12 @@ void Game::pressESC() {
     inputActions::getInstance().changeState('p',this->window,this->cursor);
     inputActions::getInstance().cursorFixedCenterPos=false;
 }
+
+
+int Game::procentShotPower() {
+    float licznik=this->shotPower-this->minShotPower;
+    float mianownik=this->maxShotPower-this->minShotPower;
+    return (licznik/mianownik)*100.0f;
+}
+
+

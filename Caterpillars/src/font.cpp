@@ -11,11 +11,7 @@ Character::Character(GLuint text,glm::ivec2 roz, glm::ivec2 bear, GLuint adv){
 Font::Font(const char *ttf, int size) {
 	std::cout << "Tworzenie fontu" << std::endl;
 	start(size);
-<<<<<<< HEAD
-//	this->pos.z = 1.0f;
-	// this->kolor = glm::vec3(0.0f,0.0f,0.0f);
-=======
->>>>>>> 3a4562dc36f7ff5bf953726377cd92c94d3dee5d
+
     this->initChar(ttf, size);
 }
 

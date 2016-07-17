@@ -15,6 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 //#include "../object2D.hpp"
 #include "../sprite.hpp"
+#include "../powerBar.hpp"
 #include "player.hpp"
 #include "../../settings.hpp"
 
@@ -34,6 +35,7 @@ public:
    Sprite *targetView;
 //   object2D *rose;
    Sprite *rose;
+    PowerBar *powerBar;
    std::vector< Caterpillar* > caterrVec;
    Caterpillar* currentCutterpillar;
    void testViewMov();
@@ -62,6 +64,7 @@ public:
    float maxShotPower = 30;//wartosc do ktorej rosnie sila a potem od poczatku
     float minShotPower = 10;
    bool powerischoosed = false;//po wybraniu sily strzalu true
+    int procentShotPower();
     void createPlayers();
    std::vector<Player*> players;
    /**
