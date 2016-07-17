@@ -18,8 +18,6 @@ uniform sampler2D lightMap;
 void main(){
 	vec4 De=vec4(0.1f,0.1f,0.1f,1.0f);
 	vec4 Ld=vec4(1.0f,1.0f,1.0f,1.0f);
-	//vec4 Ms=vec4(1,1,1,1);
-	//vec4 Ls=vec4(1,1,1,1);
 
 	vec4 mN=normalize(vN);
 	vec4 mL1=normalize(vec4(vL1.xyz,1.0f));

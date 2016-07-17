@@ -5,9 +5,7 @@
 
 Object::Object(){
 	this->teksturCount = 0;
-
 	this->colission = false;//dla bulleta
-
 
 	this->currentBinding = 0;
 	this->buffersCount = 0;
@@ -21,20 +19,31 @@ Object::Object(){
 	this->kickTime=0;
 	this->canKick=true;
 	this->size = glm::vec3(1.0f);
+	this->normalMap = 0;
 }
 
 Object::~Object(){
 }
 void Object::uniformTextures(){
+	glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
+	if(this->shadowMap!=0)glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
+	if(this->lightMap!=0)glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
+	if(this->normalMap!=0)glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "normalMap"), 3);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
-   glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
-   glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, this->lightMap);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
+	if(this->shadowMap!=0){
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, this->shadowMap);
+	}
+	if(this->lightMap!=0){
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, this->lightMap);
+	}
+	if(this->normalMap!=0){
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, this->normalMap);
+	}
 }
 
 void Object::recalculateMatrix(){
@@ -66,48 +75,21 @@ void Object::recalculateMatrix(){
 		glm::vec4(0.0f,0.0f,0.0f,1.0f)
 	);
 	this->rotM=this->rotMY*rotZ*rotX;
-
 }
 void Object::kick(float x,float y, float z){
 	this->speed.x=x;
 	this->speed.y=y;
 	this->speed.z=z;
-	//this->kickTime=time_now??;
-
 }
-void Object::recalculatePhysics(){
-	//this->kickTime=???
-	//Wzorek na rzut ukośny mając prędkości początkowe i czas wyliczamy nowe współrzędne
-	//Sprawdzanie kolizji (czy można przesunąć obiekt na daną pozycję)
-
-
-}
+void Object::recalculatePhysics(){}
 
 void Object::recalculateGravity(){
-	//Tu bedzie wszystko zwiazanego z grawitacja
-
-   //Tu trzeba bedzie na biezaca liczyc predkosc speedY
-	//speedY > 0 oznaczac bedzie ruch w gore a < 0 spadanie
-	//Nie mam pojecia czy to jest dobra koncepcja
-
-	//Drukowanie parametrow
-	//cout << "PosX: " << this->pos.x << "  SpeedX: "<< this->speed.x << endl;
-	//cout << "PosY: " << this->pos.y << "  SpeedY: "<< this->speed.y << endl;
-	//cout << "PosZ: " << this->pos.z << "  SpeedZ: "<< this->speed.z << endl;
-
-
-
-	//end = clock();
-	//diff = ((float)end - (float)start);
-	//bet_time = diff/CLOCKS_PER_SEC;
 	bet_time = inputActions::getInstance().deltaTime;
-	//cout<<"bet_time: "<< bet_time<<endl;
 	in_meter = 1;//ile jednostek mamy w pseudo metrze
 	//jesli wejdzie drugi raz
 	if(sec_time)
 	{
-		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
-			 			this->pos.z,inputActions::getInstance().objectPointers))
+		if(!Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,this->pos.z,inputActions::getInstance().objectPointers))
 		{
 			//gdy mamy kolizje obiektu z mapa
 			//cout << ""Mapa - kolizja" << endl;
@@ -123,7 +105,6 @@ void Object::recalculateGravity(){
 		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
 			 				this->pos.z, inputActions::getInstance().objectPointers))
 		{
-
 			if(!this->on_the_ground)
 			{
 				windX = bet_time * Map::getInstance().windForce.x * this->windMul;
@@ -133,12 +114,9 @@ void Object::recalculateGravity(){
 				//tutaj nalezy uwzglednic jeszcze sile wiatru
 				this->speed.x +=  windX;//*windMul
 				this->speed.z +=  windZ;//*windMul
-
 			}
 
-
-			this->speed.y -= Map::getInstance().gravity * bet_time * in_meter -
-				windY;
+			this->speed.y -= Map::getInstance().gravity * bet_time * in_meter -windY;
 
 			nextX = this->pos.x + this->speed.x;
 			nextY = this->pos.y + this->speed.y;
@@ -152,54 +130,25 @@ void Object::recalculateGravity(){
 				this->on_the_ground = true;
 			}
 
-
 			if(!this->on_the_ground)
 			{
 				this->speed.x -= windX;
 				this->speed.y -= windY;
 				this->speed.z -= windZ;
 			}
-
 		}
 	}
 	start = clock();
 	sec_time = true;
-
-
-
 }
-
 
 void Object::diagonalThrow(glm::vec3 throw_speed)
 {
 	this->on_the_ground = false;
-
 	this->speed.x = throw_speed.x;
 	this->speed.y = throw_speed.y;
 	this->speed.z = throw_speed.z;
 }
-
-
-//void Object::initBinding(bool newBuffer){
-//	if(newBuffer == true) {
-//		this->newBinding();
-//	}
-//	else{
-//		// std::cout << "HEJ!" << std::endl;
-//		this->buffers[currentBinding]->usuwanie();
-//	}
-//	// if(this->currentBinding!=0){
-//	//      std::cout << "kurcze" << std::endl;
-//	// }
-//	glGenVertexArrays(1, &this->buffers[this->currentBinding]->VAO);
-//	glGenBuffers(1, &this->buffers[this->currentBinding]->VBO);
-//	glGenBuffers(1, &this->buffers[this->currentBinding]->EBO);
-//	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-//	glBindVertexArray(this->buffers[this->currentBinding]->VAO);
-//	glBindBuffer(GL_ARRAY_BUFFER, this->buffers[this->currentBinding]->VBO);
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->buffers[this->currentBinding]->EBO);
-//	// std::cout << "hej" << std::endl;
-//}
 
 void Object::initBinding(){
 	if(this->buffers.empty()) {
@@ -229,25 +178,17 @@ void Object::newBinding(){
 		delete temp;
 		this->buffersCount--;
 	}
-	// std::cout << "Bindowanie odpowiednich bufferow" << std::endl;
 	this->buffersCount++;
 	this->buffers.push_back(new Buffers());
 	if(this->buffers.empty()) {
 		std::cerr << "ERROR::EMPTY BUFFER::ERROR" << std::endl;
 	}
-	// if(this->buffersCount==1){
-	//      this->currentBinding = 0;
-	// }
-	// else{
 	this->currentBinding = this->buffersCount-1;
-	// }
 }
 
 GLuint Object::currentVAO(){
 	return this->buffers[this->currentBinding]->VAO;
 }
-
-
 
 void Object::endBinding(){
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
@@ -258,10 +199,9 @@ void Object::endBinding(){
 void Object::paramText2D(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Set texture wrapping to GL_REPEAT
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// Set texture filtering
+	// Set texture filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 }
 
 void Object::bindTexture2D(const GLchar *texturePath){
@@ -294,20 +234,12 @@ void Object::loadTexture2D(const GLchar *texturePath){
 	if(error != 0) {
 		std::cout << "ERROR:: " << error << std::endl;
 	}
-	// std::cout << "Texture width: " << width << " texture height: " << height << std::endl;
-	// std::cout << "0: " << image.data() << std::endl;
-	//std::cout << "0: " << image.size() << std::endl;
-	//std::cout << "1: " << image[1] << std::endl;
-	//std::cout << "2: " << image[2] << std::endl;
-
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
 	errorCheck("Po loadTexture");
 	glGenerateMipmap(GL_TEXTURE_2D);
-
 }
 
 void Object::bindTexture3D(int number, vector<std::string> texturePath){
-
 	glGenTextures(1, &this->texture3D);
 	glBindTexture(GL_TEXTURE_3D, this->texture3D); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
 	//Set our texture parameters
@@ -315,22 +247,12 @@ void Object::bindTexture3D(int number, vector<std::string> texturePath){
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_BORDER); // Set texture wrapping to GL_REPEAT
-	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	// glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
-
-	// Set texture filtering
-	//glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	//glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	listaTekstur.resize(number);
 	for( int i=0;i<number;i++ ) this->listaTekstur[i].texturePath = texturePath[i].c_str();
-//	for (int j = 0; j < this->listaTekstur.size(); ++j) {
-//		std::cout << this->listaTekstur[j].texturePath << std::endl;
-//	}
+
 	this->loadTexture3D(number);
 	glBindTexture(GL_TEXTURE_3D, 0);
 	errorCheck("Po loadTexture");
@@ -340,8 +262,6 @@ void Object::loadTexture3D(int number){
 	int i;
 	this->teksturCount = number;
 	for(i=0; i < number; i++) {
-		//std::cout << this->listaTekstur[i].texturePath << std::endl;
-		// std::vector<unsigned char> image;
 		unsigned int width,height;
 		unsigned error = lodepng::decode(this->listaTekstur[i].image,width,height,this->listaTekstur[i].texturePath);
 		if(error != 0) {
@@ -390,10 +310,35 @@ void Object::vAttributePointer(int firstVertex, int stride, int stride2) {
 		glVertexAttribPointer(2, nextVertex, GL_FLOAT, GL_FALSE, stride2 * sizeof(GLfloat), (GLvoid*)(stride * sizeof(GLfloat)));
 		glEnableVertexAttribArray(2);
 	}
-
 }
 
-void Object::draw(){}
+void Object::setPos(float x,float y,float z){
+   this->pos.x=x;
+   this->pos.y=y;
+   this->pos.z=z;
+   this->recalculateMatrix();
+}
+
+void Object::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
+	this->shader->useShaderProgram(0);
+   this->uniformTextures();
+
+   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
+   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
+   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
+   GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
+   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
+
+   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
+   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
+   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->modM));
+   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
+   glUniform4fv(SUN, 1, glm::value_ptr(sun));
+
+   glBindVertexArray(this->currentVAO());
+   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+	glBindVertexArray(0);
+}
 
 GLint Object::getUniform(const char *nazwa) {
 	return glGetUniformLocation(this->shader->shaderProgram[this->currentShader],nazwa);

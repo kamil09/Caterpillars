@@ -11,17 +11,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-// #include "../../../inputActions.hpp"
 
 using namespace std;
-
-//MAPA MOŻE BYĆ TYLKO JEDNA :)
 class Wall : public Object{
 private:
    void recalculateTriangleMap();
 public:
-   //deprecated
-   Wall(int x, int width, int z, int depth, int min, int max);
    Wall(char *filename, int x, int width, int z, int depth, int min, int max);
    ~Wall();
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun);

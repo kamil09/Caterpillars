@@ -25,14 +25,12 @@ const int murHeight=200;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-// #include "../../../inputActions.hpp"
 
 using namespace std;
 
 //MAPA MOŻE BYĆ TYLKO JEDNA :)
 class Map : public Object{
 private:
-   //float gravity;   //grawitacja [m/s^2]
    float fogSpeed;  //Prędkość podnoszenia się mgły [m/s] (zamiast wody :) )
    float fogHeight; //Wysokość na jakiej jest mgła
    float air;       //Współczynnik Oporu powietrza Od 0 do 1
@@ -47,10 +45,8 @@ public:
    glm::vec3 ***meshNormals;
    void calcMeshNormals(int xStart, int xStop, int yStart, int yStop);
    void generateMeshNormals();
-
    Map();
    ~Map();
-//   void bindBuffers(bool newBuffer);
    Map(const Map &);
    static Map& getInstance();
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun);

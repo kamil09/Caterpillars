@@ -3,9 +3,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-// #include "inputActions.hpp"
 #include <iostream>
-// #include "../inputActions.hpp"
 
 class State{
 public:
@@ -21,7 +19,6 @@ public:
     void mouse_button_callback(GLFWwindow* window, int key, int action, int mods);
     void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
     bool customPollEvents;
-
     //Obsluga klawiatury:
     //WSAD
     virtual void pressW(){}
@@ -39,13 +36,10 @@ public:
     virtual void pressI(){}
     virtual void releaseI(){}
     //ESC
-    virtual void pressESC(){
-
-    }
+    virtual void pressESC(){}
     virtual void releaseESC(){}
     //SHIFT
     virtual void pressShift(){}
-
     //Obsluga myszy:
     //LMB i RMB
     virtual void pressLMB(){}
@@ -55,7 +49,6 @@ public:
     //Sprawdzanie Wcisnietych Klawiszy
     void keysControl();
     //Do obslugiPrzyciskow
-
 };
 
 

@@ -25,15 +25,13 @@ using namespace glm;
 static void error_callback(int error, const char* description);
 //INICJALIZACJA
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor);
-//ZMIANA stanu
-// void changeState(gameCaseType statNum,GLFWwindow* window,GLFWcursor* cursor);
-
 //MAIN
 int main(void){
 	glfwSetErrorCallback(error_callback);
 	if(!glfwInit()) return 1;
+
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	// std::cout << "Monitor width: " << mode->width << " monitor height: " << mode->height << std::endl;
+
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -68,8 +66,7 @@ int main(void){
 	}
 
 	glfwMakeContextCurrent(window);
-	// glfwSetWindowSize(window, mode->width, mode->height);
-	// window = glfwCreateWindow(800, 600, "Caterpillars",NULL, NULL);
+	glfwSwapInterval(1);
 
 	std::cout << Setting::getInstance().getHeight() << std::endl;
 	std::cout << Setting::getInstance().getWidth() << std::endl;
@@ -78,8 +75,10 @@ int main(void){
 		glfwTerminate();
 		return 1;
 	}
+
 	GLFWcursor* cursor=0;
 	initOpenGLProgram(window,cursor);
+
 	int width,height;
 	glfwGetWindowSize(window,&width,&height);
 	std::cout << "Current Window width: " << width << std::endl;
@@ -87,15 +86,6 @@ int main(void){
 
 	glViewport(0,0,width,height);
 
-	// glEnable(GL_ALPHA);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// Enable depth test
-	glEnable(GL_DEPTH_TEST);
-	// Accept fragment if it closer to the camera than the former one
-	//glDepthFunc(GL_LESS);
-	// Cull triangles which normal is not towards the camera
-	//glEnable(GL_CULL_FACE);
 	Info *info = new Info();
 	errorCheck("inicjalizacja");
 	while (!glfwWindowShouldClose(window)) {
@@ -107,7 +97,6 @@ int main(void){
 
 	   inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
-
 		//Liczenie deltatime
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -128,14 +117,19 @@ int main(void){
 
 void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	glewExperimental = GL_TRUE;
+	glClearColor(0, 0, 0, 1);
+
 	errorCheck("Przed glewInit");
 	GLenum error_code = glewInit();
-	if(error_code != GLEW_OK) {
-		std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
-	}
+	if(error_code != GLEW_OK) std::cerr << "Glew init error: " << glewGetErrorString(error_code) << std::endl;
 	errorCheck("Po glewInit");
-//	MainMenu *mainMenu = new MainMenu(window,cursor);
-//	inputActions::getInstance().currentState = mainMenu;
+
+	//depth test
+	glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	cursor = inputActions::getInstance().setCallbacks(window,cursor);
 	inputActions::getInstance().changeState('m',window,cursor);
 
@@ -144,7 +138,6 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	const GLubyte *version = glGetString(GL_VERSION);
 	const GLubyte *shading = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "Informacje o sprzęcie:" << std::endl << vendor << std::endl << renderer << std::endl << version << std::endl << shading << std::endl;
-	// Font::initFt();
 }
 
 static void error_callback(int error, const char* description){

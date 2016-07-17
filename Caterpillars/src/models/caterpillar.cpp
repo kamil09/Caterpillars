@@ -87,47 +87,20 @@ void Caterpillar::copyParent() {
 
 Caterpillar::~Caterpillar(){}
 
-void Caterpillar::setPos(float x,float y,float z){
-   this->pos.x=x;
-   this->pos.y=y;
-   this->pos.z=z;
-   this->recalculateMatrix();
-}
-
 void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
-   this->shader->useShaderProgram(0);
-
-   this->uniformTextures();
-
-   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
-   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
-   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
-   GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
-   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
-
-
-   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
-   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
-   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM*this->rotMY*this->sclM));
-   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-   glUniform4fv(SUN, 1, glm::value_ptr(sun));
-
-
-   glBindVertexArray(this->currentVAO());
-   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
-   glBindVertexArray(0);
+   this->modM=this->posM*this->rotMY*this->sclM;
+   Object::draw(projection,modelView,lights,sun) ;
 
    this->weapon->draw(projection,modelView,this,lights,sun);
-    if(this->font!= NULL){
-        glm::mat4 temp = this->posM;
-        this->font->projection = projection;
-        this->font->view = modelView;
-        this->font->rotMY = this->rotMY;
-        temp[3][0] += 0.0f;
-        temp[3][1] += 10.0f;
-        temp[3][2] += 0.0f;
-        this->font->posM = temp;
-//        this->font->print3d("+"+std::to_string(this->life),10.0f,0.0f,0.01f,glm::vec3(1.0f,0.0f,0.0f));
-        this->font->print3d("+"+std::to_string(this->life),0.0f,0.0f,0.01f,this->player->kolor);
+   if(this->font!= NULL){
+      glm::mat4 temp = this->posM;
+      this->font->projection = projection;
+      this->font->view = modelView;
+      this->font->rotMY = this->rotMY;
+      temp[3][0] += 0.0f;
+      temp[3][1] += 10.0f;
+      temp[3][2] += 0.0f;
+      this->font->posM = temp;
+      this->font->print3d("+"+std::to_string(this->life),0.0f,0.0f,0.01f,this->player->kolor);
     }
 }

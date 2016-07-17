@@ -7,8 +7,6 @@
 #include <cstdlib>
 #include <unistd.h>
 
-
-
 void errorCheck(const char* napis);
 
 #endif
