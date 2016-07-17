@@ -18,6 +18,7 @@ private:
 
 public:
    Gun(char *filename, int min, int max,Object *owner);
+   Gun(char *filename);
    ~Gun();
    void draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::mat4 lights,glm::vec4 sun);
    glm::vec3 startLook;
@@ -26,6 +27,9 @@ public:
    int minDamage;
    int maxDamage;
    glm::mat4 posMadd;   //Maciez przesuniecia
+    void copyParent();
+    static Gun *parent;
+
 };
 
 #endif

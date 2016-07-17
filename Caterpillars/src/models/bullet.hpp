@@ -18,13 +18,15 @@ class Bullet : public Object{
 private:
 
 public:
+    static Bullet *parent;
    Bullet(char *filename, float randDam);
+   Bullet(char *filename);
    ~Bullet();
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights, glm::vec4 sun);
    glm::vec3 startLook;
    int damage;
    bool used;
-
+    void copyParent();
 };
 
 #endif
