@@ -24,7 +24,6 @@ inputActions::inputActions(){
 	this->lastX=0;
 	this->lastY=0;
 
-	// this->changeState=false;
 	this->cursorFixedCenterPos=false;
 	this->cursorDisabled=false;
 }
@@ -35,9 +34,7 @@ void inputActions::clear(){
 	this->movedY=0;
 }
 
-inputActions::~inputActions(){
-
-}
+inputActions::~inputActions(){}
 
 inputActions& inputActions::getInstance(){
 	static inputActions instance;
@@ -49,9 +46,7 @@ void inputActions::getMouseCurrentPosition(GLFWwindow* window){
 	glfwGetCursorPos(window, &xpos, &ypos);
 	this->cursorLastX=xpos;
 	this->cursorLastY=ypos;
-	// std::cout << "Cursor X: " << this->cursorLastX << " Cursor Y: " << this->cursorLastY << std::endl;
 }
-
 
 double inputActions::getCursorLastX(){
 	return this->cursorLastX;
@@ -70,17 +65,18 @@ void inputActions::key_callback(GLFWwindow* window,int key, int scancode, int ac
 	}
 	inputActions().getInstance().currentState->key_callback(window, key, scancode, action, mods);
 }
+
 void inputActions::cursor_pos_callback(GLFWwindow* window, double xpos, double ypos){
 	inputActions::getInstance().currentState->cursor_pos_callback(window, xpos, ypos);
 }
+
 void inputActions::mouse_button_callback(GLFWwindow* window, int key, int action, int mods){
 	inputActions::getInstance().currentState->mouse_button_callback(window, key, action, mods);
 }
+
 void inputActions::scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
 	inputActions::getInstance().currentState->scroll_callback(window, xoffset, yoffset);
 }
-
-
 
 GLFWcursor * inputActions::setCallbacks(GLFWwindow *window, GLFWcursor *cursor){
 	glfwSetKeyCallback(window, inputActions::key_callback);
@@ -101,33 +97,18 @@ void inputActions::changeCursor(int shape){
 	}
 }
 
-
-//void inputActions::changeGame(GLFWwindow* window,GLFWcursor* cursor){
-//	Game *game = new Game(window,cursor);
-//	inputActions::getInstance().currentState = game;
-////	std::cout << "HEJ!" << std::endl;
-//}
-
-
 State *inputActions::findState(char key, GLFWwindow *window, GLFWcursor *cursor) {
 	char upKey = toupper(key);
-//	std::map<char,State*> map = inputActions::getInstance().mapStates;
 	std::map<char,State*>::iterator it = this->mapStates.find(upKey);
-//	std::cout << "map size: " << inputActions::getInstance().mapStates.size() << std::endl;
 	if(it != this->mapStates.end() ){
-//		std::cout << "map: " << it->first << std::endl;
 		State *result =it->second;
 		return result;
-//		return it->second;
 	}
 	else{
 		std::cout << "Tworzenie" << std::endl;
 		return this->createState(upKey,window,cursor);
 	}
-
-//	return nullptr;
 }
-
 
 State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *cursor) {
 	State *temp = nullptr;
@@ -138,13 +119,10 @@ State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *curso
 			this->mapStates.insert(std::make_pair('M',temp));
 			break;
 		case 'G':
-//			temp2= std::make_shared<Game>(window,cursor);
-//			temp = temp2.get();
 			temp = new Game(window,cursor);
 			this->mapStates.insert(std::make_pair('G',temp));
 			break;
 		case 'O':
-//			State *state = (Menu*) inputActions::getInstance().findState('M',window,cursor);
 			state = this->findState('M',window,cursor);
 			if(state!= nullptr){
 				temp = new OptionMenu(state,window,cursor);
@@ -156,16 +134,13 @@ State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *curso
 			if(state!= nullptr){
 				temp = new GameMenu(state,window,cursor);
 				this->mapStates.insert(std::make_pair('S',temp));
-//				inputActions::getInstance().mapStates.insert(std::make_pair('S',temp));
 			}
 			break;
 		case 'L':
 			state = this->findState('M',window,cursor);
-//			state = inputActions::getInstance().findState('M',window,cursor);
 			if(state!= nullptr){
 				temp = new LoadingScreen(state,window,cursor);
 				this->mapStates.insert(std::make_pair('L',temp));
-//				inputActions::getInstance().mapStates.insert(std::make_pair('L',temp));
 			}
 			break;
 		case 'P':
@@ -173,7 +148,6 @@ State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *curso
 			if(state!= nullptr){
 				temp = new PauseMenu(state,window,cursor);
 				this->mapStates.insert(std::make_pair('P',temp));
-//				inputActions::getInstance().mapStates.insert(std::make_pair('L',temp));
 			}
 			break;
 	}
@@ -183,14 +157,5 @@ State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *curso
 
 void inputActions::changeState(char key, GLFWwindow *window, GLFWcursor *cursor) {
 	State* newState = this->findState(key,window,cursor);
-//	std::shared_ptr<State> p(newState);
-	if(newState!= nullptr){
-//		inputActions::getInstance().currentState = newState;
-		this->currentState = newState;
-	}
+	if(newState!= nullptr) this->currentState = newState;
 }
-
-
-
-
-

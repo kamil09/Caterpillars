@@ -53,7 +53,6 @@ void Setting::loadFromFile(FILE *in){
 }
 
 Setting::Setting(){
-	//std::cout << "stworzono singleton" << std::endl;
 	this->width=800;
 	this->height=600;
 	this->fullResolution=true;
@@ -63,7 +62,6 @@ Setting::Setting(){
 	this->difficulty=1;
 	this->frames=30;
 	this->rankFileName=(char*)"rankFile";
-
 	//LOAD SETTINGS FROM FILE
 	this->load();
 
@@ -76,7 +74,6 @@ Setting::Setting(){
 	int playerCount = 4;
 	std::vector<glm::vec3> kolory;
 	kolory ={
-//			glm::vec3(0.612, 0, 0),
 			glm::vec3(0.712, 0, 0),
 			glm::vec3(0.039, 0.227, 0.763),
 			glm::vec3(0.239, 0.718, 0.063),
@@ -102,7 +99,6 @@ Setting::Setting(){
 			this->players[i].czyGra = false;
 		}
 	}
-
 }
 
 void Setting::load(){
@@ -117,9 +113,7 @@ void Setting::load(){
 	}
 }
 
-Setting::~Setting(){
-
-}
+Setting::~Setting(){}
 
 Setting& Setting::getInstance(){
 	static Setting instance;

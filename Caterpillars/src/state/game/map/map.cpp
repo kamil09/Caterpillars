@@ -106,18 +106,11 @@ void makeHill(float **map){
 
          float toADD = cos(odlNor*3.14/2)*hillHeight;
          if(toADD<=0) toADD=0;
-
-         //printf("%f %f %d %d %f\n",highPerOneX, highPerOneY, rotDifX, rotDifY, toADD);
          if(map[i][j] < toADD + baseHeight)
             map[i][j]=toADD+baseHeight;
 
       }
    }
-   // for(int i=0;i<vertX;i++)
-   //    for(int j=0;j<vertY;j++){
-   //       if (map[i][j] < baseHeight) printf("TO LOW %d - %d",i,j);
-   //       if (map[i][j] > maxMapHeight) puts("TO HIGH");
-   //    }
 }
 
 void Map::generateRandomMap(){
@@ -128,7 +121,6 @@ void Map::generateRandomMap(){
       mapVert[i] = new float[vertY];
       mapVertFirst[i] = new float[vertY];
    }
-
 
    for(int i=0;i<vertX;i++)
       for(int j=0;j<vertY;j++)
@@ -156,7 +148,6 @@ void Map::kaboom(float x, float y, float z, float radius){
    //Zmniejszamy wysokość w punkcie kaboom i okolicznych
    //Dajemy efekt dźwiękowy i odpryski jakieś.
    int xx = round(x);
-   //int yy = round(y);
    int zz = round(z);
    int rr = round(radius);
 
@@ -180,26 +171,21 @@ void Map::kaboom(float x, float y, float z, float radius){
          minTab[i][j]=sqrt(tmp);
       }
    }
-
    int tabKoorX=0;
    int tabKoorZ=0;
    for(int i=left;i<=right;i++){
       tabKoorX=0;
       for(int j=top;j<=bottom;j++){
          if(i>=0 && j>=0 && i<vertX && j<vertY){
-            //if((this->mapVert[i][j] > yy+minTab[tabKoorX][tabKoorZ]) ){
-               this->mapVert[i][j] -= minTab[tabKoorX][tabKoorZ];
-            //}
+            this->mapVert[i][j] -= minTab[tabKoorX][tabKoorZ];
             if( this->mapVert[i][j] < this->minHeight ) this->mapVert[i][j] = this->minHeight;
          }
          tabKoorX++;
       }
       tabKoorZ++;
    }
-
    this->recalculateTriangleMap();
    this->bindBuffers(6,9,GL_DYNAMIC_DRAW);
-   puts("kaboom done");
 }
 
 void Map::genTriangleTab(){
@@ -232,8 +218,6 @@ void Map::genTriangleTab(){
          this->vertices[index+6] = normal.x;
          this->vertices[index+7] = normal.y;
          this->vertices[index+8] = normal.z;
-         //printf("%f| %f | %f \n",this->vertices[index+6],this->vertices[index+7],this->vertices[index+8]);
-
          index+=9;
       }
 
@@ -275,12 +259,10 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::
    glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
    glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
-
    glBindVertexArray(this->currentVAO());
 
 	glDrawElements(GL_TRIANGLE_STRIP, 2*vertX*(vertY-1)+vertY-1, GL_UNSIGNED_INT, 0);
    glBindVertexArray(0);
-
 }
 
 void Map::recalculateTriangleMap(){

@@ -52,5 +52,4 @@ public:
       char *getRankFileName();
 };
 
-
 #endif

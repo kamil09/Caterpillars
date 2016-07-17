@@ -27,8 +27,6 @@ public:
 };
 
 class Tower : public Object{
-private:
-
 public:
    Tower(char *filename, int posX, int posY, int posZ, int startAngle, int endAngle);
    ~Tower();

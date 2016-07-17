@@ -17,16 +17,11 @@
 #include <mutex>
 #include <functional>
 
-// #include "state/menu/menu.hpp"
-
 #define M_PI 3.14159265358979323846
 
-// class Game;
 class State;
-// enum class gameCaseType {MAIN=0,START=1,START_WIELU=2,OPTIONS=3,EXIT=4,INFO=5,GAME_ST=6,PAUSE=7,GAME_END=8};
 class inputActions{
    public:
-//    static std::mutex barrier;
       inputActions();
       inputActions(const inputActions &);
       ~inputActions();
@@ -35,12 +30,9 @@ class inputActions{
       State *currentState;
       std::map<char,State*> mapStates;
       std::vector<Object*> objectPointers;
-
-    //   gameCaseType nextState;
-    //   bool changeState;
       //Będziemy zapamiętywać wciśnięcie przycisku i sprawdzać przy każdym przeliczaniu fizyki (co klatkę)
-    bool keys[1024];
-    bool w_pressed;
+      bool keys[1024];
+      bool w_pressed;
       bool a_pressed;
       bool s_pressed;
       bool d_pressed;
@@ -50,16 +42,13 @@ class inputActions{
       bool SHIFT_pressed;
       //Zerowane przy każdym przeliczniu fizyki
       int scroll;
-
       //Gdy wciśnięty przycisk true (ładujemy wtedy broń np, celujemy itp);
       bool leftClick;
       bool rightClick;
-
       //Gdy true oznacza to, że przed chwilą zwolniono przycik myszy, należy wyzerować i zrobić jakąś akcję na podstawie cursorLastX, cursorLastY
       bool lastLeftClick;
       double cursorLastX;
       double cursorLastY;
-
       //Wskazuje o ile przesnięto myszę od ostatniej klatki (używane do sterowania kamerą)
       double movedX;
       double movedY;
@@ -67,15 +56,14 @@ class inputActions{
       double lastX;
       double lastY;
       bool cursorFixedCenterPos;
-        bool cursorDisabled;
+      bool cursorDisabled;
       void clear();
       double getCursorLastX();
       double getCursorLastY();
 
       GLfloat deltaTime = 0.0f;//Czas pomiedzy klatkami
 
-//      void setCallbacks(GLFWwindow* window,GLFWcursor* cursor);
-    GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
+      GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
       static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );
       static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
       static void mouse_button_callback(GLFWwindow* window, int key, int action, int mods);
@@ -87,8 +75,6 @@ class inputActions{
       State *findState(char key, GLFWwindow *window, GLFWcursor *cursor);
       State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
       void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
-//      void changeGame(GLFWwindow* window,GLFWcursor* cursor);
-
 };
 
 

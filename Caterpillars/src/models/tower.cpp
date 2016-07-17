@@ -4,21 +4,13 @@ void TowerLight::moveLight(){
    this->direction == 0 ? this->rot.y+=0.005 : this->rot.y -=0.005;
    if (this->rot.y > this->endA) this->direction=1;
    if (this->rot.y < this->startA) this->direction=0;
-
    this->recalculateMatrix();
-
    this->lightDir = glm::vec4(0.0f,-1.0f,-1.0f,1.0f);
    lightDir = this->rotM*lightDir;
 }
 
 TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int dir){
-
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-
-   //this->size = glm::vec3(40, 100, 40);
-   //this->size.y = 100; //Tu nie wiem jaka wartosc
-   //this->size.z = 40;
-   //cout<<this->size.x<<" : "<<this->size.y<<" : "<<this->size.z;
 
    this->scl.x=8;
    this->scl.y=8;
@@ -52,33 +44,11 @@ TowerLight::TowerLight(char*filename,Object *o, float startA, float endA, int di
 TowerLight::~TowerLight(){};
 
 void TowerLight::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
-   this->shader->useShaderProgram(0);
-   this->uniformTextures();
-
-   GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
-   GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
-   GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
-   GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
-   GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
-
-
-   //printf("%f/%f/%f\n",this->lightDir.x,this->lightDir.y,this->lightDir.z);
-
-   glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
-   glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
-   glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM * this->sclM * this->rotM));
-   glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-   glUniform4fv(SUN, 1, glm::value_ptr(sun));
-
-   //
-   glBindVertexArray(this->currentVAO());
- 	// //glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
-   glBindVertexArray(0);
+   this->modM=this->posM * this->sclM * this->rotM;
+   Object::draw(projection,modelView,lights,sun);
 }
 
 Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int endAngle){
-
    this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
 
    this->size.x = 40;
@@ -104,32 +74,11 @@ Tower::Tower(char *filename, int posX, int posY, int posZ, int startAngle, int e
 
    this->light = new TowerLight((char*)"../src/obj/towerL.obj",this,(float)startAngle,(float)endAngle,0);
 }
-Tower::~Tower(){
-}
+
+Tower::~Tower(){}
 
 void Tower::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
-  this->shader->useShaderProgram(0);
-  this->uniformTextures();
-
-  GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
-  GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
-  GLint M = glGetUniformLocation(this->shader->shaderProgram[0], "M");
-  GLint L = glGetUniformLocation(this->shader->shaderProgram[0], "L");
-  GLint SUN = glGetUniformLocation(this->shader->shaderProgram[0], "SUN");
-
-
-  glUniformMatrix4fv(P, 1, GL_FALSE, glm::value_ptr(projection));
-  glUniformMatrix4fv(V, 1, GL_FALSE, glm::value_ptr(modelView));
-  glUniformMatrix4fv(M, 1, GL_FALSE, glm::value_ptr(this->posM * this->sclM));
-  glUniformMatrix4fv(L, 1, GL_FALSE, glm::value_ptr(lights));
-  glUniform4fv(SUN, 1, glm::value_ptr(sun));
-
-
-  //
-  glBindVertexArray(this->currentVAO());
-	// //glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-  glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
-  glBindVertexArray(0);
-
+  this->modM=this->posM * this->sclM;
+  Object::draw(projection,modelView,lights,sun);
   this->light->draw(projection,modelView,lights,sun);
 }

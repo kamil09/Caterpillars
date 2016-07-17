@@ -12,9 +12,7 @@ Text::Text(std::string newText,float newX,float newY,float newSkala,glm::vec3 co
     this->kolor = color;
 }
 
-Text::~Text() {
-}
-
+Text::~Text() {}
 
 void Text::draw(Font *font){
     font->print(this->text,this->x,this->y, this->skala,this->kolor);

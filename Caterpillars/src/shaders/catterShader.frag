@@ -15,6 +15,7 @@ out vec4 color;
 uniform sampler2D ourTexture1;
 uniform sampler2D shadowMap;
 uniform sampler2D lightMap;
+uniform sampler2D normalMap;
 
 void main(){
 	vec4 De=vec4(0.1f,0.1f,0.1f,1.0f);
@@ -44,7 +45,7 @@ void main(){
 	float nl2=max(0,dot(mN,mL2));
 	float nl3=max(0,dot(mN,mL3));
 
-	int shininess=300;
+	int shininess=350;
 	float rv1=pow(max(0,dot(mR1,mV)),shininess);
 	float rv2=pow(max(0,dot(mR2,mV)),shininess);
 	float rv3=pow(max(0,dot(mR3,mV)),shininess);

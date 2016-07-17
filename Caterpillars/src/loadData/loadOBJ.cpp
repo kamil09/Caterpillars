@@ -3,6 +3,7 @@
 /*
  * Blender:
  * OBJ + triangulate faces + write materials + include UVs + inpude Nurmals
+ *
  */
 bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuint> *indices){
    FILE * file = fopen(path, "r");
@@ -79,16 +80,5 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
       vertices->push_back(nor[normalIndex*3-2]);
       vertices->push_back(nor[normalIndex*3-1]);
    }
-   // for(int i=0;i<verNum;i++){
-   //    vertices->push_back(ver[i*3-3]);
-   //    vertices->push_back(ver[i*3-2]);
-   //    vertices->push_back(ver[i*3-1]);
-   //    vertices->push_back(tex[i*2-2]);
-   //    vertices->push_back(tex[i*2-1]);
-   //    vertices->push_back(nor[normalIndex*3-3]);
-   //    vertices->push_back(nor[normalIndex*3-2]);
-   //    vertices->push_back(nor[normalIndex*3-1]);
-   // }
-
    return true;
 }
