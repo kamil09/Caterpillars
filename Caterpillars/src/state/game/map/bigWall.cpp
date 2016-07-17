@@ -2,7 +2,7 @@
 #include "../../../inputActions.hpp"
 
 Wall::Wall(char *filename, int x, int width, int z, int depth, int min, int max){
-   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
+   this->shader = new Shader("../src/shaders/basic3DShader.vs","../src/shaders/basic3DShader.frag");
    this->size.x = width;
    this->size.y = max; //Tu nie wiem jaka wartosc
    this->size.z = depth;
@@ -18,6 +18,8 @@ Wall::Wall(char *filename, int x, int width, int z, int depth, int min, int max)
    this->bindTexture2D("../src/img/wall.png");
    this->bindLightMap2D("../src/img/light/example.png");
    this->bindShadwMap2D("../src/img/shadow/example.png");
+   this->bindNormalMap2D("../src/img/normal/wallNormal.png");
+   this->czyNormalMap=1;
 }
 
 Wall::~Wall(){}

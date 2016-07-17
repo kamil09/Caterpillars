@@ -13,11 +13,9 @@
 #include "../../models/bullet.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-//#include "../object2D.hpp"
 #include "../sprite.hpp"
 #include "player.hpp"
 #include "../../settings.hpp"
-
 
 class Game : public State{
 private:
@@ -30,9 +28,7 @@ public:
    Wall *wall;
    std::vector<Tower*> towers;
    std::vector<Bullet*> bullets;
-//   object2D *targetView;
    Sprite *targetView;
-//   object2D *rose;
    Sprite *rose;
    std::vector< Caterpillar* > caterrVec;
    Caterpillar* currentCutterpillar;

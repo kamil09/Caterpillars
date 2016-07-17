@@ -4,11 +4,9 @@
 Caterpillar* Caterpillar::parent = nullptr;
 
 Caterpillar::Caterpillar(char *filename){
-    std::cout << "###TWORZENIE CATERPILLARA###" << std::endl;
-   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-   this->scl.x=3;
-   this->scl.y=3;
-   this->scl.z=3;
+   std::cout << "###TWORZENIE CATERPILLARA###" << std::endl;
+   this->shader = new Shader("../src/shaders/basic3DShader.vs","../src/shaders/basic3DShader.frag");
+   this->scl=glm::vec3(3,3,3);
    this->recalculateMatrix();
    this->viewBack=0.0f;
    this->tmpViewBack=666.0f;
@@ -18,18 +16,14 @@ Caterpillar::Caterpillar(char *filename){
    this->maxWalkAngle=0.45;
    this->maxWalkSpeed=2;
    loadObj::load(filename,&this->vertices, &this->indices);
-//   this->bindBuffers(true);
+
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/catTX.png");
    this->bindLightMap2D("../src/img/light/catLight.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
+   this->bindShadwMap2D("../src/img/catTX.png");
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
-
    this->weapon = new Gun( (char*)"../src/obj/weapon.obj",10,100,this);
-
-   this->size.y=1.33;
-   this->size.x=1.33;
-   this->size.z=0.66;
+   this->size=glm::vec3(1.33,1.33,0.66);
 }
 
 

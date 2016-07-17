@@ -4,10 +4,8 @@ Gun::Gun(char *filename, int min, int max,Object *owner){
    //wartosci pomiedzy ktorymi bedziemy losowac Damage podczas strzelu
    this->minDamage = min;
    this->maxDamage = max;
-   this->shader = new Shader("../src/shaders/catterShader.vs","../src/shaders/catterShader.frag");
-   this->scl.x=owner->scl.x;
-   this->scl.y=owner->scl.y;
-   this->scl.z=owner->scl.z;
+   this->shader = new Shader("../src/shaders/basic3DShader.vs","../src/shaders/basic3DShader.frag");
+   this->scl=owner->scl;
 
    this->posMadd=glm::mat4(1);
    this->posMadd[3][0]=owner->size.x;
@@ -19,7 +17,7 @@ Gun::Gun(char *filename, int min, int max,Object *owner){
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/weapon.png");
    this->bindLightMap2D("../src/img/light/example.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
+   this->bindShadwMap2D("../src/img/weapon.png");
    puts("create weapon");
 }
 Gun::~Gun(){}
