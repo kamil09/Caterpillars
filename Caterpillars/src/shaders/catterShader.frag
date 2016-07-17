@@ -19,8 +19,8 @@ uniform sampler2D lightMap;
 void main(){
 	vec4 De=vec4(0.1f,0.1f,0.1f,1.0f);
 	vec4 Ld=vec4(1,1,1,1);
-	//vec4 Ms=vec4(1,1,1,1);
-	//vec4 Ls=vec4(1,1,1,1);
+	vec4 Ms=vec4(1,1,1,1);
+	vec4 Ls=vec4(1,1,1,1);
 
 	vec4 mN=normalize(vec4(vN.xyz,1.0f));
 	vec4 mL1=normalize(vec4(vL1.xyz,1.0f));
@@ -44,6 +44,10 @@ void main(){
 	float nl2=max(0,dot(mN,mL2));
 	float nl3=max(0,dot(mN,mL3));
 
-	color = (De*Md)+(Md*Ld*towL1*nl1*0.9)+(Md*Ld*towL2*nl2*0.9)+(Md*Ld*nl3*0.7)+(Md*Ld*refCoef)+(Md*Ld*refCoef)+(Md*Ld*refCoef);
-	//color = (De*Md)+(Md*Ld*towL1)+(Md*Ld*towL2)+(Md*Ld*nl3);
+	int shininess=300;
+	float rv1=pow(max(0,dot(mR1,mV)),shininess);
+	float rv2=pow(max(0,dot(mR2,mV)),shininess);
+	float rv3=pow(max(0,dot(mR3,mV)),shininess);
+
+	color = (De*Md)+(Md*Ld*towL1*nl1*0.9)+(Md*Ld*towL2*nl2*0.9)+(Md*Ld*nl3*0.7)+(Ms*Ls*refCoef*towL1*rv1)+(Ms*Ls*towL2*refCoef*rv2)+(Ms*Ls*refCoef*rv3);
 }

@@ -21,7 +21,7 @@ Caterpillar::Caterpillar(char *filename){
 //   this->bindBuffers(true);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/catTX.png");
-   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindLightMap2D("../src/img/light/catLight.png");
    this->bindShadwMap2D("../src/img/shadow/example.png");
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
 
