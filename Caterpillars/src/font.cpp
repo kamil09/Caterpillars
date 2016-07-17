@@ -11,6 +11,11 @@ Character::Character(GLuint text,glm::ivec2 roz, glm::ivec2 bear, GLuint adv){
 Font::Font(const char *ttf, int size) {
 	std::cout << "Tworzenie fontu" << std::endl;
 	start(size);
+<<<<<<< HEAD
+//	this->pos.z = 1.0f;
+	// this->kolor = glm::vec3(0.0f,0.0f,0.0f);
+=======
+>>>>>>> 3a4562dc36f7ff5bf953726377cd92c94d3dee5d
     this->initChar(ttf, size);
 }
 
@@ -118,6 +123,7 @@ void Font::print(std::string text, GLfloat x, GLfloat y,GLfloat scale,glm::vec3 
 	glUniform3f(glGetUniformLocation(this->shader->shaderProgram[0], "textColor"), color.x, color.y, color.z);
 
 	glUniformMatrix4fv(this->getUniform("M"),1,GL_FALSE,glm::value_ptr(this->posM*this->sclM*this->rotM));
+//	glUniform1f(this->getUniform("positionZ"),this->pos.z);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(this->currentVAO());

@@ -55,7 +55,8 @@ public:
    glm::vec3 shot;
    float shotPower;//sila stralu
    float calculatedDamage;
-   float maxShotPower = 15;//wartosc do ktorej rosnie sila a potem od poczatku
+   float maxShotPower = 30;//wartosc do ktorej rosnie sila a potem od poczatku
+    float minShotPower = 10;
    bool powerischoosed = false;//po wybraniu sily strzalu true
     void createPlayers();
    std::vector<Player*> players;
@@ -65,7 +66,7 @@ public:
    */
    static bool checkCollisionAndMove(Object *o,float x, float y, float z, std::vector<Object*> v );
    static bool checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v);
-
+   Font *font;
 };
 
 #endif

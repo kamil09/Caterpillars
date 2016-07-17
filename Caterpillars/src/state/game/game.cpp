@@ -47,6 +47,9 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
    glfwSetCursorPos(window,this->windowXsize/2,this->windowYsize/2);
    inputActions::getInstance().cursorFixedCenterPos=true;
+
+    this->font = new Font("../src/fonts/Coalition.ttf",32);
+    this->font->posM[3][2] = -1.0f;
 }
 
 
@@ -107,6 +110,9 @@ void Game::draw(){
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
    this->drawRose();
+    float margines = 10.0f;
+    this->font->print(this->currentCutterpillar->getLife(),-1366.0f/2.0f + margines,768.0f/2.0f - this->font->height(1.0f) - margines,1.0f,this->currentCutterpillar->player->kolor);
+    this->font->print(this->currentCutterpillar->player->nazwa,-this->font->length(this->currentCutterpillar->player->nazwa,1.0f)/2.0f,768.0f/2.0f - this->font->height(1.0f) - margines,1.0f,this->currentCutterpillar->player->kolor);
    glDisable(GL_BLEND);
 }
 
@@ -242,9 +248,11 @@ void Game::catterMove(){
      {
 
        if(!powerischoosed)
-          shotPower = 5;
+          shotPower = this->minShotPower;
+//          shotPower = 5;
        if( shotPower >= maxShotPower )
-          shotPower = 5;
+          shotPower = maxShotPower;
+//          shotPower = 5;
 
        //Wybieranie sily strzalu:
        shotPower = shotPower + 0.15;
