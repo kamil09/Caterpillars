@@ -60,5 +60,5 @@ void main(){
 	float rv2=pow(max(0,dot(mR2,mV)),shininess);
 	float rv3=pow(max(0,dot(mR3,mV)),shininess);
 
-	color=(De*Md)+(Md*Ld*towL1*nl1*0.8)+(Md*Ld*towL2*nl2*0.8)+(Md*Ld*nl3*sunCoef)+(Ms*Ls*refCoef*towL1*rv1*0.9)+(Ms*Ls*towL2*refCoef*rv2*0.9)+(Ms*Ls*refCoef*rv3*0.6);
+	color=(De*Md)+(Md*Ld*towL1*nl1*0.8)+(Md*Ld*towL2*nl2*0.8)+(Md*Ld*nl3*sunCoef)+(Ms*Ls*refCoef*towL1*rv1*0.9)+(Ms*Ls*towL2*refCoef*rv2*0.9)+(Ms*Ls*refCoef*rv3*0.9);
 }

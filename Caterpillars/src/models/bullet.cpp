@@ -20,7 +20,7 @@ Bullet::Bullet(char *filename) {
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/bullet.png");
-   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindLightMap2D("../src/img/light/bulletLight.png");
    this->bindShadwMap2D("../src/img/bullet.png");
    this->size=glm::vec3(0,2,1);
    this->used=false;

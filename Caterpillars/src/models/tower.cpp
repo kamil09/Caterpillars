@@ -68,7 +68,7 @@ TowerLight::TowerLight(char *filename) {
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/towerL.png");
-   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindLightMap2D("../src/img/light/towerLLight.png");
    this->bindShadwMap2D("../src/img/towerL.png");
 }
 
@@ -130,7 +130,7 @@ Tower::Tower(char *filename) {
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/tower.png");
-   this->bindLightMap2D("../src/img/light/example.png");
+   this->bindLightMap2D("../src/img/light/towerLight.png");
    this->bindShadwMap2D("../src/img/tower.png");
 }
 
