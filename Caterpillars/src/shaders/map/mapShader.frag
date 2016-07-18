@@ -14,6 +14,7 @@ out vec4 color;
 uniform sampler3D ourTexture1;
 uniform sampler2D shadowMap;
 uniform sampler2D lightMap;
+uniform sampler2D normalMap;
 
 void main(){
 	vec4 De=vec4(0.1f,0.1f,0.1f,1.0f);
@@ -30,6 +31,10 @@ void main(){
 
 	vec4 Md=(3*textu + shadow)/4;
 	Md=vec4(Md.xyz,1.0f);
+
+	vec4 normalMapV = texture(normalMap,vec2(textCord.x,textCord.y));
+	normalMapV = vec4(2*normalMapV.xyz-1,0);
+	mN=normalize(mN+(normalize(normalMapV)) );
 
 	float nl1=max(0,dot(mN,mL1));
 	float nl2=max(0,dot(mN,mL2));

@@ -26,6 +26,7 @@ Map::Map(){
    this->bindTexture3D(numOfTex,texturePath);
    this->bindLightMap2D("../src/img/light/example.png");
    this->bindShadwMap2D("../src/img/shadow/mapShadow.png");
+   this->bindNormalMap2D("../src/img/normal/sandNormal.png");
 }
 Map::~Map(){}
 
@@ -248,6 +249,8 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::
    glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, this->lightMap);
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
+   glBindTexture(GL_TEXTURE_2D, this->normalMap);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "normalMap"), 3);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");

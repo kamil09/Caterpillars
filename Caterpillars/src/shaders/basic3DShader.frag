@@ -47,7 +47,7 @@ void main(){
 		vec4 normalMapV = texture(normalMap,TexCoord);
 		normalMapV = vec4(2*normalMapV.xyz-1,0);
 		float sunCoef=1.0f;
-		mN=normalize(normalMapV);
+		mN=normalize(mN+(normalize(normalMapV)*2) );
 	}
 	Md=vec4(Md.xyz,1.0f);
 
