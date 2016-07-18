@@ -34,7 +34,7 @@ void main(){
 
 	vec4 normalMapV = texture(normalMap,vec2(textCord.x,textCord.y));
 	normalMapV = vec4(2*normalMapV.xyz-1,0);
-	mN=normalize(mN+(normalize(normalMapV)) );
+	mN=normalize( mN+(normalize(normalMapV) ) );
 
 	float nl1=max(0,dot(mN,mL1));
 	float nl2=max(0,dot(mN,mL2));
