@@ -74,8 +74,14 @@ void Object::recalculateMatrix(){
 		glm::vec4(0.0f,0.0f,1.0f,0.0f),
 		glm::vec4(0.0f,0.0f,0.0f,1.0f)
 	);
+//        this->rotMY =  glm::rotate(glm::mat4(1),-this->rot.y,glm::vec3(0.0f,1.0f,0.0f));
+//    this->rotM = glm::mat4(1);
+//    this->rotM = glm::rotate(this->rotM,-this->rot.y,glm::vec3(0.0f,1.0f,0.0f));
+//    this->rotM = glm::rotate(this->rotM,-this->rot.x,glm::vec3(1.0f,0.0f,0.0f));
+//    this->rotM = glm::rotate(this->rotM,-this->rot.z,glm::vec3(0.0f,0.0f,1.0f));
 	this->rotM=this->rotMY*rotZ*rotX;
 }
+
 void Object::kick(float x,float y, float z){
 	this->speed.x=x;
 	this->speed.y=y;
@@ -124,6 +130,7 @@ void Object::recalculateGravity(){
 
 			if(!Game::checkCollisionAndMove(this, nextX, nextY, nextZ,inputActions::getInstance().objectPointers))
 			{
+
 				this->speed.x = 0;
 				this->speed.y = 0;
 				this->speed.z = 0;

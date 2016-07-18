@@ -57,6 +57,6 @@ void Bullet::copyParent() {
 Bullet::~Bullet(){}
 
 void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
-   this->modM=this->posM*this->rotMY*this->sclM;
+   this->modM=this->posM*this->rotM*this->sclM;
    Object::draw(projection,modelView,lights,sun);
 }
