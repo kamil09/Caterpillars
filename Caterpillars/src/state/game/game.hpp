@@ -25,6 +25,7 @@ public:
 
     void drawRose();
    void calcViewMatrix();
+//    float cameraY = 0.0f;
    Map *map;
    Wall *wall;
    std::vector<Tower*> towers;
@@ -51,6 +52,9 @@ public:
 
    glm::vec4 sunPosition;
 
+    float currentTime;
+    float maxTime = 60.0f;
+    void changeTime();
 
    static int currCatIndex;//index currentCutterpillara w catterVec
 

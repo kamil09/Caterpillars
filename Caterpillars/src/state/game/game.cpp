@@ -14,7 +14,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->rose = new Sprite(-roseWidth / 2, -roseHeight / 2, roseWidth, roseHeight, (char *) "../src/img/rose.png");
    std::cout << "Width: " << this->windowXsize <<  " rW: " << (this->windowXsize-roseWidth)/2 << " height: " << this->windowYsize << " rH " << -(this->windowYsize-roseHeight)/2;
    //TODO: sprawdzic czy dziala dla wszystkich rozdzielczosci
-   this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,0.0f);
+   this->rose->setTraM((1366.0f-roseWidth)/2,-(768.0f-roseHeight)/2,-0.9f);
    this->projection = glm::perspective(45.0f, (float)this->windowXsize/this->windowYsize , 0.001f, 1000.0f);
    this->createPlayers();
 
@@ -93,6 +93,7 @@ void Game::changePlayer() {
         nextCat = this->players[this->activePlayer]->changeCaterpillar();
     }
     if(nextCat!= nullptr){
+        this->currentTime = this->maxTime;
         this->currentCutterpillar = nextCat;
         std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
         if(it != this->caterrVec.end()){
@@ -151,8 +152,12 @@ void Game::draw2D() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     if(!(currentCutterpillar->viewBack < -20)) targetView->draw();
+
     this->drawRose();
     float margines = 10.0f;
+    std::string czas =std::to_string((int)this->currentTime) + " s";
+    font->print(czas,this->rose->posM[3][0]-50.0f,-this->rose->posM[3][1]-this->font->height(1.0f) - this->rose->size.y/2.0f - 5.0f,1.0f,glm::vec3(0.988, 0.408, 0.0));
+//    font->print(std::to_string((int)this->currentTime),0.0f,0.0f,1.0f,glm::vec3(0.988, 0.408, 0.0));
     font->print(currentCutterpillar->getLife(), -1366.0f / 2.0f + margines, 768.0f / 2.0f - font->height(1.0f) - margines, 1.0f,
                 currentCutterpillar->player->kolor);
     font->print(currentCutterpillar->player->nazwa, -font->length(currentCutterpillar->player->nazwa, 1.0f) / 2.0f, 768.0f / 2.0f - font->height(1.0f) - margines, 1.0f,
@@ -193,8 +198,26 @@ void Game::drawRose(){
    this->rose->rotM=rotM;
    this->rose->draw();
 }
+
+
+void Game::changeTime() {
+    if(this->bullets.empty()){
+        if(this->currentTime <=0.0f){
+            if(!this->powerischoosed){
+                this->changePlayer();
+            }
+        }
+        else{
+            this->currentTime -= inputActions::getInstance().deltaTime;
+        }
+    }
+}
+
+
 void Game::run(){
+
    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
+    this->changeTime();
    if(inputActions::getInstance().SHIFT_pressed) this->testViewMov();
    else {
       this->catterMove();
@@ -247,8 +270,23 @@ void Game::calcViewMatrix(){
             this->lookFrom = this->lookAt + (back * (10.0f + speed*delta));
             this->lookFrom.y += 5.0f + speed*(delta);
         }
+//        bool goWhile = false;
+//        while (   this->lookFrom.y<=Map::getInstance().mapVert[(int)this->lookFrom.x][(int)this->lookFrom.z]){
+//            this->cameraY += 1.0f;
+//            this->lookFrom.y += 1.0f;
+//            goWhile = true;
+//        }
+//        if(!goWhile){
+//            this->lookFrom.y += this->cameraY;
+//        }
+//        while(!Game::checkCollisionAndMove(this->bullets[0],this->lookFrom,inputActions::getInstance().objectPointers)){
+//            glm::vec3 move = this->lookAt - this->lookFrom;
+//            move = glm::normalize(move);
+//            this->lookFrom += move * 0.1f;
+//        }
     }
     else{
+//        this->cameraY = 0.0f;
         this->lookAt = this->currentCutterpillar->startLook;
         this->lookAt = glm::mat3(this->currentCutterpillar->rotM) * this->lookAt;
 
