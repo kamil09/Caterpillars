@@ -72,7 +72,7 @@ public:
    static bool checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v);
    Font *font;
 
-    void bulletMove();
+    void bulletShot();
 };
 
 #endif

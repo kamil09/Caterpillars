@@ -164,7 +164,7 @@ void Game::run(){
    else {
       this->catterMove();
       this->calcViewMatrix();
-       this->bulletMove();
+       this->bulletShot();
    }
    this->draw();
 
@@ -195,17 +195,26 @@ void Game::run(){
     }
 }
 void Game::calcViewMatrix(){
-   this->lookAt = this->currentCutterpillar->startLook;
-   this->lookAt = glm::mat3(this->currentCutterpillar->rotM) * this->lookAt;
+    if(!this->bullets.empty()){
+        this->lookAt = this->bullets[0]->pos;
+        glm::vec3 perpendicular = glm::cross(this->lookAt,glm::vec3(0.0f,1.0f,0.0f));
+        glm::vec3 back = glm::normalize(perpendicular)*10.0f;
+        this->lookFrom = this->lookAt +back;
+        this->lookFrom.y += 4.0f;
+    }
+    else{
+        this->lookAt = this->currentCutterpillar->startLook;
+        this->lookAt = glm::mat3(this->currentCutterpillar->rotM) * this->lookAt;
 
-   this->lookFrom = this->currentCutterpillar->pos;
-   this->lookAt+=this->currentCutterpillar->pos;
+        this->lookFrom = this->currentCutterpillar->pos;
+        this->lookAt+=this->currentCutterpillar->pos;
 
-   this->lookFrom.y+= 6*this->currentCutterpillar->size.y;
-   this->lookAt.y+= 6*this->currentCutterpillar->size.y;
+        this->lookFrom.y+= 6*this->currentCutterpillar->size.y;
+        this->lookAt.y+= 6*this->currentCutterpillar->size.y;
 
-   glm::vec3 look = this->lookAt - this->lookFrom;
-   this->lookFrom += glm::normalize(look)*this->currentCutterpillar->viewBack;
+        glm::vec3 look = this->lookAt - this->lookFrom;
+        this->lookFrom += glm::normalize(look)*this->currentCutterpillar->viewBack;
+    }
 
    //std::cout << this->currentCutterpillar->viewBack << std::endl;
 
@@ -219,6 +228,9 @@ void Game::calcViewMatrix(){
 
 }
 void Game::catterMove(){
+    if(!this->bullets.empty()){
+        return;
+    }
 //   this->end = clock();
 	float diff = inputActions::getInstance().deltaTime;
 //	float diff = ((float)this->end - (float)this->start);
@@ -261,7 +273,7 @@ void Game::catterMove(){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
         newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*1.0f;
      }
-//       bulletMove();
+//       bulletShot();
    }
    else if(inputActions::getInstance().space_pressed){
      if(this->currentCutterpillar->on_the_ground)
@@ -329,7 +341,10 @@ void Game::catterMove(){
 //   this->start = clock();
 }
 
-void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycisk
+void Game::bulletShot() {//Warunek na strzal - widok z celowikiem i lewy przycisk
+    if(!this->bullets.empty()){
+        return;
+    }
     if(!inputActions::getInstance().space_pressed && this->currentCutterpillar->on_the_ground) {
 
         if (inputActions::getInstance().leftClick && !(currentCutterpillar->viewBack < -20)) {
