@@ -13,7 +13,6 @@ out vec4 color;
 
 uniform sampler3D ourTexture1;
 uniform sampler2D shadowMap;
-uniform sampler2D lightMap;
 uniform sampler2D normalMap;
 
 void main(){
@@ -26,7 +25,6 @@ void main(){
 	vec4 mL3=normalize(vec4(vL3.xyz,1.0f));
 
 	vec4 shadow = texture(shadowMap, vec2(textCord.x,textCord.y));
-	vec4 light = texture(lightMap,vec2(textCord.x,textCord.y));
 	vec4 textu = texture(ourTexture1,textCord);
 
 	vec4 Md=(3*textu + shadow)/4;

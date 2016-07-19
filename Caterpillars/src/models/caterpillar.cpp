@@ -20,7 +20,7 @@ Caterpillar::Caterpillar(char *filename){
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/catTX.png");
    this->bindLightMap2D("../src/img/light/catLight.png");
-   this->bindShadwMap2D("../src/img/catTX.png");
+   this->bindShadwMap2D("../src/img/shadow/catTXShadow.png");
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
    this->weapon = new Gun( (char*)"../src/obj/weapon.obj",10,100,this);
    this->size=glm::vec3(1.33,1.33,0.66);

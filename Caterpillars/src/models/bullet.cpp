@@ -21,7 +21,7 @@ Bullet::Bullet(char *filename) {
    this->bindBuffers(5,8,GL_STATIC_DRAW);
    this->bindTexture2D("../src/img/bullet.png");
    this->bindLightMap2D("../src/img/light/bulletLight.png");
-   this->bindShadwMap2D("../src/img/bullet.png");
+   this->bindShadwMap2D("../src/img/shadow/bulletShadow.png");
    this->size=glm::vec3(0,2,1);
    this->used=false;
 }
@@ -67,4 +67,3 @@ void Bullet::recalculateRotZ() {
    float rotz = asin(this->speed.y/this->shotPower);
    this->rot.z = -rotz;
 }
-

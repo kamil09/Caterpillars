@@ -57,10 +57,6 @@ void main(){
 	vL2=normalize(L2pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 	vL3=normalize(SUN-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 
-	vec3 position2 = position + vec3(
-		0.0f,
-		(vN.y * (1.0f-(int(vN.z*texture.x*100)%3)) * (0.5f-(int(vN.x*texture.y*100)%2)  ))/2 ,
-		0.0f );
-	gl_Position = P*V*M*vec4(position2.x, position2.y, position2.z, 1.0);
+	gl_Position = P*V*M*vec4(position.x, position.y, position.z, 1.0);
 	textCord = texture;
 }

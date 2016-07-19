@@ -24,7 +24,6 @@ Map::Map(){
    texturePath[4] = "../src/img/map/map5.png";texturePath[5] = "../src/img/map/map6.png";
    texturePath[6] = "../src/img/map/map7.png";texturePath[7] = "../src/img/map/map8.png";
    this->bindTexture3D(numOfTex,texturePath);
-   this->bindLightMap2D("../src/img/light/example.png");
    this->bindShadwMap2D("../src/img/shadow/mapShadow.png");
    this->bindNormalMap2D("../src/img/normal/sandNormal.png");
 }
@@ -247,10 +246,8 @@ void Map::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::
 	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "shadowMap"), 1);
    glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, this->lightMap);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "lightMap"), 2);
    glBindTexture(GL_TEXTURE_2D, this->normalMap);
-   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "normalMap"), 3);
+   glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "normalMap"), 2);
 
    GLint P = glGetUniformLocation(this->shader->shaderProgram[0], "P");
    GLint V = glGetUniformLocation(this->shader->shaderProgram[0], "V");
