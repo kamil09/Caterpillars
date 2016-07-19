@@ -94,6 +94,11 @@ void Game::changePlayer() {
     }
     if(nextCat!= nullptr){
         this->currentCutterpillar = nextCat;
+        std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
+        if(it != this->caterrVec.end()){
+            this->currCatIndex = std::distance(this->caterrVec.begin(),it);
+//            std::cout << "$$$$$$ IT: " << *it  << "$$$$$$" << std::endl;
+        }
     }
 }
 
@@ -108,7 +113,7 @@ void Game::draw(){
    this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
 
     for(int i=0;i < (int)this->caterrVec.size(); i++){
-        if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20))
+        if((this->caterrVec[i] != this->currentCutterpillar) || (this->currentCutterpillar->viewBack < -20) || (!this->bullets.empty()))
             //for (int j = 0; j < 10; j++) {
             //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
             //    this->caterrVec[i]->draw(this->projection,this->modelView);
@@ -129,6 +134,7 @@ void Game::draw(){
                 if(this->bullets[i]->currentWaitTime <= 0.0f){
                     this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
                     inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
+                    this->changePlayer();
                 }
                 else{
                     this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
@@ -236,7 +242,7 @@ void Game::calcViewMatrix(){
             this->lookFrom.y += 5.0f;
         }
         else{
-            float speed  = 5.5f;
+            float speed  = 6.5f;
             float delta = this->bullets[0]->waitTime - this->bullets[0]->currentWaitTime;
             this->lookFrom = this->lookAt + (back * (10.0f + speed*delta));
             this->lookFrom.y += 5.0f + speed*(delta);
