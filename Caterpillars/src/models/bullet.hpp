@@ -19,12 +19,14 @@ private:
 
 public:
     static Bullet *parent;
-   Bullet(char *filename, float randDam);
+   Bullet(char *filename, float shotPower);
    Bullet(char *filename);
    ~Bullet();
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights, glm::vec4 sun);
    glm::vec3 startLook;
-   int damage;
+   int damage = 100;
+    float shotPower;
+    void recalculateRotZ();
    bool used;
     void copyParent();
 };

@@ -49,6 +49,7 @@ public:
    glm::vec3 scl;
    glm::vec3 speed;
    glm::vec3 size;
+    float przyspeszenieY = 0.0f;
 
    bool colission;
 
@@ -68,7 +69,7 @@ public:
    float windMul; // od 0 do 1. Jak wiatr wpływa na dany obiekt. Dla mapy np 0, dla pocisku 1 a dla robala delikatnie
    void kick(float x,float y, float z);
    void recalculatePhysics();
-   void recalculateGravity(); //Pawelek
+   void recalculateGravity(float timeDifference); //Pawelek
    void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath);

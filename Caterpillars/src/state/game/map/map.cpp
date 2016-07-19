@@ -4,7 +4,7 @@
 
 Map::Map(){
    srand (time(NULL));
-   this->gravity=9.81;
+   this->gravity=9.81f;
    this->minHeight=0;
    this->fogSpeed=0.005;
    this->windMul=0;

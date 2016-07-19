@@ -89,19 +89,19 @@ int main(void){
 	Info *info = new Info();
 	errorCheck("inicjalizacja");
 	while (!glfwWindowShouldClose(window)) {
+		GLfloat currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		inputActions::getInstance().deltaTime = deltaTime;
 		glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if(inputActions::getInstance().currentState->customPollEvents == false){
 			glfwPollEvents();
 		}
 
-	   inputActions::getInstance().currentState->run();
+		inputActions::getInstance().currentState->run();
 		errorCheck("Rysowanie");
 		//Liczenie deltatime
-		GLfloat currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-		inputActions::getInstance().deltaTime = deltaTime;
 		//INFORMACJE
 		info->draw();
 		glfwSwapBuffers(window);

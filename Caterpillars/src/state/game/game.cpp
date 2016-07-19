@@ -169,7 +169,7 @@ void Game::run(){
    this->draw();
 
    for(int i=0;i < (int)this->caterrVec.size(); i++){
-      this->caterrVec[i]->recalculateGravity();
+       this->caterrVec[i]->recalculateGravity(2.0);
       this->caterrVec[i]->recalculateMatrix();
    }
    for(int i=0; i< (int)this->towers.size();i++ )
@@ -180,8 +180,10 @@ void Game::run(){
    {
      for(int i=0; i < (int)this->bullets.size(); i++)
      {
-
-       this->bullets[i]->recalculateGravity();
+        if(inputActions::getInstance().i_pressed){
+            this->bullets[i]->recalculateRotZ();
+            this->bullets[i]->recalculateGravity(2.0);
+        }
        this->bullets[i]->recalculateMatrix();
 //         this->bullets[i]->rotM = glm::rotate(glm::mat4(1),-this->bullets[i]->rot.y,glm::vec3(0.0f,1.0f,0.0f));
 //         this->bullets[i]->rotM = glm::rotate(this->bullets[i]->rotM,glm::radians(45.0f),glm::vec3(0.0f,0.0f,1.0f));
@@ -245,26 +247,26 @@ void Game::catterMove(){
 
      if(inputActions::getInstance().w_pressed){
         glm::vec3 add = glm::normalize(catViewVec);
-        newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*20.0f;
+        newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*2.0f;
      }
      if(inputActions::getInstance().s_pressed){
         glm::vec3 add = glm::normalize(catViewVec);
-        newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*20.0f;
+        newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*2.0f;
      }
      if(inputActions::getInstance().a_pressed){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
-        newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
+        newPos+=add*diff*this->currentCutterpillar->maxWalkSpeed*1.0f;
      }
      if(inputActions::getInstance().d_pressed){
         glm::vec3 add = glm::normalize(prosVec)*2.0f;
-        newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*10.0f;
+        newPos-=add*diff*this->currentCutterpillar->maxWalkSpeed*1.0f;
      }
 //       bulletMove();
    }
    else if(inputActions::getInstance().space_pressed){
      if(this->currentCutterpillar->on_the_ground)
      {
-      int jump_coefficient = 1;
+      int jump_coefficient = 20;
       glm::vec3 shot;
       //skok w przod
       if(inputActions::getInstance().w_pressed){
@@ -287,7 +289,7 @@ void Game::catterMove(){
       }
 
       //shot.x = 0;
-      shot.y = 3;
+      shot.y = 400.0f;
       //shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
     }
@@ -339,7 +341,7 @@ void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycis
                 shotPower = maxShotPower;
             }
             else {
-                shotPower = shotPower + 0.15f;
+                shotPower = shotPower + this->increaseShotPower*inputActions::getInstance().deltaTime;
             }
 //          shotPower = 5;
 
@@ -358,7 +360,7 @@ void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycis
         //Po wyborze sily strzaly nastepuje strzal
         if (!inputActions::getInstance().leftClick && powerischoosed) {
 //               glm::vec3 shotViewVec = glm::normalize(glm::vec3(0.0f,0.0f,0.0f));
-               glm::vec3 shotViewVec = glm::mat3(this->currentCutterpillar->rotMY) * this->currentCutterpillar->startLook;
+               glm::vec3 shotViewVec = glm::mat3(this->currentCutterpillar->rotM) * this->currentCutterpillar->startLook;
 //            glm::mat3 rotY = glm::mat3(
 //                    glm::vec3(cos(this->currentCutterpillar->rot.y),0.0f, sin(this->currentCutterpillar->rot.y)),
 //                    glm::vec3(0.0f,1.0f,0.0f),
@@ -366,7 +368,7 @@ void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycis
 //            );
 //               glm::vec3 shotViewVec =  rotY * this->currentCutterpillar->startLook;
 //            glm::vec3 look = this->lookAt - this->lookFrom;
-            glm::vec3 look = glm::mat3(this->currentCutterpillar->rotM) * this->currentCutterpillar->startLook;
+            glm::vec3 look = glm::mat3(this->currentCutterpillar->rotMY) * this->currentCutterpillar->startLook;
 //            look = glm::mat3(this->currentCutterpillar->rotM) * look;
 //            shotViewVec.y +=6.0f*this->currentCutterpillar->size.y;
 //            look.z = 0.0f;
@@ -376,7 +378,7 @@ void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycis
             shotViewVec = glm::normalize(shotViewVec);
 //            float katZ = acos(glm::dot(look,shotViewVec));
             float katZ = acos(glm::dot(shotViewVec,look));
-            if(test.y > 0){
+            if(test.y < 0){
                 katZ = -katZ;
             }
             std::cout << "X: " << test.x << " Y: " << test.y << " Z: " << test.z << std::endl;
@@ -396,9 +398,10 @@ void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycis
             cout << "Damage: " << calculatedDamage << endl;
 
             //tworzenie obiektu Bullet
-            Bullet *bullecik = new Bullet((char *) "../src/obj/bullet.obj", calculatedDamage);
+            Bullet *bullecik = new Bullet((char *) "../src/obj/bullet.obj", this->shotPower);
             //ustawienie pozycji poczatkowej
-            bullecik->rot.y = currentCutterpillar->rot.y;
+            float katY = this->currentCutterpillar->rot.y;
+            bullecik->rot.y = katY;
             bullecik->rot.z = katZ;
             std::cout << "kat X:" << glm::degrees(katZ) << " kat Y: " << glm::degrees(this->currentCutterpillar->rot.y) << std::endl;
 //            bullecik->rotM = glm::rotate(glm::mat4(1),90.0f,glm::vec3(1.0f,0.0f,0.0f));
@@ -406,9 +409,17 @@ void Game::bulletMove() {//Warunek na strzal - widok z celowikiem i lewy przycis
                              currentCutterpillar->pos.y + currentCutterpillar->size.y * 6.0f,
                              currentCutterpillar->pos.z);
             //ustawienie szybkosci wystrzelonego pocisku
-            shot.x = shotViewVec.x * shotPower * 1;
-            shot.y = shotViewVec.y * shotPower * 1.5f;
-            shot.z = shotViewVec.z * shotPower * 1;
+            float shotY,shotXZ,shotX,shotZ;
+            shotY = sin(-katZ)*this->shotPower;
+            shotXZ = cos(-katZ)*this->shotPower;
+            shotZ = sin(katY)*shotXZ;
+            shotX = cos(katY)*shotXZ;
+            shot.x = shotX;
+//            shot.x = shotViewVec.x * shotPower * 1.0f;
+            shot.y = shotY;
+//            shot.y = shotViewVec.y * shotPower * 1.0f;
+            shot.z = shotZ;
+//            shot.z = shotViewVec.z * shotPower * 1.0f;
 
             //dodanie wyzej stworzonego obiektu do listy pociskow
             bullets.push_back(bullecik);
@@ -435,10 +446,6 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
    bool canX = true;
    bool canY = false;
    bool canZ = true;
-
-    if(dynamic_cast<Bullet *>(o)){
-        return true;
-    }
 
    Caterpillar* cat;
    Bullet* bul;

@@ -89,8 +89,13 @@ void Object::kick(float x,float y, float z){
 }
 void Object::recalculatePhysics(){}
 
-void Object::recalculateGravity(){
-	bet_time = inputActions::getInstance().deltaTime;
+void Object::recalculateGravity(float timeDifference) {
+	if(timeDifference !=0.0f){
+		bet_time = inputActions::getInstance().deltaTime;
+	}
+	else{
+		std::cout << "###ERROR:DZIELENIE PRZEZ 0 FUNKCJA recalculateGravity:ERROR###" << std::endl;
+	}
 	in_meter = 1;//ile jednostek mamy w pseudo metrze
 	//jesli wejdzie drugi raz
 	if(sec_time)
@@ -121,12 +126,18 @@ void Object::recalculateGravity(){
 				this->speed.x +=  windX;//*windMul
 				this->speed.z +=  windZ;//*windMul
 			}
+			this->przyspeszenieY -=Map::getInstance().gravity * bet_time * in_meter/timeDifference;
+//			this->speed.y -= Map::getInstance().gravity * in_meter -windY;
+			this->speed.y += this->przyspeszenieY -windY;
 
-			this->speed.y -= Map::getInstance().gravity * bet_time * in_meter -windY;
+			//DO TESTOW;
+			float speedX = this->speed.x * bet_time;
+			float speedY = this->speed.y * bet_time;
+			float speedZ = this->speed.z * bet_time;
 
-			nextX = this->pos.x + this->speed.x;
-			nextY = this->pos.y + this->speed.y;
-			nextZ = this->pos.z + this->speed.z;
+			nextX = this->pos.x + speedX;
+			nextY = this->pos.y + speedY;
+			nextZ = this->pos.z + speedZ;
 
 			if(!Game::checkCollisionAndMove(this, nextX, nextY, nextZ,inputActions::getInstance().objectPointers))
 			{

@@ -14,7 +14,7 @@ Caterpillar::Caterpillar(char *filename){
    this->windMul=0.1;
    this->life=100;
    this->maxWalkAngle=0.45;
-   this->maxWalkSpeed=2;
+   this->maxWalkSpeed=5.0f;
    loadObj::load(filename,&this->vertices, &this->indices);
 
    this->bindBuffers(5,8,GL_STATIC_DRAW);
