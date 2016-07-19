@@ -48,7 +48,7 @@ void object2D::initObject2D(float x, float y, float width, float height, string 
     if(!fileName.empty()){
         char *str = new char[fileName.length()+1];
         strcpy(str,fileName.c_str());
-        this->bindTexture2D(str);
+        this->bindTexture2D(str,&this->texture2D);
         delete [] str;
     }
     else{

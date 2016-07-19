@@ -27,9 +27,9 @@ Gun::Gun(char *filename) {
 
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
-   this->bindTexture2D("../src/img/weapon.png");
-   this->bindLightMap2D("../src/img/light/weaponLight.png");
-   this->bindShadwMap2D("../src/img/shadow/weaponShadow.png");
+   this->bindTexture2D("../src/img/weapon.png",&this->texture2D);
+   this->bindTexture2D("../src/img/light/weaponLight.png",&this->lightMap);
+   this->bindTexture2D("../src/img/shadow/weaponShadow.png",&this->shadowMap);
 
 }
 

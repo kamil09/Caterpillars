@@ -24,8 +24,8 @@ Map::Map(){
    texturePath[4] = "../src/img/map/map5.png";texturePath[5] = "../src/img/map/map6.png";
    texturePath[6] = "../src/img/map/map7.png";texturePath[7] = "../src/img/map/map8.png";
    this->bindTexture3D(numOfTex,texturePath);
-   this->bindShadwMap2D("../src/img/shadow/mapShadow.png");
-   this->bindNormalMap2D("../src/img/normal/sandNormal.png");
+   this->bindTexture2D("../src/img/shadow/mapShadow.png",&this->shadowMap);
+   this->bindTexture2D("../src/img/normal/sandNormal.png",&this->normalMap);
 }
 Map::~Map(){}
 

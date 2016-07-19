@@ -72,10 +72,7 @@ public:
    void recalculateGravity(float timeDifference); //Pawelek
    void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
    //Funkcje i zmienne do textur 2D
-   void bindTexture2D(const GLchar *texturePath);
-   void bindShadwMap2D(const GLchar *texturePath);
-   void bindLightMap2D(const GLchar *texturePath);
-   void bindNormalMap2D(const GLchar *texturePath);
+   void bindTexture2D(const GLchar *texturePath,GLuint *handle);
 
    virtual void loadTexture2D(const GLchar *texturePath);
    virtual void paramText2D();

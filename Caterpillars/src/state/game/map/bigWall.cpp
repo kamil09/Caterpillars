@@ -15,10 +15,10 @@ Wall::Wall(char *filename, int x, int width, int z, int depth, int min, int max)
    this->recalculateMatrix();
    loadObj::load(filename,&this->vertices, &this->indices);
    this->bindBuffers(5,8,GL_STATIC_DRAW);
-   this->bindTexture2D("../src/img/wall.png");
-   this->bindLightMap2D("../src/img/light/example.png");
-   this->bindShadwMap2D("../src/img/shadow/example.png");
-   this->bindNormalMap2D("../src/img/normal/wallNormal.png");
+   this->bindTexture2D("../src/img/wall.png",&this->texture2D);
+   this->bindTexture2D("../src/img/light/example.png",&this->lightMap);
+   this->bindTexture2D("../src/img/shadow/example.png",&this->shadowMap);
+   this->bindTexture2D("../src/img/normal/wallNormal.png",&this->normalMap);
    this->czyNormalMap=1;
 }
 

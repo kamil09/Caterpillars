@@ -222,31 +222,9 @@ void Object::paramText2D(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Object::bindTexture2D(const GLchar *texturePath){
-	glGenTextures(1, &this->texture2D);
-	glBindTexture(GL_TEXTURE_2D, this->texture2D);
-	this->paramText2D();
-	this->loadTexture2D(texturePath);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-}
-//Powyższa metoda wywoływana w wielu miejscach,, nie chciało mi się dodawać parametru i musieć wszędzie zmieniać
-void Object::bindShadwMap2D(const GLchar *texturePath){
-	glGenTextures(1, &this->shadowMap);
-	glBindTexture(GL_TEXTURE_2D, this->shadowMap);
-	this->paramText2D();
-	this->loadTexture2D(texturePath);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-}
-void Object::bindLightMap2D(const GLchar *texturePath){
-	glGenTextures(1, &this->lightMap);
-	glBindTexture(GL_TEXTURE_2D, this->lightMap);
-	this->paramText2D();
-	this->loadTexture2D(texturePath);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-}
-void Object::bindNormalMap2D(const GLchar *texturePath){
-	glGenTextures(1, &this->normalMap);
-	glBindTexture(GL_TEXTURE_2D, this->normalMap);
+void Object::bindTexture2D(const GLchar *texturePath, GLuint *handle){
+	glGenTextures(1, handle);
+	glBindTexture(GL_TEXTURE_2D, *handle);
 	this->paramText2D();
 	this->loadTexture2D(texturePath);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.

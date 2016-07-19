@@ -34,6 +34,15 @@ public:
    Player *player;
    Gun *weapon;
    Font *font;
+
+   int dead;
+   std::vector<GLfloat> verticesDead;
+   std::vector<GLuint> indicesDead;
+
+   GLuint texture2DDead;
+   GLuint shadowMapDead;
+   GLuint lightMapDead;
+
    int life;//Życie naszego bohatera :)
     std::string getLife();
 };
