@@ -34,7 +34,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
     //Ustawianie aktualnego Caterpillara - pierwszy w tablicy catterVec
 
-    this->currentCutterpillar = this->caterrVec[0];
+//    this->currentCutterpillar = this->caterrVec[0];
 
     //ta wartosc wskazuje nam ktory jest aktyalny
     //wykorzystywana w kolizjach
@@ -69,6 +69,7 @@ void Game::createPlayers() {
         if(Setting::getInstance().players[i].czyGra){
             Player *newPlayer = new Player(i);
             this->players.push_back(newPlayer);
+            this->alivePlayers.push_back(newPlayer);
             for (int j = 0; j < newPlayer->aliveCaterpillars.size(); j++) {
                 Caterpillar *cat = newPlayer->aliveCaterpillars[j];
                 cat->font = font;
@@ -77,6 +78,22 @@ void Game::createPlayers() {
                 inputActions::getInstance().objectPointers.push_back(cat);
             }
         }
+    }
+    this->changePlayer();
+//    this->activePlayer = 0;
+//    this->currentCutterpillar = this->players[0]->changeCaterpillar();
+}
+
+
+void Game::changePlayer() {
+    this->activePlayer++;
+    this->activePlayer = this->activePlayer % this->alivePlayers.size();
+    Caterpillar *nextCat = nullptr;
+    while(nextCat== nullptr){
+        nextCat = this->players[this->activePlayer]->changeCaterpillar();
+    }
+    if(nextCat!= nullptr){
+        this->currentCutterpillar = nextCat;
     }
 }
 
@@ -109,22 +126,34 @@ void Game::draw(){
             if(!this->bullets[i]->colission)
                this->bullets[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
             else{
-               this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
-               inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
+                if(this->bullets[i]->currentWaitTime <= 0.0f){
+                    this->bullets.erase(std::remove(this->bullets.begin(), this->bullets.end(), this->bullets[i]), this->bullets.end());
+                    inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
+                }
+                else{
+                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
+                }
             }
          }
        }
+    if(this->bullets.empty()){
+        draw2D();
+    }
+}
 
-   glEnable(GL_BLEND);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   if(!(this->currentCutterpillar->viewBack < -20)) this->targetView->draw();
-   this->drawRose();
+void Game::draw2D() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    if(!(currentCutterpillar->viewBack < -20)) targetView->draw();
+    this->drawRose();
     float margines = 10.0f;
-    this->font->print(this->currentCutterpillar->getLife(),-1366.0f/2.0f + margines,768.0f/2.0f - this->font->height(1.0f) - margines,1.0f,this->currentCutterpillar->player->kolor);
-    this->font->print(this->currentCutterpillar->player->nazwa,-this->font->length(this->currentCutterpillar->player->nazwa,1.0f)/2.0f,768.0f/2.0f - this->font->height(1.0f) - margines,1.0f,this->currentCutterpillar->player->kolor);
-    this->powerBar->teksty[0]->text = "Power: " + std::to_string(this->procentShotPower()) +"%";
-    this->powerBar->draw(this->procentShotPower());
-   glDisable(GL_BLEND);
+    font->print(currentCutterpillar->getLife(), -1366.0f / 2.0f + margines, 768.0f / 2.0f - font->height(1.0f) - margines, 1.0f,
+                currentCutterpillar->player->kolor);
+    font->print(currentCutterpillar->player->nazwa, -font->length(currentCutterpillar->player->nazwa, 1.0f) / 2.0f, 768.0f / 2.0f - font->height(1.0f) - margines, 1.0f,
+                currentCutterpillar->player->kolor);
+    powerBar->teksty[0]->text = "Power: " + to_string(this->procentShotPower()) + "%";
+    powerBar->draw(this->procentShotPower());
+    glDisable(GL_BLEND);
 }
 
 void Game::drawRose(){
@@ -181,8 +210,10 @@ void Game::run(){
      for(int i=0; i < (int)this->bullets.size(); i++)
      {
 //        if(inputActions::getInstance().i_pressed){
-            this->bullets[i]->recalculateRotZ();
-            this->bullets[i]->recalculateGravity(1.0);
+         if(this->bullets[i]->currentWaitTime <= 0.0f){
+             this->bullets[i]->recalculateRotZ();
+             this->bullets[i]->recalculateGravity(0.8);
+         }
 //        }
        this->bullets[i]->recalculateMatrix();
 //         this->bullets[i]->rotM = glm::rotate(glm::mat4(1),-this->bullets[i]->rot.y,glm::vec3(0.0f,1.0f,0.0f));
@@ -198,9 +229,18 @@ void Game::calcViewMatrix(){
     if(!this->bullets.empty()){
         this->lookAt = this->bullets[0]->pos;
         glm::vec3 perpendicular = glm::cross(this->lookAt,glm::vec3(0.0f,1.0f,0.0f));
-        glm::vec3 back = glm::normalize(perpendicular)*10.0f;
+        glm::vec3 back = glm::normalize(perpendicular);
         this->lookFrom = this->lookAt +back;
-        this->lookFrom.y += 4.0f;
+        if(this->bullets[0]->currentWaitTime <= 0.0f){
+            this->lookFrom = this->lookAt + (back * 10.0f);
+            this->lookFrom.y += 5.0f;
+        }
+        else{
+            float speed  = 5.5f;
+            float delta = this->bullets[0]->waitTime - this->bullets[0]->currentWaitTime;
+            this->lookFrom = this->lookAt + (back * (10.0f + speed*delta));
+            this->lookFrom.y += 5.0f + speed*(delta);
+        }
     }
     else{
         this->lookAt = this->currentCutterpillar->startLook;
@@ -533,7 +573,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            cout << "Boooooom" <<endl;
            if(!o->colission)
               Map::getInstance().kaboom(x,y,z,boomRadius);
-
+            bul->currentWaitTime = bul->waitTime;
            o->colission = true;
 
            for(int i=0; i< v.size(); i++)

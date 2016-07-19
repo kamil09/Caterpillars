@@ -29,6 +29,8 @@ public:
     void recalculateRotZ();
    bool used;
     void copyParent();
+    float currentWaitTime = -1.0f;
+    float waitTime = 5.0f;
 };
 
 #endif

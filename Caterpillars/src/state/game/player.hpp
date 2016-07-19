@@ -23,6 +23,8 @@ public:
     glm::vec3 kolor;
     std::vector<Caterpillar*> caterpillars;
     std::vector<Caterpillar*> aliveCaterpillars;
+    int activeCaterpillar = -1;
+    Caterpillar * changeCaterpillar();
 };
 
 #endif //CATERPILLARS_PLAYER_HPP

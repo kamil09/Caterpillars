@@ -59,11 +59,14 @@ public:
    float calculatedDamage;
    float maxShotPower = 45.0f;//wartosc do ktorej rosnie sila a potem od poczatku
     float minShotPower = 8.0f;
-    float increaseShotPower = 5.0f;
+    float increaseShotPower = 9.0f;
    bool powerischoosed = false;//po wybraniu sily strzalu true
     int procentShotPower();
     void createPlayers();
    std::vector<Player*> players;
+   std::vector<Player*> alivePlayers;
+    int activePlayer = -1;
+    void changePlayer();
    /**
    * Funkcja sprawdza kolizję oraz przesuwa objekt jeżeli może
    * Zwraca kolizję na Osi Y
@@ -71,8 +74,9 @@ public:
    static bool checkCollisionAndMove(Object *o,float x, float y, float z, std::vector<Object*> v );
    static bool checkCollisionAndMove(Object *o,glm::vec3 pos, std::vector<Object*> v);
    Font *font;
-
     void bulletShot();
+
+    void draw2D();
 };
 
 #endif

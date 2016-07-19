@@ -17,3 +17,13 @@ Player::Player(int id) {
     }
 }
 
+
+Caterpillar * Player::changeCaterpillar() {
+    if(this->aliveCaterpillars.empty()){
+        return nullptr;
+    }
+    this->activeCaterpillar++;
+    this->activeCaterpillar = this->activeCaterpillar % this->aliveCaterpillars.size();
+    return this->aliveCaterpillars[this->activeCaterpillar];
+}
+
