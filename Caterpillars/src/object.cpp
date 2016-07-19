@@ -126,14 +126,14 @@ void Object::recalculateGravity(float timeDifference) {
 				this->speed.x +=  windX;//*windMul
 				this->speed.z +=  windZ;//*windMul
 			}
-			this->przyspeszenieY -=Map::getInstance().gravity * bet_time * in_meter/timeDifference;
-//			this->speed.y -= Map::getInstance().gravity * in_meter -windY;
-			this->speed.y += this->przyspeszenieY -windY;
+//			this->przyspeszenieY -=Map::getInstance().gravity * bet_time * in_meter/timeDifference;
+			this->speed.y -= Map::getInstance().gravity * in_meter * bet_time/timeDifference -windY;
+//			this->speed.y += this->przyspeszenieY -windY;
 
 			//DO TESTOW;
-			float speedX = this->speed.x * bet_time;
-			float speedY = this->speed.y * bet_time;
-			float speedZ = this->speed.z * bet_time;
+			float speedX = this->speed.x * bet_time/timeDifference;
+			float speedY = this->speed.y * bet_time/timeDifference;
+			float speedZ = this->speed.z * bet_time/timeDifference;
 
 			nextX = this->pos.x + speedX;
 			nextY = this->pos.y + speedY;

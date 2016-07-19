@@ -169,7 +169,7 @@ void Game::run(){
    this->draw();
 
    for(int i=0;i < (int)this->caterrVec.size(); i++){
-       this->caterrVec[i]->recalculateGravity(2.0);
+       this->caterrVec[i]->recalculateGravity(0.35);
       this->caterrVec[i]->recalculateMatrix();
    }
    for(int i=0; i< (int)this->towers.size();i++ )
@@ -180,10 +180,10 @@ void Game::run(){
    {
      for(int i=0; i < (int)this->bullets.size(); i++)
      {
-        if(inputActions::getInstance().i_pressed){
+//        if(inputActions::getInstance().i_pressed){
             this->bullets[i]->recalculateRotZ();
-            this->bullets[i]->recalculateGravity(2.0);
-        }
+            this->bullets[i]->recalculateGravity(1.0);
+//        }
        this->bullets[i]->recalculateMatrix();
 //         this->bullets[i]->rotM = glm::rotate(glm::mat4(1),-this->bullets[i]->rot.y,glm::vec3(0.0f,1.0f,0.0f));
 //         this->bullets[i]->rotM = glm::rotate(this->bullets[i]->rotM,glm::radians(45.0f),glm::vec3(0.0f,0.0f,1.0f));
@@ -266,7 +266,7 @@ void Game::catterMove(){
    else if(inputActions::getInstance().space_pressed){
      if(this->currentCutterpillar->on_the_ground)
      {
-      int jump_coefficient = 20;
+      int jump_coefficient = 15.0f;
       glm::vec3 shot;
       //skok w przod
       if(inputActions::getInstance().w_pressed){
@@ -289,7 +289,7 @@ void Game::catterMove(){
       }
 
       //shot.x = 0;
-      shot.y = 400.0f;
+      shot.y = 20.0f;
       //shot.z = 0;
       this->currentCutterpillar->diagonalThrow(shot);
     }

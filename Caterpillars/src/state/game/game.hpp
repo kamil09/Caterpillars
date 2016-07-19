@@ -57,8 +57,8 @@ public:
    glm::vec3 shot;
    float shotPower;//sila stralu
    float calculatedDamage;
-   float maxShotPower = 100.0f;//wartosc do ktorej rosnie sila a potem od poczatku
-    float minShotPower = 70.0f;
+   float maxShotPower = 45.0f;//wartosc do ktorej rosnie sila a potem od poczatku
+    float minShotPower = 8.0f;
     float increaseShotPower = 5.0f;
    bool powerischoosed = false;//po wybraniu sily strzalu true
     int procentShotPower();
