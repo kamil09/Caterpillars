@@ -15,7 +15,7 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
    std::vector<double> ver;
    std::vector<double> nor;
    std::vector<int> uvIndices;
-   std::vector<double> normalIndices;
+   std::vector<int> normalIndices;
    int verNum=0;
    int texNum=0;
    int norNum=0;
