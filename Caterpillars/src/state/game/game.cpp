@@ -122,6 +122,8 @@ void Game::draw(){
         this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
     }
+
+
     for(int i=0;i<(int)this->towers.size();i++ )
       this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
@@ -143,9 +145,20 @@ void Game::draw(){
             }
          }
        }
-    if(this->bullets.empty()){
+
+   if(this->bullets.empty()){
         draw2D();
-    }
+   }
+   for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
+      if(Map::getInstance().particleEffectsVector[i]->effectMaxTime>0)
+         Map::getInstance().particleEffectsVector[i]->run();
+      else{
+         ParticleEffect *tmp = Map::getInstance().particleEffectsVector[i];
+         Map::getInstance().particleEffectsVector.erase(std::remove(Map::getInstance().particleEffectsVector.begin(), Map::getInstance().particleEffectsVector.end(), Map::getInstance().particleEffectsVector[i]), Map::getInstance().particleEffectsVector.end());
+         delete tmp;
+         puts("deleted particle effect");
+      }
+   }
 }
 
 void Game::draw2D() {
@@ -616,7 +629,9 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          {
            cout << "Boooooom" <<endl;
            if(!o->colission)
-              Map::getInstance().kaboom(x,y,z,boomRadius);
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,5,50,10000));
+            Map::getInstance().kaboom(x,y,z,boomRadius);
+
             bul->currentWaitTime = bul->waitTime;
            o->colission = true;
 
@@ -705,5 +720,3 @@ int Game::procentShotPower() {
     float mianownik=this->maxShotPower-this->minShotPower;
     return (licznik/mianownik)*100.0f;
 }
-
-

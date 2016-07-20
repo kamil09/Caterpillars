@@ -17,6 +17,7 @@
 #include "../powerBar.hpp"
 #include "player.hpp"
 #include "../../settings.hpp"
+#include "particle.hpp"
 
 class Game : public State{
 private:
