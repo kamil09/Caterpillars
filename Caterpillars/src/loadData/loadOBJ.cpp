@@ -66,19 +66,37 @@ bool loadObj::load(char * path,std::vector<GLfloat> *vertices, std::vector<GLuin
          normalIndices.push_back(normalIndex[2]);
       }
    }
+   // for( unsigned int i=0; i<indices->size(); i++ ){
+   //    unsigned int vertexIndex = (*indices)[i];
+   //    unsigned int texIndex = uvIndices[i];
+   //    unsigned int normalIndex = normalIndices[i];
+   //
+   //    vertices->push_back(ver[vertexIndex*3-3]);
+   //    vertices->push_back(ver[vertexIndex*3-2]);
+   //    vertices->push_back(ver[vertexIndex*3-1]);
+   //    vertices->push_back(tex[texIndex*2-2]);
+   //    vertices->push_back(tex[texIndex*2-1]);
+   //    vertices->push_back(nor[normalIndex*3-3]);
+   //    vertices->push_back(nor[normalIndex*3-2]);
+   //    vertices->push_back(nor[normalIndex*3-1]);
+   //
+   // }
+   vertices->resize(verNum*8+8);
    for( unsigned int i=0; i<indices->size(); i++ ){
-      unsigned int vertexIndex = (*indices)[i];
-      unsigned int texIndex = uvIndices[i];
-      unsigned int normalIndex = normalIndices[i];
+      int vertexIndex = (*indices)[i];
+      (*indices)[i]--;
+      int texIndex = uvIndices[i];
+      int normalIndex = normalIndices[i];
+      int index = (vertexIndex-1)*8;
 
-      vertices->push_back(ver[vertexIndex*3-3]);
-      vertices->push_back(ver[vertexIndex*3-2]);
-      vertices->push_back(ver[vertexIndex*3-1]);
-      vertices->push_back(tex[texIndex*2-2]);
-      vertices->push_back(tex[texIndex*2-1]);
-      vertices->push_back(nor[normalIndex*3-3]);
-      vertices->push_back(nor[normalIndex*3-2]);
-      vertices->push_back(nor[normalIndex*3-1]);
+      (*vertices)[index] = ver[vertexIndex*3-3];
+      (*vertices)[index+1] = ver[vertexIndex*3-2];
+      (*vertices)[index+2] = ver[vertexIndex*3-1];
+      (*vertices)[index+3] = tex[texIndex*2-2];
+      (*vertices)[index+4] = tex[texIndex*2-1];
+      (*vertices)[index+5] = nor[normalIndex*3-3];
+      (*vertices)[index+6] = nor[normalIndex*3-2];
+      (*vertices)[index+7] = nor[normalIndex*3-1];
    }
    return true;
 }

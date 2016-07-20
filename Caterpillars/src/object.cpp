@@ -341,7 +341,8 @@ void Object::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,gl
    glUniform4fv(SUN, 1, glm::value_ptr(sun));
 
    glBindVertexArray(this->currentVAO());
-   glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+   //glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
 
