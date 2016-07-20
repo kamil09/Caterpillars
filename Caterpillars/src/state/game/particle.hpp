@@ -19,16 +19,26 @@ struct Particle{
 class ParticleEffect{
 
 public:
+   GLfloat particleEffectVertex[12];
+   GLuint VerBuffer;
+   GLuint ParPosBuffer;
+   GLuint ParColBuffer;
+
    ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles);
    void run();
    void draw();
 
    std::vector<Particle> particlesContainer;
+   //Pozycja i mnożnik rozmiaru
+   GLfloat *effectParticlePosAndSize;
+   //współrzędne koloru tekstury
+   GLfloat *effectColorData;
 
    glm::vec3 effectPos;
    float effectMaxTime;
    float effectMinSize;
    float effectMaxSize;
+   int particlesCount;
    int effectMaxParticles;
 };
 

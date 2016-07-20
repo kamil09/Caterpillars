@@ -149,16 +149,9 @@ void Game::draw(){
    if(this->bullets.empty()){
         draw2D();
    }
-   for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
-      if(Map::getInstance().particleEffectsVector[i]->effectMaxTime>0)
-         Map::getInstance().particleEffectsVector[i]->run();
-      else{
-         ParticleEffect *tmp = Map::getInstance().particleEffectsVector[i];
-         Map::getInstance().particleEffectsVector.erase(std::remove(Map::getInstance().particleEffectsVector.begin(), Map::getInstance().particleEffectsVector.end(), Map::getInstance().particleEffectsVector[i]), Map::getInstance().particleEffectsVector.end());
-         delete tmp;
-         puts("deleted particle effect");
-      }
-   }
+   for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
+      Map::getInstance().particleEffectsVector[i]->draw();
+
 }
 
 void Game::draw2D() {
@@ -266,6 +259,17 @@ void Game::run(){
 
       }
     }
+
+    for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
+      if(Map::getInstance().particleEffectsVector[i]->effectMaxTime>0)
+         Map::getInstance().particleEffectsVector[i]->run();
+      else{
+         ParticleEffect *tmp = Map::getInstance().particleEffectsVector[i];
+         Map::getInstance().particleEffectsVector.erase(std::remove(Map::getInstance().particleEffectsVector.begin(), Map::getInstance().particleEffectsVector.end(), Map::getInstance().particleEffectsVector[i]), Map::getInstance().particleEffectsVector.end());
+         delete tmp;
+         puts("deleted particle effect");
+      }
+   }
 }
 void Game::calcViewMatrix(){
     if(!this->bullets.empty()){
