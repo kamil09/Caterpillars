@@ -633,7 +633,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          {
            cout << "Boooooom" <<endl;
            if(!o->colission)
-            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,5,50,10000));
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,5,50,5000,1));
             Map::getInstance().kaboom(x,y,z,boomRadius);
 
             bul->currentWaitTime = bul->waitTime;

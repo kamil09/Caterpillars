@@ -26,7 +26,7 @@ Caterpillar::Caterpillar(char *filename){
 
    this->bindTexture2D("../src/img/box.png",&this->texture2DDead);
    this->bindTexture2D("../src/img/light/boxLight.png",&this->lightMapDead);
-   this->bindTexture2D("../src/img/shadow/boxDead.png",&this->shadowMapDead);
+   this->bindTexture2D("../src/img/shadow/boxShadow.png",&this->shadowMapDead);
 
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
    this->weapon = new Gun( (char*)"../src/obj/weapon.obj",10,100,this);

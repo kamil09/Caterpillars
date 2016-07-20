@@ -24,7 +24,7 @@ public:
    GLuint ParPosBuffer;
    GLuint ParColBuffer;
 
-   ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles);
+   ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles,float life);
    void run();
    void draw();
 
@@ -40,6 +40,7 @@ public:
    float effectMaxSize;
    int particlesCount;
    int effectMaxParticles;
+   float singleParticleLife;
 };
 
 #endif

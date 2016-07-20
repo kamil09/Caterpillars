@@ -2,7 +2,7 @@
 #include "../../inputActions.hpp"
 
 
-ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles){
+ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles, float life){
    GLfloat tmp[12] = {-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f,-0.5f, 0.5f, 0.0f, 0.5f, 0.5f, 0.0f,};
    (*this->particleEffectVertex)=(*tmp);
 
@@ -13,6 +13,7 @@ ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, floa
    this->effectMaxParticles=maxParticles;
    this->particlesContainer.resize(this->effectMaxParticles);
    this->particlesCount=0;
+   this->singleParticleLife = life;
    puts("created particle effect");
 
    glGenBuffers(1, &this->VerBuffer);
@@ -46,9 +47,22 @@ ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, floa
 //Calculate particles
 void ParticleEffect::run(){
    this->effectMaxTime-=inputActions::getInstance().deltaTime;
+   if(this->effectMaxTime >= this->singleParticleLife){
+      //TODO CREATE NEW PARTICLES, but not to much :)
+   }
 
+   //main loop
+   this->particlesCount=0;
+   for(int i=0;i<this->effectMaxParticles;i++){
+      Particle& p = this->particlesContainer[i];
+      if(p.life>0){
+         p.life-=inputActions::getInstance().deltaTime;
 
+         //TODO CALCULATE EVERYTHING
 
+         this->particlesCount++;
+      }
+   }
 }
 //draw particles
 void ParticleEffect::draw(){
