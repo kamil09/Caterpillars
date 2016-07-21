@@ -8,6 +8,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vector>
+#include "../../shaders/shader.hpp"
+#include "../../loadData/lodepng.h"
 
 struct Particle{
 	glm::vec3 pos, speed;
@@ -23,6 +25,8 @@ public:
    GLuint VerBuffer;
    GLuint ParPosBuffer;
    GLuint ParColBuffer;
+	Shader *shader;
+	GLuint texture;
 
    ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles,float life);
    void run();
