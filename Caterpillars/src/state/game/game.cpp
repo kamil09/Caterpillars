@@ -574,6 +574,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
 
 //   cout << endl << "-----------------" << endl;
 
+
    for(int i=0; i< v.size(); i++)
    {
      //Dla wiez
@@ -596,7 +597,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
        if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
        {
          if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
-            && (y >= (int)v[i]->pos.y - 35) && (y <= (int)v[i]->pos.y + 35)
+            && (y >= (int)v[i]->pos.y - (int)v[i]->size.y*6) && (y <= (int)v[i]->pos.y + (int)v[i]->size.y*6)
             && (z >= (int)v[i]->pos.z - 3) && (z <= (int)v[i]->pos.z + 3))
          {
            canX = false;
@@ -605,7 +606,13 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            //Jesli kolizja z pociskiem to zmniejszamy zycie Caterpillara
            if((bul = dynamic_cast<Bullet *>(o)))
            {
+             if(bul->colission == false)
+             {
              cat->life = cat->life - bul->damage;
+             Map::getInstance().kaboom(x,y,z,boomRadius);
+             o->colission = true;
+             bul->currentWaitTime = bul->waitTime;
+             }
            }
          }
        }
@@ -622,9 +629,11 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          {
            cout << "Boooooom" <<endl;
            if(!o->colission)
+           {
               Map::getInstance().kaboom(x,y,z,boomRadius);
-            bul->currentWaitTime = bul->waitTime;
-           o->colission = true;
+              bul->currentWaitTime = bul->waitTime;
+              o->colission = true;
+           }
 
            for(int i=0; i< v.size(); i++)
            {
@@ -711,5 +720,3 @@ int Game::procentShotPower() {
     float mianownik=this->maxShotPower-this->minShotPower;
     return (licznik/mianownik)*100.0f;
 }
-
-
