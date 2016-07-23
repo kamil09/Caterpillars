@@ -367,7 +367,7 @@ void Object::bindTextureCube(std::vector<std::string> faces, GLuint *handle) {
 //	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_LINEAR);
 //	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_LINEAR);
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);g // Unbind texture when done, so we won't accidentily mess up our texture.
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 }
 
 
