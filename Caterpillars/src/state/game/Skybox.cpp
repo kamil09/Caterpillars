@@ -16,186 +16,152 @@ Skybox::Skybox() {
     float back = - marginesXZ;
     float front = vertY + marginesXZ;
 
-//    this->vertices= {
-//            // Positions
-//            -1.0f,  height, -1.0f,
-//            -1.0f, -1.0f, -1.0f,
-//            vertX, -1.0f, -1.0f,
-//            vertX, -1.0f, -1.0f,
-//            vertX,  height, -1.0f,
-//            -1.0f,  height, -1.0f,
-//
-//            -1.0f, -1.0f,  vertY,
-//            -1.0f, -1.0f, -1.0f,
-//            -1.0f,  height, -1.0f,
-//            -1.0f,  height, -1.0f,
-//            -1.0f,  height,  vertY,
-//            -1.0f, -1.0f,  vertY,
-//
-//            vertX, -1.0f, -1.0f,
-//            vertX, -1.0f,  vertY,
-//            vertX,  height,  vertY,
-//            vertX,  height,  vertY,
-//            vertX,  height, -1.0f,
-//            vertX, -1.0f, -1.0f,
-//
-//            -1.0f, -1.0f,  vertY,
-//            -1.0f,  height,  vertY,
-//            vertX,  height,  vertY,
-//            vertX,  height,  vertY,
-//            vertX, -1.0f,  vertY,
-//            -1.0f, -1.0f,  vertY,
-//
-//            -1.0f,  height, -1.0f,
-//            vertX,  height, -1.0f,
-//            vertX,  height,  vertY,
-//            vertX,  height,  vertY,
-//            -1.0f,  height,  vertY,
-//            -1.0f,  height, -1.0f,
-//
-//            -1.0f, -1.0f, -1.0f,
-//            -1.0f, -1.0f,  vertY,
-//            vertX, -1.0f, -1.0f,
-//            vertX, -1.0f, -1.0f,
-//            -1.0f, -1.0f,  vertY,
-//            vertX, -1.0f,  vertY
-//    };
-//
-//    this->vertices= {
-//            // Positions
-//            lewo, 1.5f * height, -vertY / 2.0f,
-//            lewo, -height / 2.0f, -vertY / 2.0f,
-//            1.5f*vertX, -height/2.0f, -vertY/2.0f,
-//            1.5f*vertX, -height/2.0f, -vertY/2.0f,
-//            1.5f*vertX,  1.5f*height, -vertY/2.0f,
-//            lewo, 1.5f * height, -vertY / 2.0f,
-//
-//            lewo, -height / 2.0f, 1.5f * vertY,
-//            lewo, -height / 2.0f, -vertY / 2.0f,
-//            lewo, 1.5f * height, -vertY / 2.0f,
-//            lewo, 1.5f * height, -vertY / 2.0f,
-//            lewo, 1.5f * height, 1.5f * vertY,
-//            lewo, -height / 2.0f, 1.5f * vertY,
-//
-//            1.5f*vertX, -height/2.0f, -vertY/2.0f,
-//            1.5f*vertX, -height/2.0f,  1.5f*vertY,
-//            1.5f*vertX,  1.5f*height,  1.5f*vertY,
-//            1.5f*vertX,  1.5f*height,  1.5f*vertY,
-//            1.5f*vertX,  1.5f*height, -vertY/2.0f,
-//            1.5f*vertX, -height/2.0f, -vertY/2.0f,
-//
-//            lewo, -height / 2.0f, 1.5f * vertY,
-//            lewo, 1.5f * height, 1.5f * vertY,
-//            1.5f*vertX,  1.5f*height,  1.5f*vertY,
-//            1.5f*vertX,  1.5f*height,  1.5f*vertY,
-//            1.5f*vertX, -height/2.0f,  1.5f*vertY,
-//            lewo, -height / 2.0f, 1.5f * vertY,
-//
-//            lewo, 1.5f * height, -vertY / 2.0f,
-//            1.5f*vertX,  1.5f*height, -vertY/2.0f,
-//            1.5f*vertX,  1.5f*height,  1.5f*vertY,
-//            1.5f*vertX,  1.5f*height,  1.5f*vertY,
-//            lewo, 1.5f * height, 1.5f * vertY,
-//            lewo, 1.5f * height, -vertY / 2.0f,
-//
-//            lewo, -height / 2.0f, -vertY / 2.0f,
-//            lewo, -height / 2.0f, 1.5f * vertY,
-//            1.5f*vertX, -height/2.0f, -vertY/2.0f,
-//            1.5f*vertX, -height/2.0f, -vertY/2.0f,
-//            lewo, -height / 2.0f, 1.5f * vertY,
-//            1.5f*vertX, -height/2.0f,  1.5f*vertY
-//    };
 
-            this->vertices = {
-                    // Positions
-                    //Tył
-//                    -1.0f,  1.0f, -1.0f,
-                    lewo,  gora, back,
-//                    -1.0f, -1.0f, -1.0f,
-                    lewo, dol, back,
-//                    1.0f, -1.0f, -1.0f,
-                    prawo, dol, back,
-//                    1.0f, -1.0f, -1.0f,
-                    prawo, dol, back,
-//                    1.0f,  1.0f, -1.0f,
-                    prawo,  gora, back,
-//                    -1.0f,  1.0f, -1.0f,
-                    lewo,  gora, back,
+//            this->vertices = {
+//                    // Positions
+//                    //Tył
+////                    -1.0f,  1.0f, -1.0f,
+//                    lewo,  gora, back,
+////                    -1.0f, -1.0f, -1.0f,
+//                    lewo, dol, back,
+////                    1.0f, -1.0f, -1.0f,
+//                    prawo, dol, back,
+////                    1.0f, -1.0f, -1.0f,
+//                    prawo, dol, back,
+////                    1.0f,  1.0f, -1.0f,
+//                    prawo,  gora, back,
+////                    -1.0f,  1.0f, -1.0f,
+//                    lewo,  gora, back,
+//
+////                    -1.0f, -1.0f,  1.0f,
+//                    lewo, dol,  front,
+////                    -1.0f, -1.0f, -1.0f,
+//                    lewo, dol, back,
+////                    -1.0f,  1.0f, -1.0f,
+//                    lewo,  gora, back,
+////                    -1.0f,  1.0f, -1.0f,
+//                    lewo,  gora, back,
+////                    -1.0f,  1.0f,  1.0f,
+//                    lewo,  gora,  front,
+////                    -1.0f, -1.0f,  1.0f,
+//                    lewo, dol,  front,
+//
+////                    1.0f, -1.0f, -1.0f,
+//                    prawo, dol, back,
+////                    1.0f, -1.0f,  1.0f,
+//                    prawo, dol,  front,
+////                    1.0f,  1.0f,  1.0f,
+//                    prawo,  gora,  front,
+////                    1.0f,  1.0f,  1.0f,
+//                    prawo,  gora, front,
+////                    1.0f,  1.0f, -1.0f,
+//                    prawo,  gora, back,
+////                    1.0f, -1.0f, -1.0f,
+//                    prawo, dol, back,
+//              //Prawo
+////                    -1.0f, -1.0f,  1.0f,
+//                    lewo, dol,  front,
+////                    -1.0f,  1.0f,  1.0f,
+//                    lewo,  gora, front,
+////                    1.0f,  1.0f,  1.0f,
+//                    prawo, gora, front,
+////                    1.0f,  1.0f,  1.0f,
+//                    prawo,  gora,  front,
+////                    1.0f, -1.0f,  1.0f,
+//                    prawo, dol,  front,
+////                    -1.0f, -1.0f,  1.0f,
+//                    lewo, dol,  front,
+//                //Gora
+////                    -1.0f,  1.0f, -1.0f,
+//                    lewo, gora, back,
+////                    1.0f,  1.0f, -1.0f,
+//                    prawo, gora, back,
+////                    1.0f,  1.0f,  1.0f,
+//                    prawo, gora,  front,
+////                    1.0f,  1.0f,  1.0f,
+//                    prawo, gora,  front,
+////                    -1.0f,  1.0f,  1.0f,
+//                    lewo,  gora,  front,
+////                    -1.0f,  1.0f, -1.0f,
+//                    lewo, gora, back,
+//                //Dół
+////                    -1.0f, -1.0f, -1.0f,
+//                    lewo, dol, back,
+////                    -1.0f, -1.0f,  1.0f,
+//                    lewo, dol, front,
+////                    1.0f, -1.0f, -1.0f,
+//                    prawo, dol, back,
+////                    1.0f, -1.0f, -1.0f,
+//                    prawo, dol, back,
+////                    -1.0f, -1.0f,  1.0f,
+//                    lewo, dol,  front,
+////                    1.0f, -1.0f,  1.0f
+//                    prawo, dol,  front
+//            };
 
-//                    -1.0f, -1.0f,  1.0f,
-                    lewo, dol,  front,
-//                    -1.0f, -1.0f, -1.0f,
-                    lewo, dol, back,
-//                    -1.0f,  1.0f, -1.0f,
-                    lewo,  gora, back,
-//                    -1.0f,  1.0f, -1.0f,
-                    lewo,  gora, back,
-//                    -1.0f,  1.0f,  1.0f,
-                    lewo,  gora,  front,
-//                    -1.0f, -1.0f,  1.0f,
-                    lewo, dol,  front,
+    this->vertices = {
+            // Positions
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
 
-//                    1.0f, -1.0f, -1.0f,
-                    prawo, dol, back,
-//                    1.0f, -1.0f,  1.0f,
-                    prawo, dol,  front,
-//                    1.0f,  1.0f,  1.0f,
-                    prawo,  gora,  front,
-//                    1.0f,  1.0f,  1.0f,
-                    prawo,  gora, front,
-//                    1.0f,  1.0f, -1.0f,
-                    prawo,  gora, back,
-//                    1.0f, -1.0f, -1.0f,
-                    prawo, dol, back,
-              //Prawo
-//                    -1.0f, -1.0f,  1.0f,
-                    lewo, dol,  front,
-//                    -1.0f,  1.0f,  1.0f,
-                    lewo,  gora, front,
-//                    1.0f,  1.0f,  1.0f,
-                    prawo, gora, front,
-//                    1.0f,  1.0f,  1.0f,
-                    prawo,  gora,  front,
-//                    1.0f, -1.0f,  1.0f,
-                    prawo, dol,  front,
-//                    -1.0f, -1.0f,  1.0f,
-                    lewo, dol,  front,
-                //Gora
-//                    -1.0f,  1.0f, -1.0f,
-                    lewo, gora, back,
-//                    1.0f,  1.0f, -1.0f,
-                    prawo, gora, back,
-//                    1.0f,  1.0f,  1.0f,
-                    prawo, gora,  front,
-//                    1.0f,  1.0f,  1.0f,
-                    prawo, gora,  front,
-//                    -1.0f,  1.0f,  1.0f,
-                    lewo,  gora,  front,
-//                    -1.0f,  1.0f, -1.0f,
-                    lewo, gora, back,
-                //Dół
-//                    -1.0f, -1.0f, -1.0f,
-                    lewo, dol, back,
-//                    -1.0f, -1.0f,  1.0f,
-                    lewo, dol, front,
-//                    1.0f, -1.0f, -1.0f,
-                    prawo, dol, back,
-//                    1.0f, -1.0f, -1.0f,
-                    prawo, dol, back,
-//                    -1.0f, -1.0f,  1.0f,
-                    lewo, dol,  front,
-//                    1.0f, -1.0f,  1.0f
-                    prawo, dol,  front
-            };
-    this->bindBuffers(3,3,GL_STATIC_DRAW);
-    std::vector<std::string> faces = {
-            "../src/img/skyboxRight.png",
-            "../src/img/skyboxLeft.png",
-            "../src/img/skyboxTop.png",
-            "../src/img/skyboxBottom.png",
-            "../src/img/skyboxBack.png",
-            "../src/img/skyboxFront.png",
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+
+            -1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
+
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f
     };
+
+    this->bindBuffers(3,3,GL_STATIC_DRAW);
+//    std::vector<std::string> faces = {
+//            "../src/img/skyboxRight.png",
+//            "../src/img/skyboxLeft.png",
+//            "../src/img/skyboxTop.png",
+//            "../src/img/skyboxBottom.png",
+//            "../src/img/skyboxBack.png",
+//            "../src/img/skyboxFront.png",
+//    };
+
+    std::vector<std::string> faces;
+    faces.push_back("../src/img/skyboxRight.png");
+    faces.push_back("../src/img/skyboxLeft.png");
+    faces.push_back("../src/img/skyboxTop.png");
+    faces.push_back("../src/img/skyboxBottom.png");
+    faces.push_back("../src/img/skyboxBack.png");
+    faces.push_back("../src/img/skyboxFront.png");
+
     this->bindTextureCube(faces,&this->textureCube);
 
 }
