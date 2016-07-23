@@ -11,5 +11,6 @@ void main()
 //    vec4 pos = P * V * vec4(position, 1.0);
     gl_Position = P * V * vec4(position, 1.0);
 //    gl_Position = pos.xyww;
-    TexCoords = position;
+//    TexCoords = position;
+    TexCoords = vec3(-position.x,position.yz);
 }
