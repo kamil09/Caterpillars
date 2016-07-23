@@ -22,7 +22,7 @@ void Menu::run(){
     this->checkCursor();
     glfwPollEvents();
 //    this->keysControl();
-    glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
+//    glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->check=1;
     this->draw();

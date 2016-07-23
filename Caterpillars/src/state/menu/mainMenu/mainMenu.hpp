@@ -21,7 +21,7 @@ public:
     void loadTranslates() override;
 
     virtual void loadCallBacks() override;
-
+    void authors();
     // ~MainMenu();
     // Font *font;
 };
