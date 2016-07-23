@@ -64,6 +64,24 @@ void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,gl
 
 
 void Bullet::recalculateRotZ() {
-   float rotz = asin(this->speed.y/this->shotPower);
+   float rotz;
+   float wynikDzielenia = this->speed.y/this->shotPower;
+   if(wynikDzielenia > 1.0f){
+      rotz = glm::radians(85.0f);
+//      wynikDzielenia = 1.0f;
+   }
+   else if(wynikDzielenia < -1.0f){
+      rotz = glm::radians(-85.0f);
+//      wynikDzielenia = -1.0f;
+   }
+   else{
+      rotz = asin(wynikDzielenia);
+   }
+   if(rotz != rotz){
+      std::cout << "BLAD" << std::endl;
+   }
+//   if(glm::degrees(rotz) > 90.0f){
+//      rotz = glm::radians(90.0f);
+//   }
    this->rot.z = -rotz;
 }

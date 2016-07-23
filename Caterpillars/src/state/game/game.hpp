@@ -17,6 +17,7 @@
 #include "../powerBar.hpp"
 #include "player.hpp"
 #include "../../settings.hpp"
+#include "Skybox.hpp"
 
 class Game : public State{
 private:
@@ -81,6 +82,8 @@ public:
     void bulletShot();
 
     void draw2D();
+
+    Skybox *skybox;
 };
 
 #endif

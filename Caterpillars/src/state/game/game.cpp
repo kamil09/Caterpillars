@@ -59,6 +59,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->powerBar->font = new Font("../src/fonts/Coalition.ttf",26);
     this->powerBar->font->posM[3][2] = -0.9f;
     this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(0.0f,0.0f,0.0f));
+
+    this->skybox = new Skybox();
 }
 
 
@@ -108,9 +110,13 @@ int Game::currCatIndex;
 
 void Game::draw(){
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
-   if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
-   this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-   this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
+    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
+
+    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    this->skybox->draw(this->projection,this->modelView);
+
+    this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
    this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
 
     for(int i=0;i < (int)this->caterrVec.size(); i++){

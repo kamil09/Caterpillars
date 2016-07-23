@@ -73,7 +73,8 @@ public:
    void diagonalThrow(glm::vec3 throw_speed); //Rzut ukosny
    //Funkcje i zmienne do textur 2D
    void bindTexture2D(const GLchar *texturePath,GLuint *handle);
-
+   void bindTextureCube(std::vector<std::string> faces,GLuint *handle);
+    void loadTextureCube(std::vector<std::string> faces);
    virtual void loadTexture2D(const GLchar *texturePath);
    virtual void paramText2D();
    int textureWidth;
