@@ -26,6 +26,8 @@ inputActions::inputActions(){
 
 	this->cursorFixedCenterPos=false;
 	this->cursorDisabled=false;
+
+	this->winner = false;
 }
 
 void inputActions::clear(){
@@ -148,6 +150,13 @@ State *inputActions::createState(char key, GLFWwindow *window, GLFWcursor *curso
 			if(state!= nullptr){
 				temp = new PauseMenu(state,window,cursor);
 				this->mapStates.insert(std::make_pair('P',temp));
+			}
+			break;
+		case 'E':
+			state = this->findState('G',window,cursor);
+			if(state!= nullptr){
+				temp = new EndMenu(state,window,cursor);
+				this->mapStates.insert(std::make_pair('E',temp));
 			}
 			break;
 	}

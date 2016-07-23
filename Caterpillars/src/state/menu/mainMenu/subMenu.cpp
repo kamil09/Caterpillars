@@ -48,3 +48,6 @@ void SubMenu::pressESC() {
     inputActions::getInstance().currentState = this->primaryState;
 }
 
+void goExit(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
+    inputActions::getInstance().changeState('m',window,cursor);
+}

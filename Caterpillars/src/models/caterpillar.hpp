@@ -46,6 +46,8 @@ public:
 
    int life;//Życie naszego bohatera :)
     std::string getLife();
+    void dealDamage(int damage);
+    void heal(int heal);
 };
 
 

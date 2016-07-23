@@ -1,9 +1,9 @@
 //
-// Created by lewin on 10.07.16.
+// Created by lewin on 23.07.16.
 //
 
-#ifndef PAUSEMENU
-#define PAUSEMENU
+#ifndef ENDMENU_HPP
+#define ENDMENU_HPP
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -11,25 +11,19 @@
 #include "../menu/button.hpp"
 #include "../menu/mainMenu/subMenu.hpp"
 
-class PauseMenu : public SubMenu{
+class EndMenu : public SubMenu {
 public:
+    EndMenu(State *state, GLFWwindow *window, GLFWcursor *cur);
+    virtual void loadCallBacks() override;
+    virtual void loadTextureFiles() override;
+    virtual void loadCoordinates() override;
+    virtual void loadTranslates() override;
+    virtual void loadSprites() override;
+
     virtual void pressESC() override;
 
-    virtual void loadCallBacks() override;
-
-    virtual void loadTextureFiles() override;
-
-    virtual void loadCoordinates() override;
-
-    virtual void loadTranslates() override;
-
-    virtual void loadSprites() override;
     Font *font;
-    PauseMenu(State *state, GLFWwindow *window, GLFWcursor *cur);
 };
 
 
-
-void goBack2(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor);
-
-#endif //CATERPILLARS_PAUSEMENU_HPP
+#endif //CATERPILLARS_ENDMENU_HPP

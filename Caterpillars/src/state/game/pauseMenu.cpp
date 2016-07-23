@@ -60,9 +60,7 @@ void PauseMenu::pressESC() {
     SubMenu::pressESC();
 }
 
-void goExit(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
-    inputActions::getInstance().changeState('m',window,cursor);
-}
+
 
 void goBack2(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor) {
     inputActions::getInstance().cursorFixedCenterPos=true;

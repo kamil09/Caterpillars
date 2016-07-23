@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "caterpillar.hpp"
 
 
@@ -151,4 +152,25 @@ std::string Caterpillar::getLife() {
     }
     temp +=std::to_string(this->life);
     return temp;
+}
+
+void Caterpillar::dealDamage(int damage) {
+    this->life -= damage;
+    if(this->life <= 0){
+        this->dead = 1;
+//        Caterpillar* temp = nullptr;
+//        std::vector<Caterpillar*> temp2 = this->player->aliveCaterpillars;
+        std::vector<Caterpillar*>::iterator it = std::find(this->player->aliveCaterpillars.begin(),this->player->aliveCaterpillars.end(),this);
+        if(it != this->player->aliveCaterpillars.end()){
+            std:: cout << "Caterpillar of player: " << this->player->nazwa << " died life: " << this->life << std::endl;
+            this->player->aliveCaterpillars.erase(it);
+        }
+    }
+}
+
+void Caterpillar::heal(int heal) {
+    if(this->life > 0){
+        this->life += heal;
+    }
+
 }

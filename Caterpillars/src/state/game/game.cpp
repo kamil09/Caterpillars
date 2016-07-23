@@ -88,13 +88,26 @@ void Game::createPlayers() {
 
 
 void Game::changePlayer() {
-    this->activePlayer++;
-    this->activePlayer = this->activePlayer % this->alivePlayers.size();
+    Player *previousPlayer = this->alivePlayers[this->activePlayer];
+    int nextPlayer = this->activePlayer + 1;
+//    this->activePlayer++;
+//    this->activePlayer = this->activePlayer % this->alivePlayers.size();
+    nextPlayer = nextPlayer % this->alivePlayers.size();
     Caterpillar *nextCat = nullptr;
     while(nextCat== nullptr){
-        nextCat = this->players[this->activePlayer]->changeCaterpillar();
+        nextCat = this->alivePlayers[nextPlayer]->changeCaterpillar();
+        if(nextCat== nullptr){
+            this->alivePlayers.erase(this->alivePlayers.begin()+nextPlayer);
+            nextPlayer = nextPlayer % this->alivePlayers.size();
+        }
     }
     if(nextCat!= nullptr){
+        if(previousPlayer == this->alivePlayers[nextPlayer]){
+            inputActions::getInstance().winner = this->alivePlayers[this->activePlayer];
+        }
+//        else{
+            this->activePlayer = nextPlayer;
+//        }
         this->currentTime = this->maxTime;
         this->currentCutterpillar = nextCat;
         std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
@@ -221,9 +234,12 @@ void Game::changeTime() {
 
 
 void Game::run(){
-
-   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
+    if(inputActions::getInstance().winner!= nullptr){
+        this->endGame();
+        return;
+    }
     this->changeTime();
+    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    if(inputActions::getInstance().SHIFT_pressed) this->testViewMov();
    else {
       this->catterMove();
@@ -608,7 +624,8 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            {
              if(bul->colission == false)
              {
-             cat->life = cat->life - bul->damage;
+             cat->dealDamage(bul->damage);
+//             cat->life = cat->life - bul->damage;
              Map::getInstance().kaboom(x,y,z,boomRadius);
              o->colission = true;
              bul->currentWaitTime = bul->waitTime;
@@ -642,9 +659,13 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
                //Zmniejszanie zycia jesli w promieniu boom booma kabooma
                float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+pow((cat->pos.z - o->pos.z),2));
                cout << "Radius: " << rad << endl;
-               if(rad <= boomRadius)
-                  cat->life = cat->life - (int)(bul->damage/rad);
-
+               if(rad <= boomRadius){
+                   //Zmiana do damage
+                   float proc = 1 - (rad/boomRadius);
+//                  cat->life = cat->life - (int)(bul->damage/rad);
+//                   cat->life = cat->life - (int)(bul->damage*proc);
+                   cat->dealDamage((int)(bul->damage*proc));
+               }
              }
            }
          }
@@ -718,5 +739,13 @@ void Game::pressESC() {
 int Game::procentShotPower() {
     float licznik=this->shotPower-this->minShotPower;
     float mianownik=this->maxShotPower-this->minShotPower;
+    if(mianownik<=0.0f){
+        mianownik = 1.0f;
+    }
     return (licznik/mianownik)*100.0f;
+}
+
+void Game::endGame() {
+    inputActions::getInstance().changeState('e',this->window,this->cursor);
+    inputActions::getInstance().cursorFixedCenterPos=false;
 }

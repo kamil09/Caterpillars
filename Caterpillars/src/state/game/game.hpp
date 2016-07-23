@@ -82,7 +82,7 @@ public:
     void bulletShot();
 
     void draw2D();
-
+   void endGame();
     Skybox *skybox;
 };
 
