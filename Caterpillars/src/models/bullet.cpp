@@ -8,6 +8,7 @@ Bullet::Bullet(char *filename, float shotPower){
    }
    //wartosci wylosowana Damage
    this->shotPower = shotPower;
+   this->windMul = 15.0f;
    this->copyParent();
 }
 
@@ -84,4 +85,14 @@ void Bullet::recalculateRotZ() {
 //      rotz = glm::radians(90.0f);
 //   }
    this->rot.z = -rotz;
+
+   //Rotacja na osiY
+   float katY = atan2(this->speed.x,this->speed.z);
+//   if(this->speed.z < 0){
+//      katY = katY - glm::radians(180.0f);
+//   }
+//   else if(this->speed.x < 0){
+//      katY = katY - glm::radians(180.0f);
+//   }
+   this->rot.y = katY;
 }

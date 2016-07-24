@@ -139,9 +139,10 @@ void Map::generateRandomMap(){
 void Map::rand(){
    //To bedzie ok tylko trzeba zrobic losowanie <-50;50>
    //zeby bylo we wszystkich kierunkach
-   this->windForce.x = std::rand() % 50-25;
-   this->windForce.y = std::rand() % 50-25;
-   this->windForce.z = std::rand() % 50-25;
+   this->windForce.x = std::rand() % 51-50;
+   this->windForce.y = std::rand() % 51-50;
+   this->windForce.z = std::rand() % 51-50;
+   std::cout << "wiatr x: " << this->windForce.x << " wiatr y: " << this->windForce.y << " wiatr z: " << this->windForce.z << std::endl;
 }
 
 void Map::kaboom(float x, float y, float z, float radius){

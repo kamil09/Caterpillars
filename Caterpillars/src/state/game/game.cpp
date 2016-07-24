@@ -122,6 +122,7 @@ void Game::changePlayer() {
 //        }
         this->currentTime = this->maxTime;
         this->currentCutterpillar = nextCat;
+        this->map->rand();
 //        std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
 //        if(it != this->caterrVec.end()){
 //            this->currCatIndex = std::distance(this->caterrVec.begin(),it);
@@ -493,6 +494,9 @@ void Game::bulletShot() {//Warunek na strzal - widok z celowikiem i lewy przycis
             }
             else {
                 shotPower = shotPower + this->increaseShotPower*inputActions::getInstance().deltaTime;
+                if(this->shotPower > this->maxShotPower){
+                    this->shotPower = this->maxShotPower;
+                }
             }
 //          shotPower = 5;
 
