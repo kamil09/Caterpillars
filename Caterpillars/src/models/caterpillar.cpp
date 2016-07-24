@@ -14,7 +14,7 @@ Caterpillar::Caterpillar(char *filename){
    this->life=100;
    this->maxWalkAngle=0.45;
    this->maxWalkSpeed=5.0f;
-   this->dead=1;
+   this->dead=0;
    loadObj::load(filename,&this->vertices, &this->indices);
    loadObj::load((char*)"../src/obj/box.obj",&this->verticesDead, &this->indicesDead);
 
@@ -97,7 +97,7 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 ligh
    this->modM=this->posM*this->rotMY*this->sclM;
 
    if(this->dead==0){
-      printf("DEAD: %d\n",this->dead);
+      //printf("DEAD: %d\n",this->dead);
       this->weapon->draw(projection,modelView,this,lights,sun);
       if(this->font!= NULL){
            glm::mat4 temp = this->posM;

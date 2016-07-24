@@ -10,14 +10,14 @@ layout (location = 1) in vec4 las;
 layout (location = 2) in vec2 texture;
 
 void main(){
-   mat4 scl=mat4(las.a,0,0,0,
-                  0,las.a,0,0,
-                  0,0,las.a,0,
-                  0,0,0,1);
-   mat4 pos=mat4(1,0,0,las.x,
-                 0,1,0,las.y,
-                 0,0,1,las.z,
-                 0,0,0,1);
+   mat4 scl=mat4(las[3],0.0f,0.0f,0.0f,
+                  0.0f,las[3],0.0f,0.0f,
+                  0.0f,0.0f,las[3],0.0f,
+                  0.0f,0.0f,0.0f,1.0f);
+   mat4 pos=mat4(1.0f,0.0f,0.0f,las[0],
+                 0.0f,1.0f,0.0f,las[1],
+                 0.0f,0.f,1.0f,las[2],
+                 0.0f,0.0f,0.0f,1.0f);
    mat4 M=pos*scl;
 
 	gl_Position = P*V*M*vec4(vertex.x, vertex.y, vertex.z, 1.0);

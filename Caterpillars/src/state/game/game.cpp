@@ -103,7 +103,6 @@ void Game::changePlayer() {
     }
 }
 
-
 int Game::currCatIndex;
 
 void Game::draw(){
@@ -122,7 +121,6 @@ void Game::draw(){
         this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
     }
-
 
     for(int i=0;i<(int)this->towers.size();i++ )
       this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
@@ -145,12 +143,10 @@ void Game::draw(){
             }
          }
        }
-
-   if(this->bullets.empty()){
-        draw2D();
-   }
-   for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
-      Map::getInstance().particleEffectsVector[i]->draw();
+   if(this->bullets.empty()) draw2D();
+   
+   for(unsigned int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
+      Map::getInstance().particleEffectsVector[i]->draw(this->projection,this->modelView);
 
 }
 
@@ -260,8 +256,8 @@ void Game::run(){
       }
     }
 
-    for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
-      if(Map::getInstance().particleEffectsVector[i]->effectMaxTime>0)
+    for(unsigned int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
+      if(Map::getInstance().particleEffectsVector[i]->effectTimeLeft>0)
          Map::getInstance().particleEffectsVector[i]->run();
       else{
          ParticleEffect *tmp = Map::getInstance().particleEffectsVector[i];
@@ -632,9 +628,10 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          if((bul = dynamic_cast<Bullet *>(o)))
          {
            cout << "Boooooom" <<endl;
-           if(!o->colission)
-            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,5,50,5000,1));
+           if(!o->colission){
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
             Map::getInstance().kaboom(x,y,z,boomRadius);
+         }
 
             bul->currentWaitTime = bul->waitTime;
            o->colission = true;

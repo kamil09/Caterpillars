@@ -54,7 +54,7 @@ void main(){
 
 	vN=normalize(vec4(normal.xyz,1.0f)); //Oblicz i interpoluj wektor normalny w przestrzeni swiata
 	vL1=normalize(L1pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
-	vL2=normalize(L2pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
+	vL2=normalize(L2pos-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiatah
 	vL3=normalize(SUN-vertex); //Oblicz i interpoluj wektor do zrodla swiatla w przestrzeni swiata
 
 	gl_Position = P*V*M*vec4(position.x, position.y, position.z, 1.0);

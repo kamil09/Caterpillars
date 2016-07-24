@@ -1,7 +1,6 @@
-#version 330 core
+h#version 330 core
 
 in vec2 TexCoord;
-in vec2 iTexCoord;
 in float towL1;
 in float towL2;
 flat in int czyNormalMapI;
