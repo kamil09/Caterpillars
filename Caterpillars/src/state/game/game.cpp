@@ -138,7 +138,13 @@ void Game::draw(){
             //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
             //    this->caterrVec[i]->draw(this->projection,this->modelView);
             //}
-        this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+        //if(!this->caterrVec[i]->colission)
+          this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+        //else
+        //{
+          //this->caterrVec.erase(std::remove(this->caterrVec.begin(), this->caterrVec.end(), this->caterrVec[i]), this->caterrVec.end());
+          //inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->caterrVec[i]), inputActions::getInstance().objectPointers.end());
+        //}
 
     }
     for(int i=0;i<(int)this->towers.size();i++ )
@@ -569,6 +575,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
    bool canZ = true;
 
    Caterpillar* cat;
+   Caterpillar* hcat;
    Bullet* bul;
    int boomRadius = 20;
 
@@ -613,12 +620,22 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
        if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
        {
          if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
-            && (y >= (int)v[i]->pos.y - (int)v[i]->size.y*6) && (y <= (int)v[i]->pos.y + (int)v[i]->size.y*6)
+            && (y >= (int)v[i]->pos.y - (int)v[i]->size.y*6) && (y <= (int)v[i]->pos.y + (int)v[i]->size.y*12)
             && (z >= (int)v[i]->pos.z - 3) && (z <= (int)v[i]->pos.z + 3))
          {
+           if(cat->dead == 0) {
            canX = false;
            canY = false;
            canZ = false;
+           }
+           else {
+             if((hcat = dynamic_cast<Caterpillar *>(o)) && !hcat->colission)
+             {
+               hcat->heal(100);
+               hcat->colission = true;
+             }
+           }
+
            //Jesli kolizja z pociskiem to zmniejszamy zycie Caterpillara
            if((bul = dynamic_cast<Bullet *>(o)))
            {
@@ -629,6 +646,21 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
              Map::getInstance().kaboom(x,y,z,boomRadius);
              o->colission = true;
              bul->currentWaitTime = bul->waitTime;
+
+              for(int j=0; j < v.size(); j++)
+               {
+                 if((cat = dynamic_cast<Caterpillar *>(v[j])))
+                 {
+                   float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+ pow((cat->pos.z - o->pos.z),2));
+                   cout << "Radius: " << rad << endl;
+                   if(rad <= boomRadius)
+                   {
+                       float proc = 1 - (rad/boomRadius);
+                       cat->dealDamage((int)(bul->damage*proc));
+                   }
+                 }
+               }
+
              }
            }
          }
