@@ -662,7 +662,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
              {
 //             cat->dealDamage(bul->damage);
 //             cat->life = cat->life - bul->damage;
-            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,15000,2,0.5));
              Map::getInstance().kaboom(x,y,z,boomRadius);
              o->colission = true;
              bul->currentWaitTime = bul->waitTime;
@@ -699,7 +699,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            cout << "Boooooom" <<endl;
            if(!o->colission)
            {
-             Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
+             Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,15000,2,0.5));
               Map::getInstance().kaboom(x,y,z,boomRadius);
               bul->currentWaitTime = bul->waitTime;
               o->colission = true;
