@@ -26,7 +26,8 @@ struct Particle{
 class ParticleEffect{
 
 public:
-   static GLfloat particleEffectVertex[12];
+   //static GLfloat particleEffectVertex[12];
+	static GLfloat particleEffectVertex[18];
    GLuint VerBuffer;
    GLuint ParPosBuffer;
    GLuint ParColBuffer;

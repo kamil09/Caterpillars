@@ -1,7 +1,14 @@
 #include "particle.hpp"
 #include "../../inputActions.hpp"
 
-GLfloat ParticleEffect::particleEffectVertex[12] = {-0.5f,-0.5f,0.0f,0.5f,-0.5f,0.0f,-0.5f,0.5f,0.0f,0.5f,0.5f,0.0f};
+//GLfloat ParticleEffect::particleEffectVertex[12] = {-0.5f,-0.5f,-0.3f,0.5f,-0.5f,0.0f,-0.5f,0.5f,0.0f,0.5f,0.5f,-0.3f};
+GLfloat ParticleEffect::particleEffectVertex[18] = {  -0.5f,-0.5f,0.0f,
+                                                      0.5f,-0.5f,0.0f,
+                                                      0.0f,0.35f,0.0f,
+                                                      0.0f,-0.08f,0.85f,
+                                                      -0.5f,-0.5f,0.0f,
+                                                      0.5f,-0.5f,0.0f};
+
 
 ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, float maxSize, int maxParticles, float life, float coef){
 
@@ -40,10 +47,9 @@ ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, floa
 
    srand( time( NULL ) );
    this->createFirstParticles(coef);
-   this->run();
 
-   //glGenVertexArrays(1, &this->VAO);
-   //glBindVertexArray(this->VAO);
+   glGenVertexArrays(1, &this->VAO);
+   glBindVertexArray(this->VAO);
 
    this->shader = new Shader("../src/shaders/particle.vs","../src/shaders/particle.frag");
 
@@ -55,52 +61,28 @@ void ParticleEffect::bindBuffers(){
    this->ParPosBuffer=0;
    this->ParColBuffer=0;
 
-   glGenVertexArrays(1, &this->VerBuffer);
+   glGenBuffers(1, &this->VerBuffer);
    glGenBuffers(1, &this->ParPosBuffer);
    glGenBuffers(1, &this->ParColBuffer);
 
 
-   glBindVertexArray(this->VerBuffer);
+   glBindBuffer(GL_ARRAY_BUFFER, this->VerBuffer);
    glBufferData(GL_ARRAY_BUFFER, sizeof(particleEffectVertex), particleEffectVertex, GL_STATIC_DRAW);
-
-   glBindBuffer(GL_ARRAY_BUFFER, this->ParPosBuffer);
-   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 4 * sizeof(GLfloat), NULL, GL_DYNAMIC_DRAW);
-
-   glBindBuffer(GL_ARRAY_BUFFER, this->ParColBuffer);
-   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 2 * sizeof(GLfloat), NULL, GL_DYNAMIC_DRAW);
-
-   //glBufferSubData(GL_ARRAY_BUFFER, 0, this->particlesCount * sizeof(GLfloat) * 4, this->effectParticlePosAndSize);
-
-   //glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 2 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
-   //glBufferSubData(GL_ARRAY_BUFFER, 0, this->particlesCount * sizeof(GLfloat) * 2, this->effectColorData);
-
-   //1rst attribute buffer : vertices
-   glEnableVertexAttribArray(0);
-   glBindVertexArray(this->VerBuffer);
    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(GLvoid*)0);
-   //2nd attribute buffer : positions of particles' centers
-   glEnableVertexAttribArray(1);
-   glBindBuffer(GL_ARRAY_BUFFER, this->ParPosBuffer);
-   glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,0,(GLvoid*)0);
-   //3rd attribute buffer : particles' colors
-   glEnableVertexAttribArray(2);
-   glBindBuffer(GL_ARRAY_BUFFER, this->ParColBuffer);
-   glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,0,(GLvoid*)0);
+   glEnableVertexAttribArray(0);
 
-   //glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindVertexArray(0);
-   // //1rst attribute buffer : vertices
-   // glEnableVertexAttribArray(0);
-   // glBindBuffer(GL_ARRAY_BUFFER, this->VerBuffer);
-   // glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
-   // // //2nd attribute buffer : positions of particles' centers
-   // glEnableVertexAttribArray(1);
-   // glBindBuffer(GL_ARRAY_BUFFER, this->ParPosBuffer);
-   // glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,0,(void*)0);
-   // // //3rd attribute buffer : particles' colors
-   // glEnableVertexAttribArray(2);
-   // glBindBuffer(GL_ARRAY_BUFFER, this->ParColBuffer);
-   // glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,0,(void*)0);
+   glBindBuffer(GL_ARRAY_BUFFER, this->ParPosBuffer);
+   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+   glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,0,(GLvoid*)0);
+   glEnableVertexAttribArray(1);
+
+   glBindBuffer(GL_ARRAY_BUFFER, this->ParColBuffer);
+   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 2 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+   glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,0,(GLvoid*)0);
+   glEnableVertexAttribArray(2);
+
+   glBindVertexArray(0);
+   glBindBuffer(GL_ARRAY_BUFFER,0);
 
 }
 
@@ -109,10 +91,12 @@ void ParticleEffect::createFirstParticles(float coef){
 }
 
 void ParticleEffect::createSimpleParticle(){
-   //TODO powinno być losowanie w kuli, a nie w kwadracie
-   float posX=(float)(rand()%( (int)this->effectMinSize*10 )) / 10 -this->effectMinSize;
-   float posY=(float)(rand()%( (int)this->effectMinSize*10 )) / 10 -this->effectMinSize;
-   float posZ=(float)(rand()%( (int)this->effectMinSize*10 )) / 10 -this->effectMinSize;
+   //Losowanie w prawie kuli; nie mam na razie pomysłu jak zrobić aby były to zmienne niezależne, więc wygląda jak jajko :/
+   float posX = (float)(rand()%max( (int)ceil(this->effectMinSize*100),1 )) / 50 - this->effectMinSize;
+   float maxy = sqrt(pow(this->effectMinSize,2)-pow(posX,2));
+   float posY= (float) (rand()%max( (int)ceil(maxy*100),1)) / 50 - maxy;
+   float maxz=this->effectMinSize - sqrt(pow(posX,2)+pow(posY,2));
+   float posZ=(float)(rand()%max( (int)ceil(maxz*100),1)) / 100 -maxz;
 
    Particle p;
    p.pos=glm::vec3(posX,posY,posZ);
@@ -128,9 +112,8 @@ void ParticleEffect::createSimpleParticle(){
    float speedZ=(float)(rand()%5-2)*maxSpeed/3 ;
    p.speed=glm::vec3(speedX,speedY,speedZ);
 
-   //TODO pomysleć nad rozmiarem
-   p.size=(float)(rand()%10+10)/30+0.2;
 
+   p.size=(float)(rand()%100)/800+0.07;
    this->particlesContainer.push_back(p);
 }
 
@@ -147,14 +130,15 @@ void ParticleEffect::run(){
       if(p.life>0){
          p.life-=inputActions::getInstance().deltaTime;
          //TODO ZMIANA PRĘDKOŚCI I ROZMIARU
-
-         p.pos+=p.speed*inputActions::getInstance().deltaTime; //pozycja
          this->effectParticlePosAndSize[4*particlesCount]=p.pos.x + this->effectPos.x;
          this->effectParticlePosAndSize[4*particlesCount+1]=p.pos.y + this->effectPos.y;
          this->effectParticlePosAndSize[4*particlesCount+2]=p.pos.z + this->effectPos.z;
          this->effectParticlePosAndSize[4*particlesCount+3]=p.size;
 
-         //printf("POZYCJA: %f %f %f\n",this->effectParticlePosAndSize[4*particlesCount],this->effectParticlePosAndSize[4*particlesCount+1],this->effectParticlePosAndSize[4*particlesCount+2]);
+         p.size-=0.8*inputActions::getInstance().deltaTime;
+         if(p.size<0.05) p.size=0.05;
+         p.speed.y-=9.81*inputActions::getInstance().deltaTime;
+         p.pos+=p.speed*inputActions::getInstance().deltaTime; //pozycja
 
          //TODO POPRAWIĆ LOSOWANIE KOLORU, DODAĆ 2 TYP
          float rad = sqrt( pow(p.pos.x,2)+pow(p.pos.y,2)+pow(p.pos.z,2) );
@@ -169,14 +153,12 @@ void ParticleEffect::run(){
 //draw particles
 void ParticleEffect::draw(glm::mat4 projection, glm::mat4 modelView){
    this->shader->useShaderProgram(0);
-   glBindVertexArray(this->VerBuffer);
+   glBindVertexArray(this->VAO);
 
    glBindBuffer(GL_ARRAY_BUFFER, this->ParPosBuffer);
-   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 4 * sizeof(GLfloat), this->effectParticlePosAndSize, GL_DYNAMIC_DRAW);
    glBufferSubData(GL_ARRAY_BUFFER, 0, this->particlesCount * sizeof(GLfloat) * 4, this->effectParticlePosAndSize);
 
    glBindBuffer(GL_ARRAY_BUFFER, this->ParColBuffer);
-   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 2 * sizeof(GLfloat), this->effectColorData, GL_DYNAMIC_DRAW);
    glBufferSubData(GL_ARRAY_BUFFER, 0, this->particlesCount * sizeof(GLfloat) * 2, this->effectColorData);
 
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
@@ -193,10 +175,7 @@ void ParticleEffect::draw(glm::mat4 projection, glm::mat4 modelView){
    // This is equivalent to :
    // for(i in ParticlesCount) : glDrawArrays(GL_TRIANGLE_STRIP, 0, 4),
    // but faster.
-   glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, this->particlesCount);
-
-//   glDisableVertexAttribArray(0);
-//	glDisableVertexAttribArray(1);
-//	glDisableVertexAttribArray(2);
-
+   glDrawArraysInstanced(GL_TRIANGLES, 0, 6, this->particlesCount);
+   glBindVertexArray(0);
+   glBindBuffer(GL_ARRAY_BUFFER,0);
 }
