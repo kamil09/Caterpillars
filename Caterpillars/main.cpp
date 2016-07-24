@@ -129,6 +129,7 @@ void initOpenGLProgram(GLFWwindow* window,GLFWcursor* cursor){
 	glEnable(GL_DEPTH_TEST);
 	// glEnable(GL_ALPHA);
 	glEnable(GL_BLEND);
+	glDepthFunc(GL_LESS);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	cursor = inputActions::getInstance().setCallbacks(window,cursor);

@@ -39,7 +39,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
     //ta wartosc wskazuje nam ktory jest aktyalny
     //wykorzystywana w kolizjach
-//    Game::currCatIndex = 0;
+    //Game::currCatIndex = 0;
 
 
     this->lookFrom=glm::vec3(0, 400, 0);
@@ -59,9 +59,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->powerBar->setTraM(-1366.0f/2.0f + 10.0f,-768.0f/2.0f + this->font->height(1.0f) + 20.0f,0.0f);
     this->powerBar->font = new Font("../src/fonts/Coalition.ttf",26);
     this->powerBar->font->posM[3][2] = -0.9f;
-    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(1.0f,1.0f,1.0f));
-
-    this->skybox = new Skybox();
+    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(0.0f,0.0f,0.0f));
 }
 
 
@@ -136,13 +134,9 @@ void Game::changePlayer() {
 
 void Game::draw(){
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
-    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
-
-    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-
-    this->skybox->draw(this->projection,this->modelView);
-
-    this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
+   if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
+   this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
+   this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
    this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
 
     for(int i=0;i < (int)this->caterrVec.size(); i++){
@@ -151,24 +145,10 @@ void Game::draw(){
             //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
             //    this->caterrVec[i]->draw(this->projection,this->modelView);
             //}
-        if(!this->caterrVec[i]->colission)
-          this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
-        else {
-            Caterpillar *toErase = this->caterrVec[i];
-//          this->caterrVec.erase(std::remove(this->caterrVec.begin(), this->caterrVec.end(), this->caterrVec[i]), this->caterrVec.end());
-//          inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->caterrVec[i]), inputActions::getInstance().objectPointers.end());
-            std::vector<Caterpillar*>::iterator itC = std::find(this->caterrVec.begin(),this->caterrVec.end(),toErase);
-            if(itC != this->caterrVec.end()){
-                this->caterrVec.erase(itC);
-            }
-            std::vector<Object*>::iterator itO = std::find(inputActions::getInstance().objectPointers.begin(),inputActions::getInstance().objectPointers.end(),toErase);
-            if(itO != inputActions::getInstance().objectPointers.end()){
-                inputActions::getInstance().objectPointers.erase(itO);
-            }
-//            delete toErase;
-        }
+        this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
     }
+
     for(int i=0;i<(int)this->towers.size();i++ )
       this->towers[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
 
@@ -184,15 +164,16 @@ void Game::draw(){
                     inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
                     this->changePlayer();
                 }
-//                else{
-//                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
-//                }
+                else{
+                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
+                }
             }
          }
        }
-    if(this->bullets.empty()){
-        draw2D();
-    }
+   if(this->bullets.empty()) draw2D();
+   for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
+      Map::getInstance().particleEffectsVector[i]->draw(this->projection,this->modelView);
+
 }
 
 void Game::draw2D() {
@@ -261,6 +242,7 @@ void Game::changeTime() {
 }
 
 
+
 void Game::run(){
     if(inputActions::getInstance().winner!= nullptr){
         this->endGame();
@@ -306,7 +288,19 @@ void Game::run(){
 
       }
     }
+    for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
+      if(Map::getInstance().particleEffectsVector[i]->effectTimeLeft>0)
+         Map::getInstance().particleEffectsVector[i]->run();
+      else{
+         ParticleEffect *tmp = Map::getInstance().particleEffectsVector[i];
+         Map::getInstance().particleEffectsVector.erase(std::remove(Map::getInstance().particleEffectsVector.begin(), Map::getInstance().particleEffectsVector.end(), Map::getInstance().particleEffectsVector[i]), Map::getInstance().particleEffectsVector.end());
+         delete tmp;
+         puts("deleted particle effect");
+      }
+    }
 }
+
+
 void Game::calcViewMatrix(){
     if(!this->bullets.empty()){
         this->lookAt = this->bullets[0]->pos;
@@ -445,35 +439,34 @@ void Game::catterMove(){
   }
 
 
-   checkCollisionAndMove(this->currentCutterpillar,newPos,inputActions::getInstance().objectPointers);
-   if(inputActions::getInstance().movedX!=0){
-      this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;
-      if(this->currentCutterpillar->rot.y<-2*M_PI) this->currentCutterpillar->rot.y+=2*M_PI;
-      if(this->currentCutterpillar->rot.y>2*M_PI) this->currentCutterpillar->rot.y-=2*M_PI;
-   }
-   if(inputActions::getInstance().movedY!=0){
-      this->currentCutterpillar->rot.z+=(float)(inputActions::getInstance().movedY)/500;
-      if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
-      if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
-   }
-   if(inputActions::getInstance().scroll!=0){
-      this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/1.5;
-      if(this->currentCutterpillar->viewBack > 0.0f) this->currentCutterpillar->viewBack = 0.0f;
-      if(this->currentCutterpillar->viewBack < -60.0f) this->currentCutterpillar->viewBack = -60.0f;
-   }
-   //std::cout << inputActions::getInstance().rightClick << std::endl;
-   if(inputActions::getInstance().rightClick){
-      if(this->currentCutterpillar->tmpViewBack > 0) this->currentCutterpillar->tmpViewBack = this->currentCutterpillar->viewBack;
-      if(this->currentCutterpillar->viewBack < -20) this->currentCutterpillar->viewBack=0.0f;
-   }
-   else{
-       if(this->currentCutterpillar->tmpViewBack <= 0 ){
-         this->currentCutterpillar->viewBack = this->currentCutterpillar->tmpViewBack;
-         this->currentCutterpillar->tmpViewBack=666.0f;
-      }
-      //printf("odl: %f\n",this->currentCutterpillar->tmpViewBack);
-   }
-
+  checkCollisionAndMove(this->currentCutterpillar,newPos,inputActions::getInstance().objectPointers);
+ if(inputActions::getInstance().movedX!=0){
+    this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;
+    if(this->currentCutterpillar->rot.y<-2*M_PI) this->currentCutterpillar->rot.y+=2*M_PI;
+    if(this->currentCutterpillar->rot.y>2*M_PI) this->currentCutterpillar->rot.y-=2*M_PI;
+ }
+ if(inputActions::getInstance().movedY!=0){
+    this->currentCutterpillar->rot.z+=(float)(inputActions::getInstance().movedY)/500;
+    if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
+    if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
+ }
+ if(inputActions::getInstance().scroll!=0){
+    this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/1.5;
+    if(this->currentCutterpillar->viewBack > 0.0f) this->currentCutterpillar->viewBack = 0.0f;
+    if(this->currentCutterpillar->viewBack < -60.0f) this->currentCutterpillar->viewBack = -60.0f;
+ }
+ //std::cout << inputActions::getInstance().rightClick << std::endl;
+ if(inputActions::getInstance().rightClick){
+    if(this->currentCutterpillar->tmpViewBack > 0) this->currentCutterpillar->tmpViewBack = this->currentCutterpillar->viewBack;
+    if(this->currentCutterpillar->viewBack < -20) this->currentCutterpillar->viewBack=0.0f;
+ }
+ else{
+     if(this->currentCutterpillar->tmpViewBack <= 0 ){
+       this->currentCutterpillar->viewBack = this->currentCutterpillar->tmpViewBack;
+       this->currentCutterpillar->tmpViewBack=666.0f;
+    }
+    //printf("odl: %f\n",this->currentCutterpillar->tmpViewBack);
+ }
 
 //   this->start = clock();
 }
@@ -673,6 +666,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
              {
 //             cat->dealDamage(bul->damage);
 //             cat->life = cat->life - bul->damage;
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
              Map::getInstance().kaboom(x,y,z,boomRadius);
              o->colission = true;
              bul->currentWaitTime = bul->waitTime;
@@ -709,6 +703,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            cout << "Boooooom" <<endl;
            if(!o->colission)
            {
+             Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
               Map::getInstance().kaboom(x,y,z,boomRadius);
               bul->currentWaitTime = bul->waitTime;
               o->colission = true;

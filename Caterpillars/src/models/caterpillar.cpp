@@ -20,7 +20,6 @@ Caterpillar::Caterpillar(char *filename, bool dead) {
         this->bindTexture2D("../src/img/box.png",&this->texture2D);
         this->bindTexture2D("../src/img/light/boxLight.png",&this->lightMap);
         this->bindTexture2D("../src/img/shadow/boxShadow.png",&this->shadowMap);
-
     }
     else{
         this->dead=0;
@@ -31,7 +30,6 @@ Caterpillar::Caterpillar(char *filename, bool dead) {
     loadObj::load(filename,&this->vertices, &this->indices);
 
    this->bindBuffers(5,8,GL_STATIC_DRAW);
-
 
    this->startLook = glm::vec3(1.0f,0.0f,0.0f);
    this->weapon = new Gun( (char*)"../src/obj/weapon.obj",10,100,this);

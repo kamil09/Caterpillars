@@ -25,6 +25,7 @@ const int murHeight=200;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "../particle.hpp"
 
 using namespace std;
 
@@ -43,6 +44,7 @@ public:
    float **mapVert; //Jedna jednostka - 0,5 metra (1000m x 1000m) wartość w tablicy - wysokość
    float **mapVertFirst;
    glm::vec3 ***meshNormals;
+   std::vector< ParticleEffect* > particleEffectsVector;
    void calcMeshNormals(int xStart, int xStop, int yStart, int yStop);
    void generateMeshNormals();
    Map();

@@ -17,6 +17,7 @@
 #include "../powerBar.hpp"
 #include "player.hpp"
 #include "../../settings.hpp"
+#include "particle.hpp"
 #include "Skybox.hpp"
 
 class Game : public State{
