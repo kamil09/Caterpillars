@@ -113,9 +113,9 @@ void Object::recalculateGravity(float timeDifference) {
 				this->speed.z = 0;
 			}
 		}
-		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
-			 				this->pos.z, inputActions::getInstance().objectPointers))
-		{
+//		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
+//			 				this->pos.z, inputActions::getInstance().objectPointers))
+		else {
 			if(!this->on_the_ground)
 			{
 				windX = bet_time * Map::getInstance().windForce.x * this->windMul;

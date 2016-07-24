@@ -2,6 +2,7 @@
 #include <typeinfo>
 #include "../../inputActions.hpp"
 
+Caterpillar* Game::currentCutterpillar = nullptr;
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->sunPosition=glm::vec4(vertX/2,700,vertY/2,1.0f);
@@ -38,7 +39,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
     //ta wartosc wskazuje nam ktory jest aktyalny
     //wykorzystywana w kolizjach
-    Game::currCatIndex = 0;
+//    Game::currCatIndex = 0;
 
 
     this->lookFrom=glm::vec3(0, 400, 0);
@@ -90,6 +91,17 @@ void Game::createPlayers() {
 void Game::changePlayer() {
     Player *previousPlayer = this->alivePlayers[this->activePlayer];
     int nextPlayer = this->activePlayer + 1;
+    if(this->activePlayer > -1 && this->currentCutterpillar != nullptr){
+        if(this->currentCutterpillar->dead != 0){
+            int temp = this->alivePlayers[this->activePlayer]->activeCaterpillar;
+            if(this->alivePlayers[this->activePlayer]->changeCaterpillar() == nullptr){
+                this->alivePlayers.erase(this->alivePlayers.begin() + this->activePlayer);
+            }
+            else{
+                this->alivePlayers[this->activePlayer]->activeCaterpillar = temp;
+            }
+        }
+    }
 //    this->activePlayer++;
 //    this->activePlayer = this->activePlayer % this->alivePlayers.size();
     nextPlayer = nextPlayer % this->alivePlayers.size();
@@ -102,7 +114,7 @@ void Game::changePlayer() {
         }
     }
     if(nextCat!= nullptr){
-        if(previousPlayer == this->alivePlayers[nextPlayer]){
+        if(this->alivePlayers.size() == 1){
             inputActions::getInstance().winner = this->alivePlayers[this->activePlayer];
         }
 //        else{
@@ -110,16 +122,16 @@ void Game::changePlayer() {
 //        }
         this->currentTime = this->maxTime;
         this->currentCutterpillar = nextCat;
-        std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
-        if(it != this->caterrVec.end()){
-            this->currCatIndex = std::distance(this->caterrVec.begin(),it);
-//            std::cout << "$$$$$$ IT: " << *it  << "$$$$$$" << std::endl;
-        }
+//        std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
+//        if(it != this->caterrVec.end()){
+//            this->currCatIndex = std::distance(this->caterrVec.begin(),it);
+////            std::cout << "$$$$$$ IT: " << *it  << "$$$$$$" << std::endl;
+//        }
     }
 }
 
 
-int Game::currCatIndex;
+//int Game::currCatIndex;
 
 void Game::draw(){
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
@@ -138,13 +150,22 @@ void Game::draw(){
             //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
             //    this->caterrVec[i]->draw(this->projection,this->modelView);
             //}
-        //if(!this->caterrVec[i]->colission)
+        if(!this->caterrVec[i]->colission)
           this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
-        //else
-        //{
-          //this->caterrVec.erase(std::remove(this->caterrVec.begin(), this->caterrVec.end(), this->caterrVec[i]), this->caterrVec.end());
-          //inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->caterrVec[i]), inputActions::getInstance().objectPointers.end());
-        //}
+        else {
+            Caterpillar *toErase = this->caterrVec[i];
+//          this->caterrVec.erase(std::remove(this->caterrVec.begin(), this->caterrVec.end(), this->caterrVec[i]), this->caterrVec.end());
+//          inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->caterrVec[i]), inputActions::getInstance().objectPointers.end());
+            std::vector<Caterpillar*>::iterator itC = std::find(this->caterrVec.begin(),this->caterrVec.end(),toErase);
+            if(itC != this->caterrVec.end()){
+                this->caterrVec.erase(itC);
+            }
+            std::vector<Object*>::iterator itO = std::find(inputActions::getInstance().objectPointers.begin(),inputActions::getInstance().objectPointers.end(),toErase);
+            if(itO != inputActions::getInstance().objectPointers.end()){
+                inputActions::getInstance().objectPointers.erase(itO);
+            }
+//            delete toErase;
+        }
 
     }
     for(int i=0;i<(int)this->towers.size();i++ )
@@ -520,12 +541,12 @@ void Game::bulletShot() {//Warunek na strzal - widok z celowikiem i lewy przycis
 //            else{
 //                katZ = acos(katZ);
 //            }
-            calculatedDamage = (rand() % (int) (currentCutterpillar->weapon->maxDamage -
-                                                currentCutterpillar->weapon->minDamage)) +
-                               currentCutterpillar->weapon->minDamage;
-
-
-            cout << "Damage: " << calculatedDamage << endl;
+//            calculatedDamage = (rand() % (int) (currentCutterpillar->weapon->maxDamage -
+//                                                currentCutterpillar->weapon->minDamage)) +
+//                               currentCutterpillar->weapon->minDamage;
+//
+//
+//            cout << "Damage: " << calculatedDamage << endl;
 
             //tworzenie obiektu Bullet
             Bullet *bullecik = new Bullet((char *) "../src/obj/bullet.obj", this->shotPower);
@@ -620,8 +641,10 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
      {
 //       cout << i << " : Caterpillar LIFE:" << cat->life << endl;
        //Kolizja z Caterpillar
-       if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
-       {
+//       if(i != Game::currCatIndex && o!=v[i])//wykluczenie kolizji z samym soba
+       if(v[i] != Game::currentCutterpillar && o!=v[i])//wykluczenie kolizji z samym soba
+//       if(o!=v[i])//wykluczenie kolizji z samym soba
+    {
          if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
             && (y >= (int)v[i]->pos.y - (int)v[i]->size.y*6) && (y <= (int)v[i]->pos.y + (int)v[i]->size.y*12)
             && (z >= (int)v[i]->pos.z - 3) && (z <= (int)v[i]->pos.z + 3))
@@ -632,10 +655,10 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            canZ = false;
            }
            else {
-             if((hcat = dynamic_cast<Caterpillar *>(o)) && !hcat->colission)
+             if((hcat = dynamic_cast<Caterpillar *>(o)) && !cat->colission && hcat->dead==0)
              {
                hcat->heal(100);
-               hcat->colission = true;
+               cat->colission = true;
              }
            }
 
@@ -644,7 +667,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            {
              if(bul->colission == false)
              {
-             cat->dealDamage(bul->damage);
+//             cat->dealDamage(bul->damage);
 //             cat->life = cat->life - bul->damage;
              Map::getInstance().kaboom(x,y,z,boomRadius);
              o->colission = true;
@@ -652,7 +675,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
 
               for(int j=0; j < v.size(); j++)
                {
-                 if((cat = dynamic_cast<Caterpillar *>(v[j])))
+                 if((cat = dynamic_cast<Caterpillar *>(v[j])) && cat->dead==0)
                  {
                    float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+ pow((cat->pos.z - o->pos.z),2));
                    cout << "Radius: " << rad << endl;

@@ -108,7 +108,10 @@ void Caterpillar::copyParent() {
 }
 
 
-Caterpillar::~Caterpillar(){}
+Caterpillar::~Caterpillar(){
+    delete this->weapon;
+    std::cout << "Caterpillar deleted" << std::endl;
+}
 
 void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun){
    this->modM=this->posM*this->rotMY*this->sclM;
@@ -145,6 +148,7 @@ void Caterpillar::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 ligh
     }
 }
 
+
 std::string Caterpillar::getLife() {
     std::string temp;
     if(this->life >=0){
@@ -155,6 +159,7 @@ std::string Caterpillar::getLife() {
 }
 
 void Caterpillar::dealDamage(int damage) {
+    std::cout <<"Bullete damage: " << damage << std::endl;
     this->life -= damage;
     if(this->life <= 0){
         this->dead = 1;
@@ -169,6 +174,7 @@ void Caterpillar::dealDamage(int damage) {
 }
 
 void Caterpillar::heal(int heal) {
+    std::cout << "Healed: " << heal << std::endl;
     if(this->life > 0){
         this->life += heal;
     }

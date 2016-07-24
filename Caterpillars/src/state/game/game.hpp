@@ -35,7 +35,7 @@ public:
    Sprite *rose;
     PowerBar *powerBar;
    std::vector< Caterpillar* > caterrVec;
-   Caterpillar* currentCutterpillar;
+   static Caterpillar* currentCutterpillar;
    void testViewMov();
    void catterMove();
    clock_t start, end;
@@ -57,13 +57,13 @@ public:
     float maxTime = 60.0f;
     void changeTime();
 
-   static int currCatIndex;//index currentCutterpillara w catterVec
+//   static int currCatIndex;//index currentCutterpillara w catterVec
 
    glm::vec3 shot;
    float shotPower;//sila stralu
    float calculatedDamage;
    float maxShotPower = 45.0f;//wartosc do ktorej rosnie sila a potem od poczatku
-    float minShotPower = 8.0f;
+    float minShotPower = 15.0f;
     float increaseShotPower = 9.0f;
    bool powerischoosed = false;//po wybraniu sily strzalu true
     int procentShotPower();
