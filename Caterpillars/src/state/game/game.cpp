@@ -144,7 +144,7 @@ void Game::draw(){
          }
        }
    if(this->bullets.empty()) draw2D();
-   
+
    for(unsigned int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
       Map::getInstance().particleEffectsVector[i]->draw(this->projection,this->modelView);
 
@@ -629,7 +629,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          {
            cout << "Boooooom" <<endl;
            if(!o->colission){
-            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),4,2,15,10000,2,0.5));
             Map::getInstance().kaboom(x,y,z,boomRadius);
          }
 

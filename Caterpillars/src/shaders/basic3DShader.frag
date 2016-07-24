@@ -1,4 +1,4 @@
-h#version 330 core
+#version 330 core
 
 in vec2 TexCoord;
 in float towL1;
