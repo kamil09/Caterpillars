@@ -59,7 +59,8 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->powerBar->setTraM(-1366.0f/2.0f + 10.0f,-768.0f/2.0f + this->font->height(1.0f) + 20.0f,0.0f);
     this->powerBar->font = new Font("../src/fonts/Coalition.ttf",26);
     this->powerBar->font->posM[3][2] = -0.9f;
-    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(0.0f,0.0f,0.0f));
+    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(1.0f,1.0f,1.0f));
+    this->skybox = new Skybox();
 }
 
 
@@ -134,8 +135,9 @@ void Game::changePlayer() {
 
 void Game::draw(){
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
-   if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
-   this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
+    if(this->towers.size() > 1 ) this->lightsMat[3] = this->towers[1]->light->lightDir;
+    this->modelView = glm::lookAt(this->lookFrom, this->lookAt, glm::vec3(0.0f, 1.0f, 0.0f));
+   this->skybox->draw(this->projection,this->modelView);
    this->map->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
    this->wall->draw(this->projection,this->modelView, this->lightsMat,this->sunPosition);
 
@@ -145,8 +147,23 @@ void Game::draw(){
             //    this->caterrVec[i]->setPos(100.0f*j,0.0f,100.0f*j);
             //    this->caterrVec[i]->draw(this->projection,this->modelView);
             //}
-        this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
-
+            if(!this->caterrVec[i]->colission){
+                this->caterrVec[i]->draw(this->projection,this->modelView,this->lightsMat,this->sunPosition);
+            }
+            else {
+            Caterpillar *toErase = this->caterrVec[i];
+            //          this->caterrVec.erase(std::remove(this->caterrVec.begin(), this->caterrVec.end(), this->caterrVec[i]), this->caterrVec.end());
+             //          inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->caterrVec[i]), inputActions::getInstance().objectPointers.end());
+            std::vector<Caterpillar*>::iterator itC = std::find(this->caterrVec.begin(),this->caterrVec.end(),toErase);
+           if(itC != this->caterrVec.end()){
+           this->caterrVec.erase(itC);
+           }
+           std::vector<Object*>::iterator itO = std::find(inputActions::getInstance().objectPointers.begin(),inputActions::getInstance().objectPointers.end(),toErase);
+           if(itO != inputActions::getInstance().objectPointers.end()){
+           inputActions::getInstance().objectPointers.erase(itO);
+           }
+           //            delete toErase;
+        }
     }
 
     for(int i=0;i<(int)this->towers.size();i++ )
@@ -164,9 +181,9 @@ void Game::draw(){
                     inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
                     this->changePlayer();
                 }
-                else{
-                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
-                }
+//                else{
+//                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
+//                }
             }
          }
        }
