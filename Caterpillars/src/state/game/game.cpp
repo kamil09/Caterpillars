@@ -58,7 +58,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->powerBar->setTraM(-1366.0f/2.0f + 10.0f,-768.0f/2.0f + this->font->height(1.0f) + 20.0f,0.0f);
     this->powerBar->font = new Font("../src/fonts/Coalition.ttf",26);
     this->powerBar->font->posM[3][2] = -0.9f;
-    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(0.0f,0.0f,0.0f));
+    this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(1.0f,1.0f,1.0f));
 
     this->skybox = new Skybox();
 }
@@ -156,9 +156,9 @@ void Game::draw(){
                     inputActions::getInstance().objectPointers.erase(std::remove(inputActions::getInstance().objectPointers.begin(), inputActions::getInstance().objectPointers.end(), this->bullets[i]), inputActions::getInstance().objectPointers.end());
                     this->changePlayer();
                 }
-                else{
-                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
-                }
+//                else{
+//                    this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
+//                }
             }
          }
        }
@@ -267,6 +267,9 @@ void Game::run(){
          }
 //        }
        this->bullets[i]->recalculateMatrix();
+         if(this->bullets[i]->currentWaitTime > 0.0f){
+             this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
+         }
 //         this->bullets[i]->rotM = glm::rotate(glm::mat4(1),-this->bullets[i]->rot.y,glm::vec3(0.0f,1.0f,0.0f));
 //         this->bullets[i]->rotM = glm::rotate(this->bullets[i]->rotM,glm::radians(45.0f),glm::vec3(0.0f,0.0f,1.0f));
 
