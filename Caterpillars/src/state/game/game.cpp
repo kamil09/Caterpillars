@@ -2,6 +2,7 @@
 #include <typeinfo>
 #include "../../inputActions.hpp"
 
+Caterpillar* Game::currentCutterpillar = nullptr;
 
 Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
    this->sunPosition=glm::vec4(vertX/2,700,vertY/2,1.0f);
@@ -38,7 +39,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
 
     //ta wartosc wskazuje nam ktory jest aktyalny
     //wykorzystywana w kolizjach
-    Game::currCatIndex = 0;
+    //Game::currCatIndex = 0;
 
 
     this->lookFrom=glm::vec3(0, 400, 0);
@@ -86,24 +87,49 @@ void Game::createPlayers() {
 
 
 void Game::changePlayer() {
-    this->activePlayer++;
-    this->activePlayer = this->activePlayer % this->alivePlayers.size();
+    Player *previousPlayer = this->alivePlayers[this->activePlayer];
+    int nextPlayer = this->activePlayer + 1;
+    if(this->activePlayer > -1 && this->currentCutterpillar != nullptr){
+        if(this->currentCutterpillar->dead != 0){
+            int temp = this->alivePlayers[this->activePlayer]->activeCaterpillar;
+            if(this->alivePlayers[this->activePlayer]->changeCaterpillar() == nullptr){
+                this->alivePlayers.erase(this->alivePlayers.begin() + this->activePlayer);
+            }
+            else{
+                this->alivePlayers[this->activePlayer]->activeCaterpillar = temp;
+            }
+        }
+    }
+//    this->activePlayer++;
+//    this->activePlayer = this->activePlayer % this->alivePlayers.size();
+    nextPlayer = nextPlayer % this->alivePlayers.size();
     Caterpillar *nextCat = nullptr;
     while(nextCat== nullptr){
-        nextCat = this->players[this->activePlayer]->changeCaterpillar();
+        nextCat = this->alivePlayers[nextPlayer]->changeCaterpillar();
+        if(nextCat== nullptr){
+            this->alivePlayers.erase(this->alivePlayers.begin()+nextPlayer);
+            nextPlayer = nextPlayer % this->alivePlayers.size();
+        }
     }
     if(nextCat!= nullptr){
+        if(this->alivePlayers.size() == 1){
+            inputActions::getInstance().winner = this->alivePlayers[this->activePlayer];
+        }
+//        else{
+            this->activePlayer = nextPlayer;
+//        }
         this->currentTime = this->maxTime;
         this->currentCutterpillar = nextCat;
-        std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
-        if(it != this->caterrVec.end()){
-            this->currCatIndex = std::distance(this->caterrVec.begin(),it);
-//            std::cout << "$$$$$$ IT: " << *it  << "$$$$$$" << std::endl;
-        }
+//        std::vector<Caterpillar*>::iterator it = std::find(this->caterrVec.begin(),this->caterrVec.end(),nextCat);
+//        if(it != this->caterrVec.end()){
+//            this->currCatIndex = std::distance(this->caterrVec.begin(),it);
+////            std::cout << "$$$$$$ IT: " << *it  << "$$$$$$" << std::endl;
+//        }
     }
 }
 
-int Game::currCatIndex;
+
+//int Game::currCatIndex;
 
 void Game::draw(){
    if(this->towers.size() > 0 ) this->lightsMat[1] = this->towers[0]->light->lightDir;
@@ -144,8 +170,7 @@ void Game::draw(){
          }
        }
    if(this->bullets.empty()) draw2D();
-
-   for(unsigned int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
+   for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ )
       Map::getInstance().particleEffectsVector[i]->draw(this->projection,this->modelView);
 
 }
@@ -216,10 +241,14 @@ void Game::changeTime() {
 }
 
 
-void Game::run(){
 
-   //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
+void Game::run(){
+    if(inputActions::getInstance().winner!= nullptr){
+        this->endGame();
+        return;
+    }
     this->changeTime();
+    //this->map->kaboom(rand()%1000,rand()%1000,rand()%500,rand()%20+30 );
    if(inputActions::getInstance().SHIFT_pressed) this->testViewMov();
    else {
       this->catterMove();
@@ -247,6 +276,9 @@ void Game::run(){
          }
 //        }
        this->bullets[i]->recalculateMatrix();
+         if(this->bullets[i]->currentWaitTime > 0.0f){
+             this->bullets[i]->currentWaitTime -= inputActions::getInstance().deltaTime;
+         }
 //         this->bullets[i]->rotM = glm::rotate(glm::mat4(1),-this->bullets[i]->rot.y,glm::vec3(0.0f,1.0f,0.0f));
 //         this->bullets[i]->rotM = glm::rotate(this->bullets[i]->rotM,glm::radians(45.0f),glm::vec3(0.0f,0.0f,1.0f));
 
@@ -255,8 +287,7 @@ void Game::run(){
 
       }
     }
-
-    for(unsigned int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
+    for(int i =0; i<Map::getInstance().particleEffectsVector.size();i++ ) {
       if(Map::getInstance().particleEffectsVector[i]->effectTimeLeft>0)
          Map::getInstance().particleEffectsVector[i]->run();
       else{
@@ -265,8 +296,10 @@ void Game::run(){
          delete tmp;
          puts("deleted particle effect");
       }
-   }
+    }
 }
+
+
 void Game::calcViewMatrix(){
     if(!this->bullets.empty()){
         this->lookAt = this->bullets[0]->pos;
@@ -405,35 +438,34 @@ void Game::catterMove(){
   }
 
 
-   checkCollisionAndMove(this->currentCutterpillar,newPos,inputActions::getInstance().objectPointers);
-   if(inputActions::getInstance().movedX!=0){
-      this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;
-      if(this->currentCutterpillar->rot.y<-2*M_PI) this->currentCutterpillar->rot.y+=2*M_PI;
-      if(this->currentCutterpillar->rot.y>2*M_PI) this->currentCutterpillar->rot.y-=2*M_PI;
-   }
-   if(inputActions::getInstance().movedY!=0){
-      this->currentCutterpillar->rot.z+=(float)(inputActions::getInstance().movedY)/500;
-      if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
-      if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
-   }
-   if(inputActions::getInstance().scroll!=0){
-      this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/1.5;
-      if(this->currentCutterpillar->viewBack > 0.0f) this->currentCutterpillar->viewBack = 0.0f;
-      if(this->currentCutterpillar->viewBack < -60.0f) this->currentCutterpillar->viewBack = -60.0f;
-   }
-   //std::cout << inputActions::getInstance().rightClick << std::endl;
-   if(inputActions::getInstance().rightClick){
-      if(this->currentCutterpillar->tmpViewBack > 0) this->currentCutterpillar->tmpViewBack = this->currentCutterpillar->viewBack;
-      if(this->currentCutterpillar->viewBack < -20) this->currentCutterpillar->viewBack=0.0f;
-   }
-   else{
-       if(this->currentCutterpillar->tmpViewBack <= 0 ){
-         this->currentCutterpillar->viewBack = this->currentCutterpillar->tmpViewBack;
-         this->currentCutterpillar->tmpViewBack=666.0f;
-      }
-      //printf("odl: %f\n",this->currentCutterpillar->tmpViewBack);
-   }
-
+  checkCollisionAndMove(this->currentCutterpillar,newPos,inputActions::getInstance().objectPointers);
+ if(inputActions::getInstance().movedX!=0){
+    this->currentCutterpillar->rot.y+=(float)(inputActions::getInstance().movedX)/500;
+    if(this->currentCutterpillar->rot.y<-2*M_PI) this->currentCutterpillar->rot.y+=2*M_PI;
+    if(this->currentCutterpillar->rot.y>2*M_PI) this->currentCutterpillar->rot.y-=2*M_PI;
+ }
+ if(inputActions::getInstance().movedY!=0){
+    this->currentCutterpillar->rot.z+=(float)(inputActions::getInstance().movedY)/500;
+    if(this->currentCutterpillar->rot.z<-M_PI/3) this->currentCutterpillar->rot.z=-M_PI/3;
+    if(this->currentCutterpillar->rot.z>M_PI/3) this->currentCutterpillar->rot.z=M_PI/3;
+ }
+ if(inputActions::getInstance().scroll!=0){
+    this->currentCutterpillar->viewBack += (float)inputActions::getInstance().scroll/1.5;
+    if(this->currentCutterpillar->viewBack > 0.0f) this->currentCutterpillar->viewBack = 0.0f;
+    if(this->currentCutterpillar->viewBack < -60.0f) this->currentCutterpillar->viewBack = -60.0f;
+ }
+ //std::cout << inputActions::getInstance().rightClick << std::endl;
+ if(inputActions::getInstance().rightClick){
+    if(this->currentCutterpillar->tmpViewBack > 0) this->currentCutterpillar->tmpViewBack = this->currentCutterpillar->viewBack;
+    if(this->currentCutterpillar->viewBack < -20) this->currentCutterpillar->viewBack=0.0f;
+ }
+ else{
+     if(this->currentCutterpillar->tmpViewBack <= 0 ){
+       this->currentCutterpillar->viewBack = this->currentCutterpillar->tmpViewBack;
+       this->currentCutterpillar->tmpViewBack=666.0f;
+    }
+    //printf("odl: %f\n",this->currentCutterpillar->tmpViewBack);
+ }
 
 //   this->start = clock();
 }
@@ -502,12 +534,12 @@ void Game::bulletShot() {//Warunek na strzal - widok z celowikiem i lewy przycis
 //            else{
 //                katZ = acos(katZ);
 //            }
-            calculatedDamage = (rand() % (int) (currentCutterpillar->weapon->maxDamage -
-                                                currentCutterpillar->weapon->minDamage)) +
-                               currentCutterpillar->weapon->minDamage;
-
-
-            cout << "Damage: " << calculatedDamage << endl;
+//            calculatedDamage = (rand() % (int) (currentCutterpillar->weapon->maxDamage -
+//                                                currentCutterpillar->weapon->minDamage)) +
+//                               currentCutterpillar->weapon->minDamage;
+//
+//
+//            cout << "Damage: " << calculatedDamage << endl;
 
             //tworzenie obiektu Bullet
             Bullet *bullecik = new Bullet((char *) "../src/obj/bullet.obj", this->shotPower);
@@ -560,6 +592,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
    bool canZ = true;
 
    Caterpillar* cat;
+   Caterpillar* hcat;
    Bullet* bul;
    int boomRadius = 20;
 
@@ -581,6 +614,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
 
 //   cout << endl << "-----------------" << endl;
 
+
    for(int i=0; i< v.size(); i++)
    {
      //Dla wiez
@@ -600,19 +634,54 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
      {
 //       cout << i << " : Caterpillar LIFE:" << cat->life << endl;
        //Kolizja z Caterpillar
-       if(i != Game::currCatIndex)//wykluczenie kolizji z samym soba
-       {
+//       if(i != Game::currCatIndex && o!=v[i])//wykluczenie kolizji z samym soba
+       if(v[i] != Game::currentCutterpillar && o!=v[i])//wykluczenie kolizji z samym soba
+//       if(o!=v[i])//wykluczenie kolizji z samym soba
+    {
          if((x >= (int)v[i]->pos.x - 5) && (x <= (int)v[i]->pos.x + 5)
-            && (y >= (int)v[i]->pos.y - 35) && (y <= (int)v[i]->pos.y + 35)
+            && (y >= (int)v[i]->pos.y - (int)v[i]->size.y*6) && (y <= (int)v[i]->pos.y + (int)v[i]->size.y*12)
             && (z >= (int)v[i]->pos.z - 3) && (z <= (int)v[i]->pos.z + 3))
          {
+           if(cat->dead == 0) {
            canX = false;
            canY = false;
            canZ = false;
+           }
+           else {
+             if((hcat = dynamic_cast<Caterpillar *>(o)) && !cat->colission && hcat->dead==0)
+             {
+               hcat->heal(100);
+               cat->colission = true;
+             }
+           }
+
            //Jesli kolizja z pociskiem to zmniejszamy zycie Caterpillara
            if((bul = dynamic_cast<Bullet *>(o)))
            {
-             cat->life = cat->life - bul->damage;
+             if(bul->colission == false)
+             {
+//             cat->dealDamage(bul->damage);
+//             cat->life = cat->life - bul->damage;
+            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
+             Map::getInstance().kaboom(x,y,z,boomRadius);
+             o->colission = true;
+             bul->currentWaitTime = bul->waitTime;
+
+              for(int j=0; j < v.size(); j++)
+               {
+                 if((cat = dynamic_cast<Caterpillar *>(v[j])) && cat->dead==0)
+                 {
+                   float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+ pow((cat->pos.z - o->pos.z),2));
+                   cout << "Radius: " << rad << endl;
+                   if(rad <= boomRadius)
+                   {
+                       float proc = 1 - (rad/boomRadius);
+                       cat->dealDamage((int)(bul->damage*proc));
+                   }
+                 }
+               }
+
+             }
            }
          }
        }
@@ -628,13 +697,13 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
          if((bul = dynamic_cast<Bullet *>(o)))
          {
            cout << "Boooooom" <<endl;
-           if(!o->colission){
-            Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),4,2,15,10000,2,0.5));
-            Map::getInstance().kaboom(x,y,z,boomRadius);
-         }
-
-            bul->currentWaitTime = bul->waitTime;
-           o->colission = true;
+           if(!o->colission)
+           {
+             Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),3,4,20,5000,2,0.5));
+              Map::getInstance().kaboom(x,y,z,boomRadius);
+              bul->currentWaitTime = bul->waitTime;
+              o->colission = true;
+           }
 
            for(int i=0; i< v.size(); i++)
            {
@@ -643,9 +712,13 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
                //Zmniejszanie zycia jesli w promieniu boom booma kabooma
                float rad = sqrt(pow((cat->pos.x - o->pos.x),2)+pow((cat->pos.z - o->pos.z),2));
                cout << "Radius: " << rad << endl;
-               if(rad <= boomRadius)
-                  cat->life = cat->life - (int)(bul->damage/rad);
-
+               if(rad <= boomRadius){
+                   //Zmiana do damage
+                   float proc = 1 - (rad/boomRadius);
+//                  cat->life = cat->life - (int)(bul->damage/rad);
+//                   cat->life = cat->life - (int)(bul->damage*proc);
+                   cat->dealDamage((int)(bul->damage*proc));
+               }
              }
            }
          }
@@ -719,5 +792,13 @@ void Game::pressESC() {
 int Game::procentShotPower() {
     float licznik=this->shotPower-this->minShotPower;
     float mianownik=this->maxShotPower-this->minShotPower;
+    if(mianownik<=0.0f){
+        mianownik = 1.0f;
+    }
     return (licznik/mianownik)*100.0f;
+}
+
+void Game::endGame() {
+    inputActions::getInstance().changeState('e',this->window,this->cursor);
+    inputActions::getInstance().cursorFixedCenterPos=false;
 }

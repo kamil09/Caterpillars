@@ -52,7 +52,7 @@ void object2D::initObject2D(float x, float y, float width, float height, string 
         delete [] str;
     }
     else{
-        std::cout << "Brak textury" << std::endl;
+//        std::cout << "Brak textury" << std::endl;
         this->texture2D=NULL;
     }
     this->posM = glm::mat4(1);

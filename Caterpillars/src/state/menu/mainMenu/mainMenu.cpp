@@ -21,6 +21,7 @@ MainMenu::MainMenu(GLFWwindow *window,GLFWcursor *cur) : Menu(window,cur){
 //	this->createBackgroud(NULL);
 	this->createButtons();
 	this->loadSprites();
+    this->authors();
 }
 
 
@@ -114,3 +115,16 @@ void MainMenu::pressESC() {
 	glfwSetWindowShouldClose(this->window, GL_TRUE);
 }
 
+void MainMenu::authors() {
+    Font *font = new Font("../src/fonts/Coalition.ttf",20);
+    font->posM[3][2] = -0.9f;
+    this->background->font = font;
+    float y = 250.0f;
+    float x = 200.0f;
+    glm::vec3 bialy = glm::vec3(1.0f,1.0f,1.0f);
+    this->background->addText("Authors: ",x,y,1.0f,bialy);
+    this->background->addText("Kamil Piotrowski 122491",x+30.0f,font->height(1.0f)+y+10.0f,1.0f,bialy);
+    this->background->addText("Pawel Kaczmarek 122496",x+30.0f,font->height(1.0f)*2+y+20.0f,1.0f,bialy);
+    this->background->addText("Michal Lewinski 122505",x+30.0f,font->height(1.0f)*3+y+30.0f,1.0f,bialy);
+
+}

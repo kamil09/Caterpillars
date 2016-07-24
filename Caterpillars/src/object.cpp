@@ -5,7 +5,7 @@
 
 Object::Object(){
 	this->teksturCount = 0;
-	this->colission = false;//dla bulleta
+	this->colission = false;
 
 	this->currentBinding = 0;
 	this->buffersCount = 0;
@@ -113,9 +113,9 @@ void Object::recalculateGravity(float timeDifference) {
 				this->speed.z = 0;
 			}
 		}
-		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
-			 				this->pos.z, inputActions::getInstance().objectPointers))
-		{
+//		else if(Game::checkCollisionAndMove(this, this->pos.x, this->pos.y,
+//			 				this->pos.z, inputActions::getInstance().objectPointers))
+		else {
 			if(!this->on_the_ground)
 			{
 				windX = bet_time * Map::getInstance().windForce.x * this->windMul;
@@ -347,4 +347,41 @@ void Object::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,gl
 
 GLint Object::getUniform(const char *nazwa) {
 	return glGetUniformLocation(this->shader->shaderProgram[this->currentShader],nazwa);
+}
+
+
+void Object::bindTextureCube(std::vector<std::string> faces, GLuint *handle) {
+	glGenTextures(1, handle);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, *handle);
+	this->loadTextureCube(faces);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+//	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
+}
+
+
+void Object::loadTextureCube(std::vector<std::string> faces) {
+	std::cout << "Faces size: " << faces.size() << std::endl;
+	for (int i = 0; i < faces.size(); ++i) {
+		std::cout << faces[i] << std::endl;
+		std::vector<unsigned char> image;
+		unsigned width,height;
+		unsigned error = lodepng::decode(image,width,height, faces[i].c_str());
+		if(error != 0) {
+			std::cout << "ERROR:: " << error << std::endl;
+		}
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0,GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char*) image.data());
+	}
+	errorCheck("Po loadCube");
 }

@@ -12,6 +12,8 @@
 #include "state/menu/mainMenu/gameMenu.hpp"
 #include "state/menu/mainMenu/loadingScreen.hpp"
 #include "state/game/pauseMenu.hpp"
+#include "state/game/endMenu.hpp"
+#include "./state/game/player.hpp"
 #include "object.hpp"
 #include <thread>
 #include <mutex>
@@ -62,6 +64,8 @@ class inputActions{
       double getCursorLastY();
 
       GLfloat deltaTime = 0.0f;//Czas pomiedzy klatkami
+
+      Player *winner;
 
       GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
       static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );

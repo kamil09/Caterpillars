@@ -22,11 +22,11 @@ void Menu::run(){
     this->checkCursor();
     glfwPollEvents();
 //    this->keysControl();
-    glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
+//    glClearColor(0.294f, 0.176f, 0.451f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     this->check=1;
     this->draw();
-    errorCheck("RYSOWANIE MENU");
+//    errorCheck("RYSOWANIE MENU");
 }
 
 void Menu::draw(){
@@ -121,7 +121,7 @@ void Menu::createBackgroud(string fileName){
 
 
 void Menu::createButtons() {
-    std::cout << "tworzenie buttonow: " << std::endl;
+//    std::cout << "tworzenie buttonow: " << std::endl;
     for(unsigned int i=0;i < this->listaWspolrzednych.size();i++){
         this->buttonCount++;
         glm::vec4 pozycja = this->listaWspolrzednych[this->buttonCount-1];

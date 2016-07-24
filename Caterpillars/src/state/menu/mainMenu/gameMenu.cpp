@@ -322,6 +322,7 @@ void deletePlayer(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor)
         }
     }
     if(playerCount > 2){
+//    if(playerCount > 1){
         Setting::getInstance().players[clickedButton->binds].czyGra = false;
     }
 }

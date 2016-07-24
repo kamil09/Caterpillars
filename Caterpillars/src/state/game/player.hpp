@@ -24,7 +24,7 @@ public:
     std::vector<Caterpillar*> caterpillars;
     std::vector<Caterpillar*> aliveCaterpillars;
     int activeCaterpillar = -1;
-    Caterpillar * changeCaterpillar();
+    Caterpillar *changeCaterpillar();
 };
 
 #endif //CATERPILLARS_PLAYER_HPP

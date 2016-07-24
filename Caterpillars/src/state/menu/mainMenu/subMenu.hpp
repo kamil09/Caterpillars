@@ -21,6 +21,8 @@ public:
     virtual void draw() override;
 
 };
+
 void goBack(Button *state, GLFWwindow *window, GLFWcursor *cursor);
+void goExit(Button *clickedButton, GLFWwindow *window, GLFWcursor *cursor);
 
 #endif //CATERPILLARS_SUBMENU_HPP

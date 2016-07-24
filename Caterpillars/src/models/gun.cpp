@@ -33,6 +33,9 @@ Gun::Gun(char *filename) {
 
 }
 
+Gun::~Gun() {
+   std::cout << "Gun Deleted" << std::endl;
+}
 
 void Gun::copyParent() {
    this->shader = this->parent->shader;
@@ -52,7 +55,6 @@ void Gun::copyParent() {
 }
 
 
-Gun::~Gun(){}
 
 void Gun::draw(glm::mat4 projection, glm::mat4 modelView, Object *owner, glm::mat4 lights,glm::vec4 sun){
   this->modM=(owner->posM) *(owner->rotMY)* this->posMadd* (owner->sclM);

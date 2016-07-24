@@ -22,8 +22,9 @@ private:
    float maxWalkAngle;  //Maksymalny kąt pod jakim może wchodzić worms na wzniesienie
 public:
    static Caterpillar *parent;
+    static Caterpillar *box;
    void copyParent();
-   Caterpillar(char *filename);
+   Caterpillar(char *filename, bool dead);
    Caterpillar(Player *player,char *filename);
    ~Caterpillar();
    void draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,glm::vec4 sun);
@@ -36,15 +37,17 @@ public:
    Font *font;
 
    int dead;
-   std::vector<GLfloat> verticesDead;
-   std::vector<GLuint> indicesDead;
+//   std::vector<GLfloat> verticesDead;
+//   std::vector<GLuint> indicesDead;
 
-   GLuint texture2DDead;
-   GLuint shadowMapDead;
-   GLuint lightMapDead;
+//   GLuint texture2DDead;
+//   GLuint shadowMapDead;
+//   GLuint lightMapDead;
 
    int life;//Życie naszego bohatera :)
     std::string getLife();
+    void dealDamage(int damage);
+    void heal(int heal);
 };
 
 
