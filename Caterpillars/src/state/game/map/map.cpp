@@ -189,6 +189,15 @@ void Map::kaboom(float x, float y, float z, float radius){
    this->bindBuffers(6,9,GL_DYNAMIC_DRAW);
 }
 
+float Map::returnMapPointHeight(float x, float z){
+   int minX = (int)x;
+   int minZ = (int)z;
+   int maxX = (int)ceil(x);
+   int maxZ = (int)ceil(z);
+
+   return ((float)this->mapVert[minX][minZ]+(float)this->mapVert[maxX][maxZ])/2;
+}
+
 void Map::genTriangleTab(){
    int index=0;
    this->vertices.resize(vertX*vertY*9);

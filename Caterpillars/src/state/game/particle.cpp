@@ -92,28 +92,28 @@ void ParticleEffect::createFirstParticles(float coef){
 
 void ParticleEffect::createSimpleParticle(){
    //Losowanie w prawie kuli; nie mam na razie pomysłu jak zrobić aby były to zmienne niezależne, więc wygląda jak jajko :/
-   float posX = (float)(rand()%max( (int)ceil(this->effectMinSize*100),1 )) / 50 - this->effectMinSize;
+   float posX = (float)(rand()%max( (int)ceil(this->effectMinSize*2000),1 )) / 1000 - this->effectMinSize;
    float maxy = sqrt(pow(this->effectMinSize,2)-pow(posX,2));
-   float posY= (float) (rand()%max( (int)ceil(maxy*100),1)) / 50 - maxy;
+   float posY= (float) (rand()%max( (int)ceil(maxy*2000),1)) / 1000 - maxy;
    float maxz=this->effectMinSize - sqrt(pow(posX,2)+pow(posY,2));
-   float posZ=(float)(rand()%max( (int)ceil(maxz*100),1)) / 100 -maxz;
+   float posZ=(float)(rand()%max( (int)ceil(maxz*2000),1)) / 1000 -maxz;
 
    Particle p;
+   p.colision=false;
    p.pos=glm::vec3(posX,posY,posZ);
-   p.life=this->singleParticleLife*((float)(rand()%20+80)/120);
+   p.life=this->singleParticleLife*((float)(rand()%20+80)/90);
    int tmp = rand()%100;
    if(tmp < (this->effectMaxTime-this->effectTimeLeft)*(100/this->effectMaxTime) ) p.type=0;
    else p.type=1;
 
-   float maxSpeed=(float)(this->effectMaxSize-this->effectMinSize)/p.life;
+   float maxSpeed=(float)(this->effectMaxSize-this->effectMinSize)/this->singleParticleLife*2.8;
    //TODO Sensowniejsze losowanie
-   float speedX=(float)(rand()%5-2)*maxSpeed/3 ;
-   float speedY=(float)(rand()%5-2)*maxSpeed/3 ;
-   float speedZ=(float)(rand()%5-2)*maxSpeed/3 ;
+   float speedX=(float)(rand()%max( (int)ceil(maxSpeed*200),1))/100 -maxSpeed;
+   float speedY=(float)(rand()%max( (int)ceil(maxSpeed*200),1))/100 -maxSpeed;
+   float speedZ=(float)(rand()%max( (int)ceil(maxSpeed*200),1))/100 -maxSpeed;
    p.speed=glm::vec3(speedX,speedY,speedZ);
 
-
-   p.size=(float)(rand()%100)/800+0.07;
+   p.size=(float)(rand()%100)/1000+0.08;
    this->particlesContainer.push_back(p);
 }
 
@@ -135,18 +135,26 @@ void ParticleEffect::run(){
          this->effectParticlePosAndSize[4*particlesCount+2]=p.pos.z + this->effectPos.z;
          this->effectParticlePosAndSize[4*particlesCount+3]=p.size;
 
-         p.size-=0.8*inputActions::getInstance().deltaTime;
-         if(p.size<0.05) p.size=0.05;
-         p.speed.y-=9.81*inputActions::getInstance().deltaTime;
-         p.pos+=p.speed*inputActions::getInstance().deltaTime; //pozycja
+         if(this->effectParticlePosAndSize[4*particlesCount+1]-2 <= Map::getInstance().returnMapPointHeight(this->effectParticlePosAndSize[4*particlesCount],this->effectParticlePosAndSize[4*particlesCount+2]))
+         p.colision=true;
 
+         if(p.size>0.1) p.size-=0.05*inputActions::getInstance().deltaTime;
+         if(!p.colision){
+            p.speed.y-=9.81*inputActions::getInstance().deltaTime;
+            p.speed.x*=0.995;
+            p.speed.z*=0.995;
+            p.pos+=p.speed*inputActions::getInstance().deltaTime; //pozycja
+         }
          //TODO POPRAWIĆ LOSOWANIE KOLORU, DODAĆ 2 TYP
          float rad = sqrt( pow(p.pos.x,2)+pow(p.pos.y,2)+pow(p.pos.z,2) );
-         this->effectColorData[2*particlesCount]= 0.5-(rad/this->effectMaxSize/2);
-         this->effectColorData[2*particlesCount+1]= 0.5-(rad/this->effectMaxSize/2);
+         this->effectColorData[2*particlesCount]= max((float)(0.5-(rad/this->effectMaxSize/2)),0.05f);
+         this->effectColorData[2*particlesCount+1]= max((float)(0.5-(rad/this->effectMaxSize/2)),0.05f);
 
          this->particlesCount++;
       }
+
+
+
    }
    printf("%d\n",particlesCount);
 }

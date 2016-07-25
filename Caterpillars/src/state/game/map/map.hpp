@@ -47,6 +47,7 @@ public:
    std::vector< ParticleEffect* > particleEffectsVector;
    void calcMeshNormals(int xStart, int xStop, int yStart, int yStop);
    void generateMeshNormals();
+   float returnMapPointHeight(float x, float z);
    Map();
    ~Map();
    Map(const Map &);

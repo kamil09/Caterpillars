@@ -21,6 +21,7 @@ struct Particle{
 	float size;
 	float life;
 	int type;
+	bool colision;
 };
 
 class ParticleEffect{
