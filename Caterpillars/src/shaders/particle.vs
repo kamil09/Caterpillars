@@ -21,5 +21,5 @@ void main(){
    mat4 M=pos*scl;
 
 	gl_Position = P*V*M*vec4(vertex.x, vertex.y, vertex.z, 1.0);
-	textCord = texture;
+	textCord = vec2(texture.x+((vertex.x+vertex.y)/20),texture.y+((vertex.y+vertex.z)/20));
 }

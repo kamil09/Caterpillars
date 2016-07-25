@@ -177,7 +177,7 @@ void Map::kaboom(float x, float y, float z, float radius){
    for(int i=left;i<=right;i++){
       tabKoorX=0;
       for(int j=top;j<=bottom;j++){
-         if(i>=0 && j>=0 && i<vertX && j<vertY){
+         if( (i>=0) && (j>=0) && (i<vertX) && (j<vertY)){
             this->mapVert[i][j] -= minTab[tabKoorX][tabKoorZ];
             if( this->mapVert[i][j] < this->minHeight ) this->mapVert[i][j] = this->minHeight;
          }
@@ -190,6 +190,11 @@ void Map::kaboom(float x, float y, float z, float radius){
 }
 
 float Map::returnMapPointHeight(float x, float z){
+   if(x<0) x=0;
+   if(z<0) z=0;
+   if(x>=vertX)x=vertX-1;
+   if(z>=vertY)z=vertY-1;
+
    int minX = (int)x;
    int minZ = (int)z;
    int maxX = (int)ceil(x);

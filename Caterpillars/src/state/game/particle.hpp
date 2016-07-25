@@ -56,6 +56,7 @@ public:
    float effectMaxSize;
    int particlesCount;
    int effectMaxParticles;
+	int effectParticlesLeft;
    float singleParticleLife;
 };
 

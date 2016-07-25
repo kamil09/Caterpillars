@@ -18,6 +18,7 @@ ParticleEffect::ParticleEffect(glm::vec3 pos, float maxTime, float minSize, floa
    this->effectMinSize=minSize;
    this->effectMaxSize=maxSize;
    this->effectMaxParticles=maxParticles;
+   this->effectParticlesLeft=maxParticles;
    this->particlesCount=0;
    this->singleParticleLife = life;
 
@@ -91,6 +92,7 @@ void ParticleEffect::createFirstParticles(float coef){
 }
 
 void ParticleEffect::createSimpleParticle(){
+   this->effectParticlesLeft--;
    //Losowanie w prawie kuli; nie mam na razie pomysłu jak zrobić aby były to zmienne niezależne, więc wygląda jak jajko :/
    float posX = (float)(rand()%max( (int)ceil(this->effectMinSize*2000),1 )) / 1000 - this->effectMinSize;
    float maxy = sqrt(pow(this->effectMinSize,2)-pow(posX,2));
@@ -121,7 +123,9 @@ void ParticleEffect::createSimpleParticle(){
 void ParticleEffect::run(){
    this->effectTimeLeft-=inputActions::getInstance().deltaTime;
 
-      //TODO CREATE NEW PARTICLES, but not to much :)
+   this->effectMinSize += this->effectMaxSize/this->effectMaxTime*inputActions::getInstance().deltaTime;
+   int iloscNowych = this->effectParticlesLeft/(this->singleParticleLife-1)*inputActions::getInstance().deltaTime;
+   for(int i=0;i<iloscNowych;i++) this->createSimpleParticle();
 
    //main loop
    this->particlesCount=0;
@@ -129,7 +133,7 @@ void ParticleEffect::run(){
       Particle& p = this->particlesContainer[i];
       if(p.life>0){
          p.life-=inputActions::getInstance().deltaTime;
-         //TODO ZMIANA PRĘDKOŚCI I ROZMIARU
+
          this->effectParticlePosAndSize[4*particlesCount]=p.pos.x + this->effectPos.x;
          this->effectParticlePosAndSize[4*particlesCount+1]=p.pos.y + this->effectPos.y;
          this->effectParticlePosAndSize[4*particlesCount+2]=p.pos.z + this->effectPos.z;
@@ -145,18 +149,22 @@ void ParticleEffect::run(){
             p.speed.z*=0.995;
             p.pos+=p.speed*inputActions::getInstance().deltaTime; //pozycja
          }
-         //TODO POPRAWIĆ LOSOWANIE KOLORU, DODAĆ 2 TYP
-         float rad = sqrt( pow(p.pos.x,2)+pow(p.pos.y,2)+pow(p.pos.z,2) );
-         this->effectColorData[2*particlesCount]= max((float)(0.5-(rad/this->effectMaxSize/2)),0.05f);
-         this->effectColorData[2*particlesCount+1]= max((float)(0.5-(rad/this->effectMaxSize/2)),0.05f);
+
+         if( (p.type!=0) ){
+            this->effectColorData[2*particlesCount] = p.life/this->singleParticleLife/2;
+            if( p.speed.x > 0) this->effectColorData[2*particlesCount]=(this->effectColorData[2*particlesCount]*-1)+1;
+            this->effectColorData[2*particlesCount+1]= p.life/this->singleParticleLife/2;
+            if (p.speed.y > 0) this->effectColorData[2*particlesCount+1]=(this->effectColorData[2*particlesCount+1]*-1)+1;
+         }
+         else{
+            this->effectColorData[2*particlesCount]= 0.05f;
+            this->effectColorData[2*particlesCount+1]= 0.05f;
+         }
 
          this->particlesCount++;
       }
 
-
-
    }
-   printf("%d\n",particlesCount);
 }
 //draw particles
 void ParticleEffect::draw(glm::mat4 projection, glm::mat4 modelView){
@@ -164,9 +172,11 @@ void ParticleEffect::draw(glm::mat4 projection, glm::mat4 modelView){
    glBindVertexArray(this->VAO);
 
    glBindBuffer(GL_ARRAY_BUFFER, this->ParPosBuffer);
+   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
    glBufferSubData(GL_ARRAY_BUFFER, 0, this->particlesCount * sizeof(GLfloat) * 4, this->effectParticlePosAndSize);
 
    glBindBuffer(GL_ARRAY_BUFFER, this->ParColBuffer);
+   glBufferData(GL_ARRAY_BUFFER, this->effectMaxParticles * 2 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
    glBufferSubData(GL_ARRAY_BUFFER, 0, this->particlesCount * sizeof(GLfloat) * 2, this->effectColorData);
 
    glUniform1i(glGetUniformLocation(this->shader->shaderProgram[0], "ourTexture1"), 0);
