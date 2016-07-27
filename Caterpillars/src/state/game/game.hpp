@@ -66,6 +66,7 @@ public:
    float maxShotPower = 45.0f;//wartosc do ktorej rosnie sila a potem od poczatku
     float minShotPower = 15.0f;
     float increaseShotPower = 9.0f;
+    glm::vec3 perpendicular;
    bool powerischoosed = false;//po wybraniu sily strzalu true
     int procentShotPower();
     void createPlayers();

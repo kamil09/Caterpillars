@@ -108,7 +108,6 @@ void makeHill(float **map){
          if(toADD<=0) toADD=0;
          if(map[i][j] < toADD + baseHeight)
             map[i][j]=toADD+baseHeight;
-
       }
    }
 }
@@ -130,18 +129,16 @@ void Map::generateRandomMap(){
    int hillNumbers=0;
    hillNumbers = std::rand() % (maxHillNum-minHillNum) + minHillNum;
 
-   for(int i=0;i<hillNumbers;i++)
-      makeHill(this->mapVert);
-
+   for(int i=0;i<hillNumbers;i++) makeHill(this->mapVert);
    puts("RENDERED MAP!");
 }
 
 void Map::rand(){
    //To bedzie ok tylko trzeba zrobic losowanie <-50;50>
    //zeby bylo we wszystkich kierunkach
-   this->windForce.x = std::rand() % 51-50;
-   this->windForce.y = std::rand() % 51-50;
-   this->windForce.z = std::rand() % 51-50;
+   this->windForce.x = std::rand() % 40-20;
+   this->windForce.y = std::rand() % 40-20;
+   this->windForce.z = std::rand() % 40-20;
    std::cout << "wiatr x: " << this->windForce.x << " wiatr y: " << this->windForce.y << " wiatr z: " << this->windForce.z << std::endl;
 }
 

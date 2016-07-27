@@ -65,34 +65,12 @@ void Bullet::draw(glm::mat4 projection, glm::mat4 modelView, glm::mat4 lights,gl
 
 
 void Bullet::recalculateRotZ() {
-   float rotz;
-   float wynikDzielenia = this->speed.y/this->shotPower;
-   if(wynikDzielenia > 1.0f){
-      rotz = glm::radians(85.0f);
-//      wynikDzielenia = 1.0f;
-   }
-   else if(wynikDzielenia < -1.0f){
-      rotz = glm::radians(-85.0f);
-//      wynikDzielenia = -1.0f;
-   }
-   else{
-      rotz = asin(wynikDzielenia);
-   }
-   if(rotz != rotz){
-      std::cout << "BLAD" << std::endl;
-   }
-//   if(glm::degrees(rotz) > 90.0f){
-//      rotz = glm::radians(90.0f);
-//   }
-   this->rot.z = -rotz;
+   //Recalculate rotX and rotZ
+   glm::vec3 vecY = glm::normalize(glm::vec3(sqrt(pow(this->speed.x,2)+pow(this->speed.z,2)),this->speed.y,0));
+   float rotZ =  acos(vecY.x);
+   this->speed.y<0 ? this->rot.z=rotZ : this->rot.z=-rotZ;
 
-   //Rotacja na osiY
-   float katY = atan2(this->speed.x,this->speed.z);
-//   if(this->speed.z < 0){
-//      katY = katY - glm::radians(180.0f);
-//   }
-//   else if(this->speed.x < 0){
-//      katY = katY - glm::radians(180.0f);
-//   }
-   this->rot.y = katY;
+   vecY = glm::normalize(glm::vec3(this->speed.x,0,this->speed.z));
+   float rotY = acos(vecY.x);
+   -vecY.z>0 ? this->rot.y=-rotY : this->rot.y=rotY;
 }
