@@ -22,6 +22,8 @@
 
 #define M_PI 3.14159265358979323846
 
+using namespace irrklang;
+
 class State;
 class inputActions{
 private:
@@ -70,6 +72,8 @@ public:
 
       Player *winner;
 
+      ISoundEngine *SoundEngine = createIrrKlangDevice();//dzwiek
+
       GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
       static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );
       static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
@@ -82,7 +86,7 @@ public:
       State *findState(char key, GLFWwindow *window, GLFWcursor *cursor);
       State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
       void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
-    irrklang::ISoundEngine *soundEngine;
+      //irrklang::ISoundEngine *soundEngine;
 };
 
 
