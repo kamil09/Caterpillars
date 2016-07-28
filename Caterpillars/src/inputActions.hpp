@@ -82,7 +82,8 @@ public:
       State *findState(char key, GLFWwindow *window, GLFWcursor *cursor);
       State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
       void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
-    irrklang::ISoundEngine *SoundEngine;
+    irrklang::ISoundEngine *soundEngine;
+
 };
 
 
