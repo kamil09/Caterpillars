@@ -18,7 +18,7 @@
 #include <thread>
 #include <mutex>
 #include <functional>
-#include "irrKlang/irrKlang.h"
+#include "irrKlang/include/irrKlang.h"
 
 #define M_PI 3.14159265358979323846
 

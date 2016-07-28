@@ -45,7 +45,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5195f8d0-6309-43b8-b860-8c3491920ff0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/inputActions.hpp" afterPath="$PROJECT_DIR$/src/inputActions.hpp" />
     </list>
     <ignored path="Caterpillars.iws" />
@@ -70,11 +69,9 @@
       <file leaf-file-name="inputActions.hpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/inputActions.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="467">
-              <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-              <folding>
-                <element signature="e#73#93#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="273">
+              <caret line="20" column="10" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -162,8 +159,8 @@
       <file leaf-file-name="inputActions.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/inputActions.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state relative-caret-position="-1915">
+              <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -697,12 +694,12 @@
       <workItem from="1469388417697" duration="1935000" />
       <workItem from="1469699673223" duration="9921000" />
       <workItem from="1469716496834" duration="78000" />
-      <workItem from="1469716625397" duration="319000" />
+      <workItem from="1469716625397" duration="693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37697000" />
+    <option name="totallyTimeSpent" value="38071000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1108,14 +1105,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/inputActions.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="410">
@@ -1124,13 +1113,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/inputActions.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1915">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/inputActions.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-          <folding>
-            <element signature="e#73#93#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="273">
+          <caret line="20" column="10" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
