@@ -53,7 +53,7 @@ Game::Game(GLFWwindow *window,GLFWcursor *cur) : State(window,cur){
     this->powerBar->addTextM("Power: 0%",0.0f,0.0f,1.0f,glm::vec3(1.0f,1.0f,1.0f));
     this->skybox = new Skybox();
 
-    inputActions::getInstance().SoundEngine->play2D("../sounds/song_01.wav", GL_TRUE);
+    inputActions::getInstance().SoundEngine->play2D("../src/sounds/song_01.wav", GL_TRUE);
 }
 
 
@@ -436,7 +436,7 @@ void Game::bulletShot() {//Warunek na strzal - widok z celowikiem i lewy przycis
         //Po wyborze sily strzaly nastepuje strzal
         if (!inputActions::getInstance().leftClick && powerischoosed) {
 
-            inputActions::getInstance().SoundEngine->play2D("../sounds/rpg_shot.wav", GL_FALSE);
+            inputActions::getInstance().SoundEngine->play2D("../src/sounds/rpg_shot.wav", GL_FALSE);
 
             glm::vec3 shotViewVec = glm::mat3(this->currentCutterpillar->rotM) * this->currentCutterpillar->startLook;
             glm::vec3 look = glm::mat3(this->currentCutterpillar->rotMY) * this->currentCutterpillar->startLook;
@@ -533,7 +533,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            {
              if(bul->colission == false){
              Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),5,2,boomRadius*1.3,NUMBERS_OF_PARTICLES,5,0.7));
-             inputActions::getInstance().SoundEngine->play2D("../sounds/boom_01.wav", GL_FALSE);
+             inputActions::getInstance().SoundEngine->play2D("../src/sounds/boom_01.wav", GL_FALSE);
              Map::getInstance().kaboom(x,y,z,boomRadius);
              o->colission = true;
              bul->currentWaitTime = bul->waitTime;
@@ -571,7 +571,7 @@ bool Game::checkCollisionAndMove(Object *o,float x, float y, float z ,std::vecto
            {
              Map::getInstance().particleEffectsVector.push_back(new ParticleEffect(glm::vec3(x,y,z),5,2,boomRadius*1.3,NUMBERS_OF_PARTICLES,5,0.7));
               Map::getInstance().kaboom(x,y,z,boomRadius);
-              inputActions::getInstance().SoundEngine->play2D("../sounds/boom_01.wav", GL_FALSE);
+              inputActions::getInstance().SoundEngine->play2D("../src/sounds/boom_01.wav", GL_FALSE);
               bul->currentWaitTime = bul->waitTime;
               o->colission = true;
            }
