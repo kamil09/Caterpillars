@@ -18,7 +18,7 @@
 #include <thread>
 #include <mutex>
 #include <functional>
-#include "irrKlang/include/irrKlang.h"
+#include "./irrKlang/include/irrKlang.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -83,7 +83,6 @@ public:
       State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
       void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
     irrklang::ISoundEngine *soundEngine;
-
 };
 
 

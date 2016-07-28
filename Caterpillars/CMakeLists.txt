@@ -49,16 +49,16 @@ SET(IrrKlang_FOUND OFF)
 FIND_PATH(
         IrrKlang_INCLUDE_DIR
         irrKlang.h
-#        /usr/local/include/irrKlang
-#        /usr/include/irrKlang
+        /usr/local/include/irrKlang
+        /usr/include/irrKlang
         ./src/irrKlang/include
 )
 
 IF(IrrKlang_INCLUDE_DIR)
     find_library(IrrKlang_LIBRARY
             NAMES IrrKlang
-#            PATHS /usr/local/lib /usr/lib ./src/irrKlang/bin/linux-gcc-64
-            PATHS ./src/irrKlang/bin/linux-gcc-64
+            PATHS /usr/local/lib /usr/lib ./src/irrKlang/bin/linux-gcc-64
+#            PATHS ./src/irrKlang/bin/linux-gcc-64/
             )
     if(IrrKlang_LIBRARY)
         get_filename_component(IrrKlang_LIBRARY_DIRS ${IrrKlang_LIBRARY} PATH)
