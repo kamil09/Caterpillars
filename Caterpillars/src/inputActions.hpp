@@ -72,7 +72,7 @@ public:
 
       Player *winner;
 
-      ISoundEngine *SoundEngine = createIrrKlangDevice();//dzwiek
+      ISoundEngine *SoundEngine;//dzwiek
 
       GLFWcursor * setCallbacks(GLFWwindow *window, GLFWcursor *cursor);
       static void key_callback(GLFWwindow* window,int key, int scancode, int action, int mods );
@@ -86,6 +86,7 @@ public:
       State *findState(char key, GLFWwindow *window, GLFWcursor *cursor);
       State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
       void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
+        void createSoundEngine();
       //irrklang::ISoundEngine *soundEngine;
 };
 

@@ -72,6 +72,7 @@ void Menu::pressLMB() {
     // this->readPixel(this->window);
 //    this->checkButtons();
     if(this->currentButton!=-1){
+        inputActions::getInstance().SoundEngine->play2D("../src/sounds/menu_click.wav", GL_FALSE);
         this->listaButtonow[this->currentButton]->callBackFunction(this->listaButtonow[this->currentButton],this->window,this->cursor);
         inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);
         this->currentButton=-1;
@@ -157,6 +158,7 @@ void Menu::checkCursor(){
                 }
                 this->listaButtonow[this->currentButton]->kolor.a=1.0f;
                 inputActions::getInstance().changeCursor(GLFW_HAND_CURSOR);
+                inputActions::getInstance().SoundEngine->play2D("../src/sounds/menu_hover.wav", GL_FALSE);
             }
             else{
                 inputActions::getInstance().changeCursor(GLFW_CROSSHAIR_CURSOR);

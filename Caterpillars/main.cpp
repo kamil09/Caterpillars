@@ -89,6 +89,9 @@ int main(void){
 
 	Info *info = new Info();
 	errorCheck("inicjalizacja");
+
+	//Dzwiek
+	inputActions::getInstance().createSoundEngine();
 	while (!glfwWindowShouldClose(window)) {
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;

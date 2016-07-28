@@ -168,3 +168,7 @@ void inputActions::changeState(char key, GLFWwindow *window, GLFWcursor *cursor)
 	State* newState = this->findState(key,window,cursor);
 	if(newState!= nullptr) this->currentState = newState;
 }
+
+void inputActions::createSoundEngine() {
+    this->SoundEngine = createIrrKlangDevice();
+}
