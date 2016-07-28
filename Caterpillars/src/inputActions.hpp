@@ -18,15 +18,18 @@
 #include <thread>
 #include <mutex>
 #include <functional>
+#include "irrKlang/irrKlang.h"
 
 #define M_PI 3.14159265358979323846
 
 class State;
 class inputActions{
-   public:
-      inputActions();
-      inputActions(const inputActions &);
-      ~inputActions();
+private:
+
+    inputActions();
+    inputActions(const inputActions &);
+    ~inputActions();
+public:
       static inputActions& getInstance();
       void getMouseCurrentPosition(GLFWwindow *window);
       State *currentState;
@@ -79,6 +82,7 @@ class inputActions{
       State *findState(char key, GLFWwindow *window, GLFWcursor *cursor);
       State *createState(char key, GLFWwindow *window, GLFWcursor *cursor);
       void changeState(char key, GLFWwindow *window, GLFWcursor *cursor);
+    irrklang::ISoundEngine *SoundEngine;
 };
 
 
